@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#344c42">
+  <title>勇者試煉｜圓周長打怪 RPG</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="questions.js" defer></script>
+  <script src="game.js" defer></script>
+<style id="adventure-navigation-style">
+ .adventure-backbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;max-width:1300px;margin:0 auto;padding:10px 18px;background:#fff9e9f5;border-bottom:1px solid #c6b78f;color:#35553f;font-family:"Microsoft JhengHei",sans-serif;font-size:14px}
+ .adventure-return{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border:1px solid #9daa8c;border-radius:9px;background:#fffaf0;color:#35553f;font:700 15px "Microsoft JhengHei",sans-serif;text-decoration:none}
+ .adventure-return:hover{background:#e7efdc}.adventure-return:focus-visible{outline:3px solid #375f93;outline-offset:3px}
+ .adventure-dialog-return{margin:14px auto 0;display:flex;width:max-content;max-width:100%}.adventure-earned{line-height:1.7}
+ </style>
+</head>
+<body>
+<nav class="adventure-backbar" aria-label="大冒險導覽"><a class="adventure-return" href="../大冒險地圖/index.html">← 回到大地圖</a><span class="adventure-earned" id="adventureEarned" role="status" aria-live="polite">完成挑戰，收集圓周長之印。</span></nav>
+  <div class="page-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="勇者試煉首頁"><span class="brand-mark">π</span><span>圓之森<span class="brand-sub">數學冒險研究所</span></span></a>
+      <div class="top-note">圓周長計算與逆推 <span>／</span> 國中數學</div>
+      <button class="quiet-button" id="rulesButton" type="button">冒險說明</button>
+    </header>
+
+    <main>
+      <section class="heading-row" aria-labelledby="gameTitle">
+        <div><p class="eyebrow">THE CIRCLEWOOD CHRONICLES</p><h1 id="gameTitle">勇者試煉<span>圓周長的魔法之旅</span></h1></div>
+        <div class="journey-summary"><span class="chapter-label" id="chapterLabel">準備出發</span><p id="journeyCaption">帶上你的智慧，走進圓之森。</p></div>
+      </section>
+
+      <section class="player-bar" aria-label="魔法師狀態">
+        <div class="player-identity"><img src="assets/characters/mage-school.png" alt="穿黑色長袍與紅金領帶的魔法師"><div><span class="small-label">你的角色</span><strong>見習魔法師</strong></div></div>
+        <div class="health-stat"><div><span>生命 HP</span><strong id="hpText">100 / 100</strong></div><progress id="playerHp" max="100" value="100" aria-label="魔法師生命值"></progress></div>
+        <div class="stat"><span class="small-label">持有金幣</span><strong><span id="goldText">0</span><small>枚</small></strong></div>
+        <div class="stat"><span class="small-label">魔法攻擊</span><strong><span id="attackText">20</span><small>點</small></strong></div>
+        <div class="stat charm-stat"><span class="small-label">復活符</span><strong><span id="reviveText">0</span><small>張</small></strong></div>
+      </section>
+
+      <div class="adventure-grid">
+        <section class="battle-panel" aria-label="戰鬥場景">
+          <div class="scene-top"><span class="location-chip" id="locationText">圓之森・試煉入口</span><span class="scene-counter" id="sceneCounter">五道試煉，等待勇者</span></div>
+          <div class="enemy-status" id="enemyStatus" hidden><div><strong id="enemyName">森林野狼</strong><span id="enemyHpText">120 / 120</span></div><progress id="enemyHp" max="120" value="120" aria-label="怪物生命值"></progress></div>
+          <div class="title-plaque" id="titlePlaque"><img src="assets/items/title-board.png" alt="藤葉與星星裝飾的木製標題牌"><div>勇者試煉<small>把公式，化為勇氣。</small></div></div>
+          <div class="combatants"><div class="character-wrap mage-wrap"><img id="mageSprite" src="assets/characters/mage-school.png" alt="穿黑色長袍的魔法師拿著月牙法杖"><span class="character-tag">知識就是魔法</span></div><span class="versus" id="versus" hidden>VS</span><div class="character-wrap monster-wrap"><img id="monsterSprite" src="assets/characters/wolf.png" alt="可愛的森林野狼"><span class="character-tag" id="monsterTag">森林的守門員</span></div></div>
+          <div class="battle-effect" id="battleEffect" aria-hidden="true"></div>
+          <p class="scene-message" id="sceneMessage">森林深處，藏著通往魔法的答案。</p>
+        </section>
+
+        <section class="question-panel" id="questionPanel" aria-label="試煉題目">
+          <div id="welcomeView" class="welcome-view">
+            <span class="section-kicker">冒險邀請函</span><h2>準備好，<br>用數學施展魔法？</h2><p class="intro-copy">在圓之森裡，每一個正確答案，<br class="desktop-break">都是保護自己的力量。</p>
+            <ol class="intro-steps"><li><span>01</span><div><strong>讀題，選一個答案</strong><p>答對施法，並獲得 12 枚金幣。</p></div></li><li><span>02</span><div><strong>慢慢想，沒有時間限制</strong><p>答錯會扣 HP，並顯示正解與算式。</p></div></li><li><span>03</span><div><strong>五關，30 道原題</strong><p>每關後到商店補給，迎接下一場試煉。</p></div></li></ol>
+            <button class="primary-button" id="startButton" type="button">開始勇者試煉 <span aria-hidden="true">→</span></button>
+            <p class="fine-print">初始 HP 100・不計時・可隨時查看公式</p>
+          </div>
+          <div id="quizView" hidden>
+            <div class="question-meta"><span class="question-count" id="questionCount"></span><span class="question-count" id="firstAttemptStats">首次答對 0 / 已答 0 題</span></div>
+            <p class="section-kicker question-topic" id="questionType"></p>
+            <div class="question-progress" id="questionProgress" aria-hidden="true"></div>
+            <p class="question-source" id="questionSource"></p><h2 id="questionText" tabindex="-1"></h2>
+            <p class="pi-note">圓周率一律用 π 表示，不用換成 3.14。</p>
+            <div class="answers" id="answers" role="group" aria-labelledby="questionText"></div>
+            <details class="formula-hint" id="formulaHint"><summary>需要一點提示？查看公式</summary><p id="formulaText"></p><p>先找出「已知什麼」，再看「要求什麼」。</p></details>
+            <div class="feedback" id="feedback" role="status" aria-live="polite" hidden></div>
+            <button class="primary-button next-button" id="nextButton" type="button" hidden>下一題 <span aria-hidden="true">→</span></button>
+          </div>
+        </section>
+      </div>
+
+      <section class="route-section" aria-label="冒險路線"><div class="route-heading"><span class="section-kicker">你的冒險地圖</span><span id="totalProgress">尚未開始・共 30 題</span></div><ol class="route" id="route"></ol></section>
+      <footer><span>教材來源：《圓周長計算與逆推》教師版・30 題原題</span><span>一步一步，也能走到魔王面前。</span></footer>
+    </main>
+  </div>
+
+  <dialog id="rulesDialog" class="rules-dialog"><form method="dialog"><button class="close-button" aria-label="關閉冒險說明">×</button><span class="section-kicker">給勇者的小筆記</span><h2>冒險怎麼玩？</h2><ul class="rules-list"><li>依序挑戰野狼、毒蠍、惡鬼、巨龍、魔王。每關六道原題，四選一、不計時。</li><li>答對造成魔法攻擊傷害，首次答對得到 12 枚金幣；答錯扣除該關傷害，並顯示正解和算式。</li><li>六題完成且怪物 HP 歸零後過關。若還有 HP，就進入原題訂正挑戰；訂正答對得 6 枚金幣，不改動首次作答成績。</li><li>提早擊敗怪物後，仍須完成該關六題以穩定封印；答錯仍會扣血。</li><li>每關後可逛木造商店。藥水立即回復 40 HP；水晶永久增加 5 點攻擊，最多買三顆；復活符限持有一張，HP 歸零時自動回復 60 HP。</li><li>HP 歸零且沒有復活符就挑戰失敗，可重新開始。成績以 30 題的首次作答計算，未作答題不計分。</li><li>鍵盤也能玩：Tab 移動、Enter 或空白鍵選擇。選完請按「下一題」。</li></ul><button class="primary-button">我知道了</button></form></dialog>
+
+  <dialog id="shopDialog" class="shop-dialog" aria-labelledby="shopTitle"><div class="shop-hero"><span class="shop-badge">CIRCLEWOOD SUPPLY</span><h2 id="shopTitle">林間補給所</h2><p id="shopSubtitle">辛苦了，勇者。替下一段旅程做好準備吧。</p></div><div class="shop-body"><div class="shop-wallet"><strong id="shopStageTitle"></strong><span>金幣 <b id="shopGold">0</b> 枚　／　HP <b id="shopHp">100</b></span></div><div class="shop-items" id="shopItems"></div><p class="shop-feedback" id="shopFeedback" role="status" aria-live="polite">點選想購買的道具，效果立即生效。</p><button class="primary-button" id="leaveShop" type="button">繼續冒險 →</button></div></dialog>
+
+  <dialog id="resultDialog" class="result-dialog" aria-labelledby="resultTitle"><span class="section-kicker" id="resultKicker"></span><h2 id="resultTitle"></h2><p id="resultMessage"></p><div class="result-stats"><div><strong id="scoreValue"></strong><span>首次作答成績</span></div><div><strong id="correctValue"></strong><span>答對／總題數</span></div><div><strong id="clearedValue"></strong><span>完成關卡</span></div></div><p class="result-note" id="resultNote"></p><details class="review-details"><summary id="reviewSummary">看看需要練習的題目</summary><div id="reviewList"></div></details><button class="primary-button" id="retryButton" type="button">再次踏上旅程 →</button></dialog>
+
+<script>
+(() => {
+ 'use strict';
+ const keys=['cert_dynasty','cert_idiom','cert_warrior','adventure_start','adventure_finish','adventure_run'];
+ const memory=Object.create(null);let failed=false;
+ function get(key){try{return localStorage.getItem(key)}catch{failed=true;return memory[key]??null}}
+ function set(key,value){memory[key]=String(value);try{localStorage.setItem(key,String(value))}catch{failed=true}}
+ function remove(key){delete memory[key];try{localStorage.removeItem(key)}catch{failed=true}}
+ function has(key){const v=get(key);return v!==null&&!['','false','0','null','undefined'].includes(v.toLowerCase())}
+ // file: pages can have separate localStorage areas. Carry only adventure data
+ // in the return link, then immediately remove the fragment from the address bar.
+ if(location.hash.startsWith('#adventure=')){
+  try{const data=JSON.parse(decodeURIComponent(location.hash.slice(11)));
+   if(data&&Number(data.adventure_start)>0&&typeof data.adventure_run==='string'){
+    keys.forEach(key=>{if(typeof data[key]==='string')set(key,data[key]);else remove(key)});
+    history.replaceState(null,'',location.pathname+location.search);
+   }
+  }catch{/* Ignore an invalid transfer; keep this page's saved progress. */}
+ }
+ if(!get('adventure_run'))set('adventure_run',Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+ const start=Number(get('adventure_start'));if(!Number.isFinite(start)||start<=0||start>Date.now())set('adventure_start',String(Date.now()));
+ function link(path){const data={};keys.forEach(key=>{const value=get(key);if(value!==null)data[key]=value});return path+'#adventure='+encodeURIComponent(JSON.stringify(data))}
+ function clearAll(){try{localStorage.clear()}catch{failed=true}Object.keys(memory).forEach(k=>delete memory[k])}
+ window.Adventure=Object.freeze({get,set,has,link,clearAll,get failed(){return failed}});
+})();
+(() => {
+ 'use strict';
+ const A=window.Adventure,key="cert_warrior",name="圓周長之印";
+ let awarded=false;
+ function returnLink(link){link.href=A.link('../大冒險地圖/index.html')}
+ function updateLinks(){document.querySelectorAll('.adventure-return').forEach(returnLink)}
+ function check(){
+  if(awarded)return;
+  if(window.CircleRPG?.getState().phase==='won'){awarded=true;A.set(key,'true');document.getElementById('adventureEarned').textContent='✓ 已獲得「'+name+'」！回大地圖試放憑證吧。';updateLinks()}
+ }
+ for(const dialog of document.querySelectorAll('#win,#resultDialog')){const a=document.createElement('a');a.className='adventure-return adventure-dialog-return';a.href='../大冒險地圖/index.html';a.textContent='← 回到大地圖';dialog.append(a)}
+ document.addEventListener('click',event=>{const a=event.target.closest('.adventure-return');if(a){check();returnLink(a)}},true);
+ new MutationObserver(check).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['open','value','class']});
+ window.addEventListener('pageshow',()=>{updateLinks();check()});
+ updateLinks();check();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#486456">
+  <title>五柳先生傳課文填字｜五柳書齋</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="game.js" defer></script>
+<style id="adventure-navigation-style">
+ .adventure-backbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;max-width:1300px;margin:0 auto;padding:10px 18px;background:#fff9e9f5;border-bottom:1px solid #c6b78f;color:#35553f;font-family:"Microsoft JhengHei",sans-serif;font-size:14px}
+ .adventure-return{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border:1px solid #9daa8c;border-radius:9px;background:#fffaf0;color:#35553f;font:700 15px "Microsoft JhengHei",sans-serif;text-decoration:none}
+ .adventure-return:hover{background:#e7efdc}.adventure-return:focus-visible{outline:3px solid #375f93;outline-offset:3px}
+ .adventure-dialog-return{margin:14px auto 0;display:flex;width:max-content;max-width:100%}.adventure-earned{line-height:1.7}
+ </style>
+</head>
+<body>
+<nav class="adventure-backbar" aria-label="大冒險導覽"><a class="adventure-return" href="../大冒險地圖/index.html">← 回到大地圖</a><span class="adventure-earned" id="adventureEarned" role="status" aria-live="polite">完成挑戰，收集填文之印。</span></nav>
+  <div class="page-shell">
+    <header class="site-header">
+      <button class="brand" id="homeButton" aria-label="回到段落選單"><span class="brand-mark">柳</span><span>五柳書齋<small>讀古文・玩填字</small></span></button>
+      <div class="header-actions"><button id="motionButton" class="text-button" aria-pressed="false">暫停動畫</button><button id="scoreButton" class="text-button">學習成績</button></div>
+    </header>
+    <main id="main"></main>
+    <footer class="site-footer"><span>一字一拾，慢慢讀懂五柳先生。</span><details><summary>課文版本與操作說明</summary><p>課文：陶淵明〈五柳先生傳〉，依三段編排，以逗號、句號、分號、冒號、破折號、問號與驚嘆號分句，每句挖空兩字。採「閑靜」「因以為號焉」「酣觴賦詩」用字；不同課本的標點、用字可能略有差異。</p><p>拖曳字卡到空格；也可點字卡再點空格。鍵盤：Tab 選字卡、Enter 選取，再 Tab 到空格、Enter 填入。答錯可重試，已答對的字會鎖定。成績＝答對次數 ÷ 全部作答次數 × 100；提示不扣分，另列使用次數。</p><p>參考：<a href="https://zh.wikisource.org/zh/%E4%BA%94%E6%9F%B3%E5%85%88%E7%94%9F%E5%82%B3" target="_blank" rel="noopener">維基文庫原文</a>。本遊戲無限時，不儲存學生個人資料。</p></details></footer>
+  </div>
+  <div id="announcer" class="sr-only" role="status" aria-live="polite"></div>
+  <dialog id="restartDialog"><h2>重新開始練習？</h2><p>這次的作答紀錄會清除，所有段落可以再玩一次。</p><div class="button-row"><button id="cancelRestart" class="secondary">繼續目前練習</button><button id="confirmRestart" class="primary">重新開始</button></div></dialog>
+
+<script>
+(() => {
+ 'use strict';
+ const keys=['cert_dynasty','cert_idiom','cert_warrior','adventure_start','adventure_finish','adventure_run'];
+ const memory=Object.create(null);let failed=false;
+ function get(key){try{return localStorage.getItem(key)}catch{failed=true;return memory[key]??null}}
+ function set(key,value){memory[key]=String(value);try{localStorage.setItem(key,String(value))}catch{failed=true}}
+ function remove(key){delete memory[key];try{localStorage.removeItem(key)}catch{failed=true}}
+ function has(key){const v=get(key);return v!==null&&!['','false','0','null','undefined'].includes(v.toLowerCase())}
+ // file: pages can have separate localStorage areas. Carry only adventure data
+ // in the return link, then immediately remove the fragment from the address bar.
+ if(location.hash.startsWith('#adventure=')){
+  try{const data=JSON.parse(decodeURIComponent(location.hash.slice(11)));
+   if(data&&Number(data.adventure_start)>0&&typeof data.adventure_run==='string'){
+    keys.forEach(key=>{if(typeof data[key]==='string')set(key,data[key]);else remove(key)});
+    history.replaceState(null,'',location.pathname+location.search);
+   }
+  }catch{/* Ignore an invalid transfer; keep this page's saved progress. */}
+ }
+ if(!get('adventure_run'))set('adventure_run',Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+ const start=Number(get('adventure_start'));if(!Number.isFinite(start)||start<=0||start>Date.now())set('adventure_start',String(Date.now()));
+ function link(path){const data={};keys.forEach(key=>{const value=get(key);if(value!==null)data[key]=value});return path+'#adventure='+encodeURIComponent(JSON.stringify(data))}
+ function clearAll(){try{localStorage.clear()}catch{failed=true}Object.keys(memory).forEach(k=>delete memory[k])}
+ window.Adventure=Object.freeze({get,set,has,link,clearAll,get failed(){return failed}});
+})();
+(() => {
+ 'use strict';
+ const A=window.Adventure,key="cert_idiom",name="填文之印";
+ let awarded=false;
+ function returnLink(link){link.href=A.link('../大冒險地圖/index.html')}
+ function updateLinks(){document.querySelectorAll('.adventure-return').forEach(returnLink)}
+ function check(){
+  if(awarded)return;
+  if(typeof window.stats==='function' && (()=>{const s=window.stats();return s.total>0&&s.correct===s.total})()){awarded=true;A.set(key,'true');document.getElementById('adventureEarned').textContent='✓ 已獲得「'+name+'」！回大地圖試放憑證吧。';updateLinks()}
+ }
+ for(const dialog of document.querySelectorAll('#win,#resultDialog')){const a=document.createElement('a');a.className='adventure-return adventure-dialog-return';a.href='../大冒險地圖/index.html';a.textContent='← 回到大地圖';dialog.append(a)}
+ document.addEventListener('click',event=>{const a=event.target.closest('.adventure-return');if(a){check();returnLink(a)}},true);
+ new MutationObserver(check).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['open','value','class']});
+ window.addEventListener('pageshow',()=>{updateLinks();check()});
+ updateLinks();check();
+})();
+</script>
+
+</body>
+</html>

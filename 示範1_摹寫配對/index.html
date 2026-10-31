@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#edf0df">
+<title>摹寫對對碰｜五感小花園</title>
+<style>
+:root{color-scheme:light;--ink:#3c493c;--green:#426553;--line:#b9c2a4;--paper:#fffcf2;--red:#b3312c}
+*{box-sizing:border-box}body{margin:0;color:var(--ink);font-family:"Microsoft JhengHei","PingFang TC",sans-serif;background:#edf0df url('assets/images/garden.png') center center/cover fixed;min-height:100vh}button{font:inherit;color:inherit}button:focus-visible,summary:focus-visible{outline:3px solid #285e88;outline-offset:3px}button{cursor:pointer}button:disabled{cursor:default}main{max-width:1300px;margin:auto;padding:14px 32px 22px}.masthead{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:150px}.eyebrow{font-size:13px;letter-spacing:.18em;margin:0 0 8px;color:#57694c}.tagline{font-size:18px;line-height:1.7;margin:0}.title{width:440px;height:150px;flex-shrink:0;background:url('assets/images/title.png') center/100% auto no-repeat;margin:0}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.top-actions{text-align:right;min-width:145px}.restart{border:1px solid #9eae8d;background:#fffdf2eF;border-radius:99px;padding:11px 19px;box-shadow:0 3px 0 #c4ccb4;font-size:16px;font-weight:700}.restart:hover{background:#eaf1df}.edition{font-size:12px;letter-spacing:.12em;color:#697357;margin-top:15px}.guide{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 20px;border:1px solid #c5cbb6;background:#fffdf1eE;border-radius:15px;box-shadow:0 4px 16px #55613c09}.guide p{margin:0;line-height:1.65;font-size:16px}.step{display:inline-grid;place-items:center;width:24px;height:24px;background:#617951;color:white;border-radius:50%;margin-right:5px;font-size:14px}.guide strong{font-weight:700}.help{position:relative;flex-shrink:0}.help summary{cursor:pointer;list-style:none;font-size:14px;text-decoration:underline;text-underline-offset:4px}.help-content{position:absolute;right:0;top:25px;width:300px;z-index:5;background:#fffdf3;border:1px solid var(--line);padding:18px;border-radius:12px;box-shadow:0 8px 25px #3b493c25;line-height:1.8;font-size:15px}.help-content p{font-size:15px;margin:0 0 8px}.status-bar{display:grid;grid-template-columns:auto 180px 1fr;align-items:center;gap:14px;margin:16px 4px 12px}.counter{font-size:16px;white-space:nowrap}.counter b{font-size:24px;color:var(--green)}progress{width:100%;height:9px;appearance:none;border:0;border-radius:10px;background:#d8dfc9;overflow:hidden}progress::-webkit-progress-bar{background:#d8dfc9}progress::-webkit-progress-value{background:#76916b;border-radius:10px}progress::-moz-progress-bar{background:#76916b}.feedback{font-size:15px;line-height:1.6;margin:0;text-align:right;min-height:24px}.feedback[data-tone="error"]{color:#9a3f2e;font-weight:700}.feedback[data-tone="success"]{color:#356248;font-weight:700}.board{display:grid;grid-template-columns:minmax(340px,.94fr) minmax(440px,1.25fr);gap:22px;align-items:start}.panel{padding:16px;background:#fffdf3ed;border:1px solid #b9c4a8;border-radius:20px;box-shadow:0 7px 25px #55613c0b}.panel-title{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 3px 12px}.panel-title h2{font-size:18px;margin:0;letter-spacing:.07em}.panel-title small{font-size:12px;color:#6e765e}.targets{display:grid;gap:9px}.target{position:relative;width:100%;min-height:94px;text-align:left;background:#f8f8eb;border:1px solid #c5ccb5;border-radius:12px;padding:9px 12px;transition:background .15s,border-color .15s,box-shadow .15s;display:grid;grid-template-columns:62px 1fr;gap:9px;align-items:center}.target:hover{background:#f0f3e2}.target.over{background:#e2eed9;border:2px solid #527746;box-shadow:0 0 0 3px #88a86d35}.target.error{animation:shake .3s;background:#fff0e6;border-color:#b95741}.target.complete{border-color:#7a9b71;background:#f0f5e5}.sense-art{width:62px;height:62px;background-image:url('assets/images/senses.png');background-size:300% 200%;border-radius:50%;mix-blend-mode:multiply;pointer-events:none}.art-visual{background-position:0 0}.art-auditory{background-position:50% 0}.art-tactile{background-position:100% 0}.art-olfactory{background-position:0 100%}.art-gustatory{background-position:50% 100%}.art-owl{background-position:100% 100%}.target-heading{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap}.sense-name{font-size:21px;font-weight:700;letter-spacing:.12em}.sense-hint{font-size:13px;color:#6e765e}.type-count{font-size:12px;position:absolute;right:10px;top:10px;color:#657457}.drop-note{font-size:13px;color:#7b836e;margin-top:6px;border-bottom:1px dashed #bdc5aa;padding-bottom:5px}.matched-list{margin-top:5px;display:grid;gap:5px}.matched-sentence{position:relative;padding:5px 39px 5px 0;font-size:14px;line-height:1.55;color:#425b3e}.stamp{display:grid;place-items:center;border:2px solid var(--red);color:var(--red);font-weight:900;font-family:"DFKai-SB","KaiTi",serif;transform:rotate(-13deg);width:34px;height:34px;border-radius:5px;position:absolute;right:0;top:1px;font-size:12px;line-height:1;animation:stamp .3s ease-out;background:#fff9eea6}.cards{display:grid;grid-template-columns:1fr 1fr;gap:11px;align-content:start;min-height:490px}.sentence{position:relative;min-height:91px;border:0;background:transparent url('assets/images/scroll.png') center/100% 100% no-repeat;padding:15px 25px;text-align:left;font-size:18px;font-weight:500;line-height:1.65;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab;transition:filter .15s,outline-color .15s;outline:2px solid transparent;outline-offset:-5px;border-radius:13px}.sentence:hover{filter:drop-shadow(0 3px 4px #6e57352a);transform:translateY(-1px)}.sentence.selected{outline-color:#476d50;filter:drop-shadow(0 0 4px #5d815d40)}.sentence.drag-source{opacity:.35}.sentence.returning{animation:shake .3s}.sentence.drag-ghost{position:fixed;z-index:1000;margin:0;pointer-events:none;opacity:.98;transform:rotate(-3deg);filter:drop-shadow(0 12px 12px #3d473d40);transition:none;cursor:grabbing}.empty-note{grid-column:1/-1;align-self:center;text-align:center;padding:80px 10px;color:#587051;line-height:2}.footer{text-align:center;font-size:13px;letter-spacing:.06em;margin:15px 0 0;color:#5c6d53}.board.dragging,.board.dragging *{cursor:grabbing}.panel:has(.cards){background:#f8f5e7de}dialog{border:1px solid #a9b797;border-radius:24px;background:#fffdf1;color:var(--ink);padding:28px;max-width:430px;width:calc(100% - 36px);text-align:center;box-shadow:0 20px 100px #23392830}dialog::backdrop{background:#2c45394f;backdrop-filter:blur(4px)}.win-art{width:130px;height:130px;margin:0 auto}.win-label{font-size:12px;letter-spacing:.22em;color:#6b805b}.win-title{font-size:30px;margin:10px 0}.win-description{font-size:17px;line-height:1.9;margin:0 0 20px}.win-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}.primary{background:#4d7055;color:white;border:0;border-radius:99px;padding:12px 24px;font-weight:700}.secondary{background:transparent;border:1px solid #abb99b;border-radius:99px;padding:12px 20px}.win-seal{display:inline-block;border:3px double var(--red);color:var(--red);font-size:18px;padding:9px 12px;transform:rotate(-7deg);font-family:"DFKai-SB",serif;margin-bottom:12px}.keyboard-note{font-size:12px;color:#727a64;margin:10px 0 0} @keyframes stamp{from{transform:scale(1.8) rotate(-20deg);opacity:0}to{transform:scale(1) rotate(-13deg);opacity:1}}@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(min-width:1400px){main{padding-top:22px}.masthead{min-height:165px}.target{min-height:102px}.sentence{min-height:99px}}
+@media(max-width:1000px){main{padding:10px 18px 18px}.masthead{gap:8px;min-height:130px}.title{width:360px;height:130px}.tagline{font-size:15px}.eyebrow{font-size:11px}.board{grid-template-columns:minmax(280px,.9fr) minmax(350px,1.1fr);gap:14px}.sentence{padding:14px 21px;font-size:17px}.status-bar{grid-template-columns:auto 100px 1fr}.target{grid-template-columns:48px 1fr;padding:8px}.sense-art{width:48px;height:48px}.sense-hint{font-size:12px}.cards{gap:8px}.panel{padding:12px}}
+@media(max-width:700px){body{background-position:center;background-attachment:scroll}main{padding:4px 10px 14px}.masthead{min-height:110px;position:relative;justify-content:center;padding-bottom:25px}.title{width:300px;height:105px}.intro{position:absolute;bottom:3px;left:3px}.eyebrow{font-size:10px;letter-spacing:.1em;margin:0}.tagline{display:none}.top-actions{position:absolute;right:0;bottom:0;min-width:0}.restart{padding:7px 12px;font-size:13px}.edition{display:none}.guide{margin-top:8px;padding:8px 11px;gap:8px;align-items:flex-start;border-radius:11px}.guide p{font-size:13px;line-height:1.8}.step{width:18px;height:18px;font-size:11px;margin-right:2px}.guide .second-step{display:block}.help summary{font-size:12px;white-space:nowrap;margin-top:3px}.help-content{width:270px;right:0}.status-bar{grid-template-columns:auto 1fr;gap:2px 12px;margin:9px 3px}.counter{font-size:13px}.counter b{font-size:20px}.feedback{grid-column:1/-1;text-align:left;font-size:13px;min-height:40px;display:flex;align-items:center}.board{grid-template-columns:minmax(120px,.8fr) minmax(165px,1.2fr);gap:8px;align-items:stretch;height:calc(100svh - 295px);min-height:475px;max-height:720px}.panel{padding:9px 6px;border-radius:13px;display:flex;flex-direction:column;min-width:0;min-height:0}.panel-title{margin:0 2px 8px;display:block;min-height:38px}.panel-title h2{font-size:15px;letter-spacing:.03em}.panel-title small{font-size:10px;line-height:1.6}.targets{overflow-y:auto;overscroll-behavior:contain;gap:7px;flex:1;scrollbar-width:thin}.target{display:block;min-height:76px;padding:8px 6px}.sense-art{width:32px;height:32px;float:left;margin-right:4px}.target-heading{display:block;padding-top:1px}.sense-name{font-size:18px;letter-spacing:.05em}.sense-hint{display:block;font-size:10px;line-height:1.5}.type-count{font-size:10px;right:6px;top:6px}.drop-note{font-size:10px;clear:both;margin-top:5px;padding-top:4px;padding-bottom:2px}.matched-list{clear:both}.matched-sentence{font-size:12px;padding-right:28px;line-height:1.6}.stamp{width:25px;height:25px;font-size:10px}.cards{display:flex;flex-direction:column;gap:8px;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:2px 0 10px;scrollbar-width:thin;flex:1}.sentence{flex-shrink:0;min-height:100px;font-size:16px;padding:14px 19px;line-height:1.7}.empty-note{padding:50px 8px;font-size:14px}.footer{font-size:11px;line-height:1.6;margin-top:10px}.keyboard-note{display:none}.win-title{font-size:26px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.status-bar{background:#fffdf2ed;border:1px solid #c5cbb6;border-radius:12px;padding:9px 14px;margin-left:0;margin-right:0}.intro{background:#fffdf2e6;padding:10px 14px;border-radius:12px}.card-nav{display:none}@media(max-width:700px){.intro{padding:2px 6px}.status-bar{padding:6px 10px}.board{height:calc(100svh - 350px);min-height:390px}.card-nav{display:flex;gap:6px;padding-top:7px}.card-nav button{flex:1;min-height:44px;border:1px solid #b9c4a8;border-radius:9px;background:#fffdf2;font-size:13px}.card-nav button:disabled{opacity:.4}}
+@media(max-width:700px){.targets{grid-auto-rows:max-content;align-content:start}.sense-hint{line-height:1.6}.drop-note{line-height:1.6}.target-heading{padding-right:15px}.target .sense-name{font-size:17px;letter-spacing:0}}@media(max-width:360px){.board{grid-template-columns:minmax(108px,.8fr) minmax(145px,1.2fr)}.title{width:280px}.target .sense-hint{display:none}.target .sense-art{width:26px;height:26px}.target .sense-name{font-size:16px}.target-heading{padding-right:17px}.sentence{font-size:15px;padding-left:17px;padding-right:17px}.type-count{font-size:9px}.panel-title small{font-size:9px}}
+</style>
+<style id="adventure-navigation-style">
+ .adventure-backbar{position:relative;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;max-width:1300px;margin:0 auto;padding:10px 18px;background:#fff9e9f5;border-bottom:1px solid #c6b78f;color:#35553f;font-family:"Microsoft JhengHei",sans-serif;font-size:14px}
+ .adventure-return{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:9px 16px;border:1px solid #9daa8c;border-radius:9px;background:#fffaf0;color:#35553f;font:700 15px "Microsoft JhengHei",sans-serif;text-decoration:none}
+ .adventure-return:hover{background:#e7efdc}.adventure-return:focus-visible{outline:3px solid #375f93;outline-offset:3px}
+ .adventure-dialog-return{margin:14px auto 0;display:flex;width:max-content;max-width:100%}.adventure-earned{line-height:1.7}
+ </style>
+</head>
+<body>
+<nav class="adventure-backbar" aria-label="大冒險導覽"><a class="adventure-return" href="../大冒險地圖/index.html">← 回到大地圖</a><span class="adventure-earned" id="adventureEarned" role="status" aria-live="polite">完成挑戰，收集摹寫之印。</span></nav>
+<main>
+ <header class="masthead">
+  <div class="intro"><p class="eyebrow">國文練習 · 五感小花園</p><p class="tagline">讀一讀句子，<br>找出藏在文字裡的感覺。</p></div>
+  <h1 class="title"><span class="sr-only">摹寫對對碰</span></h1>
+  <div class="top-actions"><button class="restart" id="restart">重新開始</button><div class="edition">SENSORY GARDEN · 01</div></div>
+ </header>
+ <section class="guide" aria-label="遊戲說明">
+  <p><span class="step">1</span>讀右側句子，想一想用了哪種感覺。<span class="second-step"> <span class="step">2</span><strong>把卷軸拖到左側類型</strong>，也可以先點句子，再點類型。</span></p>
+  <details class="help"><summary>什麼是摹寫？</summary><div class="help-content"><p><strong>摹寫</strong>就是把感官感受到的事物，用文字具體寫出來。</p>視覺：眼睛看到的顏色、形狀。<br>聽覺：耳朵聽到的聲音。<br>觸覺：皮膚感到的冷熱、軟硬。<br>嗅覺：鼻子聞到的氣味。<br>味覺：舌頭嘗到的酸甜苦辣。</div></details>
+ </section>
+ <section class="status-bar" aria-label="配對進度">
+  <div class="counter">已配對 <b id="score">0</b> / 10</div><progress id="progress" max="10" value="0" aria-label="已完成配對數"></progress>
+  <p class="feedback" id="feedback" role="status" aria-live="polite" aria-atomic="true">從任一張卷軸開始吧！每種類型有 2 句。</p>
+ </section>
+ <div class="board" id="board">
+  <section class="panel" aria-labelledby="types-heading"><div class="panel-title"><h2 id="types-heading">五感摹寫</h2><small>把句子送回它的家</small></div><div class="targets" id="targets"></div></section>
+  <section class="panel" aria-labelledby="cards-heading"><div class="panel-title"><h2 id="cards-heading">句子小卷軸</h2><small id="remaining">還有 10 張等你配對</small></div><div class="cards" id="cards"></div><nav class="card-nav" aria-label="捲動句子卷軸"><button id="cards-up" aria-label="往上翻閱句子">上翻</button><button id="cards-down" aria-label="往下翻閱句子">下翻</button></nav></section>
+ </div>
+ <p class="footer">不急，慢慢讀。每一種感覺，都能成為生動的文字。</p>
+ <p class="keyboard-note">鍵盤操作：Tab 選擇句子，Enter 選取，再用 Tab 移到類型按 Enter。Esc 取消選取。</p>
+</main>
+<dialog id="win" aria-labelledby="win-title" aria-describedby="win-description">
+ <div class="sense-art art-owl win-art" aria-hidden="true"></div><p class="win-label">五感小花園 · 任務完成</p><div class="win-seal">五感達人</div>
+ <h2 class="win-title" id="win-title">過關！全部配對成功</h2><p class="win-description" id="win-description">你找到 10 句文字裡的感覺了！<br>眼、耳、皮膚、鼻、舌，都是寫作的好幫手。</p>
+ <div class="win-actions"><button class="primary" id="play-again">再玩一次</button><button class="secondary" id="review">看看配對結果</button></div>
+</dialog>
+<script>
+(() => {
+ 'use strict';
+ const senses = [
+  {id:'visual',name:'視覺',hint:'看：顏色、形狀',cue:'顏色、形狀或明暗'},
+  {id:'auditory',name:'聽覺',hint:'聽：各種聲音',cue:'耳朵聽到的聲音'},
+  {id:'tactile',name:'觸覺',hint:'摸：冷熱、軟硬',cue:'皮膚感到的冷熱、軟硬'},
+  {id:'olfactory',name:'嗅覺',hint:'聞：香味、氣味',cue:'鼻子聞到的氣味'},
+  {id:'gustatory',name:'味覺',hint:'嘗：酸甜、苦辣',cue:'舌頭嘗到的滋味'}
+ ];
+ // 每句只聚焦一種感官；題目及答案均保留為可編輯文字。
+ const sentences = [
+  {id:'v1',sense:'visual',text:'夕陽把天空染成了橘紅色。',clue:'橘紅色'},
+  {id:'v2',sense:'visual',text:'荷葉上，滾著一顆顆晶亮的水珠。',clue:'晶亮的水珠'},
+  {id:'a1',sense:'auditory',text:'雨點打在屋頂，發出滴滴答答的聲音。',clue:'滴滴答答的聲音'},
+  {id:'a2',sense:'auditory',text:'走廊傳來一陣清脆的笑聲。',clue:'清脆的笑聲'},
+  {id:'t1',sense:'tactile',text:'毛毯摸起來柔軟又溫暖。',clue:'柔軟又溫暖'},
+  {id:'t2',sense:'tactile',text:'冰涼的雨水落在我的手背上。',clue:'冰涼'},
+  {id:'o1',sense:'olfactory',text:'走進花園，淡淡的桂花香撲鼻而來。',clue:'桂花香撲鼻而來'},
+  {id:'o2',sense:'olfactory',text:'剛出爐的麵包，散發著濃濃的香氣。',clue:'濃濃的香氣'},
+  {id:'g1',sense:'gustatory',text:'檸檬汁喝起來酸得讓人皺眉。',clue:'酸'},
+  {id:'g2',sense:'gustatory',text:'巧克力在舌尖化開，甜中帶著微苦。',clue:'甜中帶著微苦'}
+ ];
+ const $ = id => document.getElementById(id);
+ const matched = new Set();
+ let selected = null, drag = null, frame = 0, finishTimer = 0, round = 0, previousOrder = '';
+ const timers = new Set();
+ function later(fn,delay){const timer=setTimeout(()=>{timers.delete(timer);fn();},delay);timers.add(timer);return timer;}
+ function shuffle(list){const result=[...list];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]];}if(result.map(x=>x.id).join()===previousOrder)result.push(result.shift());previousOrder=result.map(x=>x.id).join();return result;}
+ function message(text,tone=''){ $('feedback').textContent=text;$('feedback').dataset.tone=tone; }
+ function choose(id){selected=selected===id?null:id;document.querySelectorAll('.sentence:not(.drag-ghost)').forEach(card=>{const on=card.dataset.id===selected;card.classList.toggle('selected',on);card.setAttribute('aria-pressed',String(on));});if(selected)message('已選句子，請拖曳或點選左側類型。');else message('已取消選取，換一張卷軸試試吧。');}
+ function clearSelection(){selected=null;document.querySelectorAll('.sentence.selected').forEach(card=>{card.classList.remove('selected');card.setAttribute('aria-pressed','false');});}
+ function updateNav(){$('cards-up').disabled=$('cards').scrollTop<=1;$('cards-down').disabled=$('cards').scrollTop+$('cards').clientHeight>=$('cards').scrollHeight-1;}
+ function update(){const n=matched.size;$('score').textContent=n;$('progress').value=n;$('remaining').textContent=n===10?'10 張卷軸都找到家了':'還有 '+(10-n)+' 張等你配對';requestAnimationFrame(updateNav);}
+ function match(id,type){
+  if(matched.has(id))return;
+  const sentence=sentences.find(s=>s.id===id),sense=senses.find(s=>s.id===type);
+  const card=$('card-'+id),target=$('target-'+type);
+  if(!sentence||!sense||!card||!target)return;
+  clearSelection();
+  if(sentence.sense!==type){
+   message('再試一次！'+sense.name+'著重'+sense.cue+'。這句的線索是「'+sentence.clue+'」。','error');
+   target.classList.add('error');card.classList.add('returning');later(()=>{target.classList.remove('error');card.classList.remove('returning');},450);return;
+  }
+  matched.add(id);card.remove();
+  const line=document.createElement('div');line.className='matched-sentence';line.dataset.matchedId=id;line.textContent=sentence.text;
+  const stamp=document.createElement('span');stamp.className='stamp';stamp.textContent='正確';stamp.setAttribute('aria-label','配對正確，已鎖定');line.append(stamp);target.querySelector('.matched-list').append(line);
+  const count=target.querySelector('.matched-list').children.length;
+  target.querySelector('.type-count').textContent=count+' / 2';target.querySelector('.drop-note').textContent=count===2?'配對完成，已鎖定':'再找 1 句';
+  if(count===2){target.classList.add('complete');target.disabled=true;}
+  target.setAttribute('aria-label',sense.name+'，'+sense.hint+'，已配對 '+count+' 句，共 2 句');
+  update();message('答對了！「'+sentence.clue+'」屬於'+sense.name+'摹寫。','success');
+  if(matched.size===sentences.length){
+   const note=document.createElement('p');note.className='empty-note';note.textContent='所有卷軸都找到了家。你完成了五感挑戰！';$('cards').append(note);
+   message('過關！10 句全部配對成功。','success');
+   const current=round;finishTimer=later(()=>{if(current===round&&!$('win').open)$('win').showModal();},500);
+  }
+ }
+ function clearOver(){document.querySelectorAll('.target.over').forEach(el=>el.classList.remove('over'));}
+ function cancelDrag(){if(!drag)return;const d=drag;drag=null;cancelAnimationFrame(frame);frame=0;if(d.ghost)d.ghost.remove();d.card.classList.remove('drag-source');try{if(d.card.hasPointerCapture(d.pointerId))d.card.releasePointerCapture(d.pointerId);}catch{}$('board').classList.remove('dragging');clearOver();}
+ function overAt(x,y){const hit=document.elementFromPoint(x,y);const target=hit&&hit.closest('.target');return target&&!target.disabled?target:null;}
+ function renderDrag(){if(!drag||!drag.started)return;const d=drag;d.ghost.style.left=(d.x-d.offsetX)+'px';d.ghost.style.top=(d.y-d.offsetY)+'px';clearOver();const target=overAt(d.x,d.y);if(target)target.classList.add('over');
+  // 在手機分類欄的邊緣拖曳時，讓分類欄自動捲動。
+  const box=$('targets').getBoundingClientRect();if(d.x>=box.left&&d.x<=box.right){if(d.y<box.top+32)$('targets').scrollTop-=6;else if(d.y>box.bottom-32)$('targets').scrollTop+=6;}
+  if(window.innerWidth>700){if(d.y<55)window.scrollBy(0,-8);else if(d.y>window.innerHeight-55)window.scrollBy(0,8);}
+  frame=requestAnimationFrame(renderDrag);
+ }
+ function pointerDown(event){if(event.button!==0||!event.isPrimary||drag)return;const card=event.currentTarget;if(matched.has(card.dataset.id))return;const rect=card.getBoundingClientRect();drag={id:card.dataset.id,card,pointerId:event.pointerId,startX:event.clientX,startY:event.clientY,x:event.clientX,y:event.clientY,offsetX:event.clientX-rect.left,offsetY:event.clientY-rect.top,width:rect.width,height:rect.height,started:false};card.setPointerCapture(event.pointerId);}
+ function pointerMove(event){if(!drag||drag.pointerId!==event.pointerId)return;const d=drag;d.x=event.clientX;d.y=event.clientY;if(!d.started&&Math.hypot(d.x-d.startX,d.y-d.startY)>7){d.started=true;clearSelection();d.ghost=d.card.cloneNode(true);d.ghost.removeAttribute('id');d.ghost.removeAttribute('aria-pressed');d.ghost.setAttribute('aria-hidden','true');d.ghost.tabIndex=-1;d.ghost.className='sentence drag-ghost';d.ghost.style.width=d.width+'px';d.ghost.style.height=d.height+'px';document.body.append(d.ghost);d.card.classList.add('drag-source');$('board').classList.add('dragging');message('把卷軸移到左側類型，再放開。');renderDrag();}if(d.started)event.preventDefault();}
+ function pointerUp(event){if(!drag||drag.pointerId!==event.pointerId)return;const d=drag;const target=d.started?overAt(event.clientX,event.clientY):null;cancelDrag();if(d.started){if(target)match(d.id,target.dataset.type);else{clearSelection();message('卷軸已退回。請放到左側類型，或用點選配對。');}}else choose(d.id);}
+ function reset(){round++;timers.forEach(clearTimeout);timers.clear();clearTimeout(finishTimer);cancelDrag();clearSelection();matched.clear();if($('win').open)$('win').close();$('targets').replaceChildren();$('cards').replaceChildren();
+  for(const sense of senses){const target=document.createElement('button');target.type='button';target.className='target';target.id='target-'+sense.id;target.dataset.type=sense.id;target.setAttribute('aria-label',sense.name+'，'+sense.hint+'，已配對 0 句，共 2 句');target.innerHTML='<span class="sense-art art-'+sense.id+'" aria-hidden="true"></span><div><div class="target-heading"><span class="sense-name">'+sense.name+'</span><span class="sense-hint">'+sense.hint+'</span></div><span class="type-count">0 / 2</span><div class="drop-note">拖到這裡，或點選配對</div><div class="matched-list"></div></div>';target.addEventListener('click',()=>{if(selected)match(selected,sense.id);else message('先讀一張右側卷軸，點選它，再選類型。');});$('targets').append(target);}
+  for(const sentence of shuffle(sentences)){const card=document.createElement('button');card.type='button';card.className='sentence';card.id='card-'+sentence.id;card.dataset.id=sentence.id;card.textContent=sentence.text;card.setAttribute('aria-pressed','false');card.draggable=false;card.addEventListener('pointerdown',pointerDown);card.addEventListener('pointermove',pointerMove);card.addEventListener('pointerup',pointerUp);card.addEventListener('pointercancel',()=>{cancelDrag();clearSelection();message('拖曳已取消，卷軸已退回。');});card.addEventListener('lostpointercapture',()=>{if(drag&&drag.card===card)cancelDrag();});card.addEventListener('click',event=>{if(event.detail===0)choose(sentence.id);});card.addEventListener('contextmenu',event=>event.preventDefault());$('cards').append(card);}
+  $('targets').scrollTop=0;$('cards').scrollTop=0;update();message('從任一張卷軸開始吧！每種類型有 2 句。');
+ }
+ $('cards-up').addEventListener('click',()=>$('cards').scrollBy({top:-220,behavior:'smooth'}));$('cards-down').addEventListener('click',()=>$('cards').scrollBy({top:220,behavior:'smooth'}));$('cards').addEventListener('scroll',updateNav);window.addEventListener('resize',updateNav);
+ $('restart').addEventListener('click',reset);$('play-again').addEventListener('click',()=>{reset();$('restart').focus();});$('review').addEventListener('click',()=>$('win').close());document.addEventListener('keydown',event=>{if(event.key==='Escape'){cancelDrag();clearSelection();}});window.addEventListener('blur',cancelDrag);document.addEventListener('visibilitychange',()=>{if(document.hidden)cancelDrag();});reset();
+})();
+</script>
+
+<script>
+(() => {
+ 'use strict';
+ const keys=['cert_dynasty','cert_idiom','cert_warrior','adventure_start','adventure_finish','adventure_run'];
+ const memory=Object.create(null);let failed=false;
+ function get(key){try{return localStorage.getItem(key)}catch{failed=true;return memory[key]??null}}
+ function set(key,value){memory[key]=String(value);try{localStorage.setItem(key,String(value))}catch{failed=true}}
+ function remove(key){delete memory[key];try{localStorage.removeItem(key)}catch{failed=true}}
+ function has(key){const v=get(key);return v!==null&&!['','false','0','null','undefined'].includes(v.toLowerCase())}
+ // file: pages can have separate localStorage areas. Carry only adventure data
+ // in the return link, then immediately remove the fragment from the address bar.
+ if(location.hash.startsWith('#adventure=')){
+  try{const data=JSON.parse(decodeURIComponent(location.hash.slice(11)));
+   if(data&&Number(data.adventure_start)>0&&typeof data.adventure_run==='string'){
+    keys.forEach(key=>{if(typeof data[key]==='string')set(key,data[key]);else remove(key)});
+    history.replaceState(null,'',location.pathname+location.search);
+   }
+  }catch{/* Ignore an invalid transfer; keep this page's saved progress. */}
+ }
+ if(!get('adventure_run'))set('adventure_run',Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+ const start=Number(get('adventure_start'));if(!Number.isFinite(start)||start<=0||start>Date.now())set('adventure_start',String(Date.now()));
+ function link(path){const data={};keys.forEach(key=>{const value=get(key);if(value!==null)data[key]=value});return path+'#adventure='+encodeURIComponent(JSON.stringify(data))}
+ function clearAll(){try{localStorage.clear()}catch{failed=true}Object.keys(memory).forEach(k=>delete memory[k])}
+ window.Adventure=Object.freeze({get,set,has,link,clearAll,get failed(){return failed}});
+})();
+(() => {
+ 'use strict';
+ const A=window.Adventure,key="cert_dynasty",name="摹寫之印";
+ let awarded=false;
+ function returnLink(link){link.href=A.link('../大冒險地圖/index.html')}
+ function updateLinks(){document.querySelectorAll('.adventure-return').forEach(returnLink)}
+ function check(){
+  if(awarded)return;
+  if(document.getElementById('score')?.textContent.trim()==='10'){awarded=true;A.set(key,'true');document.getElementById('adventureEarned').textContent='✓ 已獲得「'+name+'」！回大地圖試放憑證吧。';updateLinks()}
+ }
+ for(const dialog of document.querySelectorAll('#win,#resultDialog')){const a=document.createElement('a');a.className='adventure-return adventure-dialog-return';a.href='../大冒險地圖/index.html';a.textContent='← 回到大地圖';dialog.append(a)}
+ document.addEventListener('click',event=>{const a=event.target.closest('.adventure-return');if(a){check();returnLink(a)}},true);
+ new MutationObserver(check).observe(document.body,{subtree:true,childList:true,characterData:true,attributes:true,attributeFilter:['open','value','class']});
+ window.addEventListener('pageshow',()=>{updateLinks();check()});
+ updateLinks();check();
+})();
+</script>
+
+</body>
+</html>

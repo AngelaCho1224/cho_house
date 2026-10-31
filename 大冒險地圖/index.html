@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#233d36">
+<title>三印傳說：星光之門｜大冒險地圖</title>
+<script>
+// Decide before the first paint so a returning adventurer never sees a cover flash.
+try{if(sessionStorage.getItem('adventure_cover_seen')!=='1')document.documentElement.classList.add('cover-active')}
+catch{document.documentElement.classList.add('cover-active')}
+</script>
+<style>
+:root{color-scheme:light;--ink:#283e35;--paper:#fcf6e8;--gold:#bd954e;--green:#276346}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:#213a33;color:var(--paper);font-family:"Microsoft JhengHei","PingFang TC",sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,[role=button]:focus-visible{outline:3px solid #ffe3a1;outline-offset:5px}button:disabled{cursor:default}header{max-width:1600px;margin:auto;padding:24px 32px 17px;display:flex;align-items:center;justify-content:space-between;gap:20px}.eyebrow{margin:0 0 5px;color:#d7c191;font-size:11px;letter-spacing:.24em}h1{font-family:"DFKai-SB","BiauKai",serif;font-size:34px;letter-spacing:.15em;font-weight:500;margin:0 0 9px}header p:last-child{margin:0;font-size:16px;line-height:1.7;color:#e1e7d9}.info{display:flex;align-items:center;gap:18px;flex-shrink:0}.count{font-size:16px;white-space:nowrap}.count b{font-size:27px;color:#f4d594;font-weight:500}.reset,.outline{border:1px solid #c2b08791;color:#f9f0db;background:#ffffff08;border-radius:8px;padding:12px 16px;min-height:46px}.reset:hover,.outline:hover{background:#ffffff18}main{padding:0 24px 15px}.map-frame{position:relative;width:min(100%,calc((100svh - 210px) * 16 / 9),1550px);margin:0 auto;border:1px solid #c5a76870;border-radius:14px;box-shadow:0 12px 45px #071f2466;overflow:visible}.map-frame>img{display:block;width:100%;height:auto;max-width:100%;max-height:calc(100svh - 210px);object-fit:contain;border-radius:13px}.hotspot{position:absolute;cursor:pointer;border-radius:20px;touch-action:manipulation;transition:box-shadow .2s,background .2s}.hotspot:hover,.hotspot:focus-visible{background:#ffecb522;box-shadow:0 0 26px 5px #f9dd8e75;outline:2px solid #ffe9a2}.hotspot.done{box-shadow:0 0 0 2px #a5d39990,0 0 25px #90b47455}.hotspot[data-key=cert_dynasty]{left:10%;top:29.8%;width:20%;height:9.1%}.hotspot[data-key=cert_idiom]{left:72.3%;top:28.8%;width:18.8%;height:8.9%}.hotspot[data-key=cert_warrior]{left:71.4%;top:82.1%;width:19%;height:9.3%}#gateButton{left:36.8%;top:62.6%;width:24%;height:9.9%}.check{position:absolute;right:-12px;top:-17px;background:#267349;color:#fffce6;border:2px solid #e4f0d4;box-shadow:0 3px 10px #163e39;border-radius:50%;width:36px;height:36px;display:grid;place-items:center;font-size:24px;font-weight:900;pointer-events:none}.check[hidden]{display:none}.map-note{text-align:center;color:#e1decb;font-size:14px;line-height:1.8;margin:16px 0 0}.storage-note{color:#ffdfad;max-width:1000px;margin:8px auto;text-align:center;font-size:14px}.storage-note:empty{display:none}.legend{color:#b6c8bb;margin-left:14px;font-size:12px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}dialog{color:var(--ink);background:var(--paper);border:1px solid #b69c65;border-radius:22px;padding:28px 32px;max-width:760px;width:calc(100% - 28px);max-height:calc(100svh - 24px);overflow:auto;box-shadow:0 22px 100px #001b2480}dialog::backdrop{background:#071e28b8;backdrop-filter:blur(6px)}.dialog-top{display:flex;align-items:start;justify-content:space-between;gap:10px}.kicker{font-size:11px;letter-spacing:.2em;color:#80704d;margin:0 0 7px}h2{font-family:"DFKai-SB",serif;font-weight:500;font-size:30px;margin:0 0 12px}.close{border:1px solid #cabd9f;background:transparent;color:#514f3d;border-radius:50%;width:44px;height:44px;flex-shrink:0;font-size:27px}.instructions{line-height:1.8;margin:3px 0 17px;font-size:16px}.slots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;padding:22px 15px;background:#e6e2d2;border:1px solid #bfb79b;border-radius:16px;box-shadow:inset 0 3px 12px #453f2012}.slot{min-height:170px;border:2px dashed #a59e83;border-radius:12px;position:relative;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:10px 5px;background:#f4eedf;color:var(--ink);transition:background .15s}.slot-label{font-size:18px;letter-spacing:.15em;margin:0 0 6px}.slot-hint{font-size:12px;line-height:1.6;color:#6e705d}.slot.over{background:#f6e2a7;border-color:#8e6824}.slot.correct{background:#e3efdd;border:2px solid #3f7756}.slot.correct::after{content:'✓ 已嵌入';color:#23613f;font-size:12px;font-weight:bold;margin-top:4px}.slot.wrong{background:#ffe0d8;border-color:#bd4138;animation:shake .4s}.bag-heading{font-size:18px;margin:22px 0 8px;display:flex;justify-content:space-between;align-items:center}.bag-heading small{font-size:12px;color:#73765d;font-weight:400}.bag{min-height:142px;display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;border:1px solid #d5c8a7;border-radius:14px;background:#fffaf0;padding:14px}.empty{color:#6f735f;font-size:15px;text-align:center;line-height:1.8;margin:8px}.badge{border:1px solid #c3ad77;background:#fff8e7;color:#3f4a39;padding:9px 8px 7px;min-width:122px;border-radius:14px;display:flex;flex-direction:column;align-items:center;gap:5px;font-weight:700;font-size:14px;box-shadow:0 3px 0 #c5b18255;touch-action:none;user-select:none;-webkit-user-select:none;cursor:grab}.badge .art{width:62px;height:62px;border-radius:50%;border:3px double #d4b879;background-image:url('map-bg.png');background-size:580% auto;pointer-events:none}.badge[data-key=cert_dynasty] .art{background-position:13% 15%}.badge[data-key=cert_idiom] .art{background-position:89% 10%}.badge[data-key=cert_warrior] .art{background-position:92% 66%}.badge.selected{outline:3px solid #456b99;outline-offset:3px}.badge.drag-source{opacity:.35}.badge.drag-ghost{position:fixed;z-index:100;pointer-events:none;margin:0;transform:rotate(-6deg);box-shadow:0 12px 25px #182d3955}.slot .badge{padding:3px 6px;background:transparent;border:0;min-width:0;box-shadow:none;cursor:default;gap:3px;font-size:13px}.slot .badge .art{width:52px;height:52px}.feedback{min-height:48px;font-size:15px;line-height:1.7;margin:15px 0 0}.feedback.error{color:#a53329}.feedback.success{color:#246442}.dialog-footer{display:flex;justify-content:flex-end}.secondary,.primary{border:1px solid #bdb18f;border-radius:9px;min-height:46px;padding:11px 20px;background:transparent;color:#344c3e}.primary{background:#315a43;color:#fff6dd;border-color:#315a43}.completion{max-width:660px;margin:40px auto;text-align:center;padding:40px 26px;background:#fcf6e8;color:#2c483a;border:1px solid #d1b47c;border-radius:22px;box-shadow:0 10px 80px #091e2570}.completion[hidden]{display:none}.completion-art{width:145px;height:145px;border:4px double #c7a563;border-radius:50%;margin:0 auto 20px;background:url('map-bg.png') 50% 50% / 350% auto}.completion h2{font-size:36px}.completion p{line-height:1.8}.duration{font-size:34px;letter-spacing:.05em;margin:12px 0 26px}.total-label{font-size:14px;color:#67735c;margin:20px 0 0}.success-seals{color:#38634a;font-size:15px;line-height:2}.completion button{font-size:18px}.page-footer{text-align:center;font-size:11px;letter-spacing:.13em;color:#a9b8a5;padding:5px 10px 18px}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}@media(max-width:700px){header{padding:19px 16px 14px;align-items:flex-start;gap:10px;flex-wrap:wrap}h1{font-size:28px}header p:last-child{font-size:14px}.info{margin-left:auto;gap:14px}.count{font-size:14px}.count b{font-size:23px}.reset{font-size:13px;padding:9px 11px}main{padding:0 10px 12px}.map-frame{width:100%}.map-frame>img{max-height:none}.map-note{font-size:13px;margin-top:14px}.legend{display:block;margin:5px 0}.check{width:26px;height:26px;font-size:18px;right:-6px;top:-15px}.hotspot{border-radius:8px}dialog{padding:20px 16px}.slots{gap:7px;padding:14px 8px}.slot{min-height:158px;padding:10px 2px}.slot-label{font-size:17px}.slot-hint{font-size:11px}.bag{gap:10px;padding:12px 6px}.badge{min-width:91px;font-size:12px;padding:8px 6px}.badge .art{width:53px;height:53px}.slot .badge{font-size:11px}.completion{margin:20px 0}.completion h2{font-size:29px}.duration{font-size:29px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<style>
+/* Keep the painted nameplates easy to tap even on a narrow phone. */
+.hotspot{min-height:44px}
+@media(max-width:700px){.hotspot{margin-top:-12px}}
+.cover-active{overflow:hidden;background:#040b15}
+@font-face{font-family:"Adventure ChenYu 2";src:url('ChenYuluoyan-2.0-Thin.ttf') format('truetype');font-style:normal;font-weight:100;font-display:block}
+.intro-cover{display:none;position:fixed;inset:0;z-index:1000;width:100%;height:100%;height:100dvh;margin:0;padding:0;border:0;border-radius:0;background:#040b15;cursor:pointer;touch-action:manipulation;opacity:1;transition:opacity .65s ease;isolation:isolate}
+.cover-active .intro-cover{display:flex;align-items:center;justify-content:center}
+.cover-stage{display:block;position:relative;width:min(100vw,calc(100dvh * 16 / 9));aspect-ratio:16/9;container-type:inline-size;pointer-events:none;overflow:hidden}
+.intro-cover img{display:block;width:100%;height:100%;object-fit:contain;pointer-events:none;user-select:none;-webkit-user-select:none}
+/* Editable typesetting source used by tests/export-cover.cjs to export cover.png.
+   The game displays that finished PNG so the exact typeface is also preserved offline. */
+.cover-type{position:absolute;inset:26% 4% auto;display:none;flex-direction:column;align-items:center;color:#f3dfb4;font-family:"Adventure ChenYu 2","DFKai-SB",serif;font-weight:100;font-synthesis:none;text-align:center;text-shadow:0 2px 5px #030811,0 0 12px #0a0f1a,0 0 28px #090d17;line-height:1}
+.cover-typesetting .cover-type{display:flex}
+.cover-title-main{display:block;font-size:11.8cqw;letter-spacing:.06em;padding-left:.06em;white-space:nowrap}
+.cover-title-sub{display:block;font-size:6.5cqw;letter-spacing:.17em;padding-left:.17em;margin-top:.8cqw;white-space:nowrap}
+.cover-start-text{display:block;font-size:2.3cqw;letter-spacing:.14em;padding-left:.14em;margin-top:1.2cqw;color:#ece4d6;white-space:nowrap;line-height:1.1}
+.intro-cover.leaving{opacity:0}
+.intro-cover:focus-visible{outline:3px solid #d7cba2;outline-offset:-7px}
+.cover-active #adventureShell{visibility:hidden}
+.cover-active.cover-revealing #adventureShell{visibility:visible}
+.cover-fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;gap:20px;color:#e8dfcc;font-family:"DFKai-SB",serif;font-size:clamp(24px,5vw,60px);line-height:1.5}
+.cover-fallback small{font-family:"Microsoft JhengHei",sans-serif;font-size:clamp(15px,2vw,22px)}
+.intro-cover.image-unavailable .cover-fallback{display:flex}
+.intro-cover.image-unavailable .cover-type{display:flex}
+@media(prefers-reduced-motion:reduce){.intro-cover{transition:none}}
+.ending-dialog{width:100vw;max-width:none;height:100dvh;max-height:none;inset:0;margin:0;padding:0;border:0;border-radius:0;background:#07121c;color:#efe6d5;overflow:auto;box-shadow:none}
+.ending-dialog[open]{display:flex;flex-direction:column}
+.ending-dialog::backdrop{background:#040b15}
+.ending-header{width:100%;max-width:1600px;margin:0 auto;padding:16px 26px;display:flex;align-items:center;justify-content:space-between;gap:15px;flex-shrink:0}
+.ending-heading{display:flex;align-items:center;flex-wrap:wrap;gap:8px 20px}
+.ending-heading h2{font-family:"Microsoft JhengHei",sans-serif;font-size:16px;font-weight:400;letter-spacing:.1em;margin:0;color:#cfc1a0}
+.ending-count{color:#b9c8c9;font-size:14px;white-space:nowrap}
+.ending-skip{border:1px solid #b8a47d70;border-radius:8px;background:transparent;color:#d4d9d4;padding:9px 14px;min-height:44px;white-space:nowrap;font-size:14px}
+.ending-body{min-height:0;flex:1;display:flex;flex-direction:column;width:100%;max-width:1600px;margin:0 auto;padding:0 22px 16px}
+.ending-stage{position:relative;min-height:0;flex:1;display:flex;align-items:center;justify-content:center;background:#030a10;border:1px solid #a995673d;border-radius:12px;overflow:hidden}
+.ending-picture-button{display:flex;align-items:center;justify-content:center;width:100%;height:100%;min-height:0;border:0;padding:0;background:transparent;color:inherit;touch-action:manipulation}
+.ending-picture-button img{display:block;width:100%;height:100%;object-fit:contain;min-height:0;user-select:none;-webkit-user-select:none;pointer-events:none}
+.ending-picture-button:focus-visible{outline:2px solid #e2cb94;outline-offset:-5px}
+.ending-error{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;background:#07121c;color:#e9dfc8;font-size:16px;text-align:center;padding:20px}
+.ending-error[hidden]{display:none}
+.ending-error button{color:#e9dfc8;background:transparent;border:1px solid #b8a47d;border-radius:8px;min-height:44px;padding:9px 20px}
+.ending-caption{flex-shrink:0;text-align:center;background:#0c1b26;border:1px solid #a995673d;border-top:0;border-radius:0 0 12px 12px;padding:14px 22px 18px;margin:0 8px;min-height:112px;display:flex;flex-direction:column;justify-content:center}
+.ending-speaker{display:block;font-family:"Microsoft JhengHei",sans-serif;font-size:12px;color:#bba980;letter-spacing:.18em;margin-bottom:7px}
+.ending-caption p{font-family:"Adventure ChenYu 2","Microsoft JhengHei",sans-serif;font-weight:100;font-synthesis:none;font-size:clamp(27px,3vw,43px);line-height:1.5;margin:0;color:#fff2d5}
+.ending-navigation{display:grid;grid-template-columns:130px 1fr 180px;align-items:center;gap:16px;flex-shrink:0;margin-top:14px}
+.ending-navigation button{min-height:48px;border:1px solid #bdab8366;border-radius:8px;padding:10px 16px;color:#efe6d5;background:#ffffff05}
+.ending-navigation button:disabled{opacity:.35}
+.ending-navigation .ending-next{background:#d3bc85;color:#172c32;border-color:#d3bc85;font-weight:700}
+.ending-navigation p{text-align:center;color:#a9b8b9;font-size:12px;line-height:1.6;margin:0}
+.completion-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+html.ending-active{overflow:hidden}
+.intro-cover,.ending-dialog button{-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+@media(max-width:700px){.ending-header{padding:12px 13px}.ending-heading{gap:5px 12px}.ending-heading h2{font-size:14px}.ending-skip{font-size:12px;padding:7px 10px}.ending-body{padding:0 10px 12px}.ending-stage{border-radius:8px}.ending-caption{margin:0 4px;padding:15px 10px;min-height:125px}.ending-caption p{font-size:29px}.ending-navigation{grid-template-columns:100px 1fr 145px;gap:8px;margin-top:12px}.ending-navigation p{font-size:10px}.ending-navigation button{font-size:13px;padding:9px 7px}}
+@media(max-width:450px){.ending-navigation{grid-template-columns:1fr 1fr}.ending-navigation p{grid-column:1/-1;grid-row:2;font-size:11px}.ending-caption p{font-size:28px}}
+@media(max-height:540px) and (orientation:landscape){.ending-header{padding:7px 20px}.ending-header button{min-height:36px}.ending-body{padding-bottom:7px}.ending-caption{min-height:68px;padding:7px 10px}.ending-caption p{font-size:25px;line-height:1.3}.ending-speaker{display:none}.ending-navigation{margin-top:7px}.ending-navigation button{min-height:40px;padding:7px 12px}}
+</style>
+</head>
+<body>
+<button type="button" class="intro-cover" id="introCover" aria-label="三印傳說：星光之門。點擊任何部位遊戲開始，也可以按 Enter 或空白鍵。"><span class="cover-stage"><img src="cover.png" alt="三印傳說：星光之門。神秘月夜裡，小魔法師走向古老星光之門。點擊任何部位遊戲開始。" fetchpriority="high" draggable="false"><span class="cover-type" aria-hidden="true"><span class="cover-title-main">三印傳說</span><span class="cover-title-sub">星光之門</span><span class="cover-start-text">點擊任何部位遊戲開始</span></span></span></button>
+<div id="adventureShell" inert>
+<header><div><p class="eyebrow">THE STARLIGHT ATLAS · 三印之旅</p><h1>大冒險地圖</h1><p>完成 3 個關卡，拿到 3 個憑證解開大門</p></div><div class="info"><span class="count" aria-live="polite">持有 <b id="heldCount">0</b> / 3</span><button class="reset" id="resetButton">🔄 清除進度</button></div></header>
+<main>
+<section id="mapView" aria-label="四個地標的冒險地圖">
+ <div class="map-frame"><img src="map-bg.png" width="1672" height="941" alt="魔法山谷地圖：左上摹寫之門、右上五柳之家、右下圓周長之印，以及中央的三印星光之門。點選各地標名牌開始冒險。">
+ <div class="hotspot" role="button" tabindex="0" data-key="cert_dynasty" data-href="../示範1_摹寫配對/index.html" aria-label="摹寫之門：摹寫對對碰，未完成"><span class="check" hidden aria-hidden="true">✓</span></div>
+ <div class="hotspot" role="button" tabindex="0" data-key="cert_idiom" data-href="../示範2_五柳先生傳課文填字/index.html" aria-label="五柳之家：課文填字，未完成"><span class="check" hidden aria-hidden="true">✓</span></div>
+ <div class="hotspot" role="button" tabindex="0" data-key="cert_warrior" data-href="../示範3_圓周長打怪RPG/index.html" aria-label="圓周長之印：打怪 RPG，未完成"><span class="check" hidden aria-hidden="true">✓</span></div>
+ <div class="hotspot" id="gateButton" role="button" tabindex="0" aria-label="通關大門：三印星光之門，隨時可以試放憑證"></div></div>
+ <p class="map-note">點地標的名牌，開始挑戰。也可以隨時點中央大門，試放手上的憑證。<span class="legend">綠色 ✓ 表示已完成</span></p>
+</section>
+<section class="completion" id="completion" hidden aria-labelledby="completionTitle"><div class="completion-art" aria-hidden="true"></div><p class="kicker">THREE SEALS · ONE ADVENTURE</p><h2 id="completionTitle" tabindex="-1">🏆 冒險完成！</h2><p>三枚憑證已就位，星光之門為你敞開。<br>月光留在杖尖，故事走向遠方。</p><p class="success-seals">✓ 摹寫之印　✓ 填文之印　✓ 圓周長之印</p><p class="total-label">總冒險時長</p><div class="duration" id="duration"></div><div class="completion-actions"><button class="secondary" id="replayEndingButton">重看結局</button><button class="primary" id="againButton">再次冒險</button></div></section>
+<p class="storage-note" id="storageNote" role="status"></p>
+</main><footer class="page-footer">不急，照自己的步調探索。</footer>
+<dialog id="gateDialog" aria-labelledby="gateTitle" aria-describedby="gateInstructions"><div class="dialog-top"><div><p class="kicker">THE STARLIGHT GATE · 封印試煉</p><h2 id="gateTitle">三印星光之門</h2></div><button class="close" id="closeGate" aria-label="關閉大門">×</button></div><p class="instructions" id="gateInstructions">把背包的憑證拖進對應凹槽。<br>也可以<strong>先點憑證，再點凹槽</strong>。三枚都放對，大門就會開啟。</p>
+<div class="slots" aria-label="三個憑證凹槽"><button class="slot" data-slot="cert_dynasty"><span class="slot-label">朝代</span><span class="slot-hint">放入「摹寫之印」</span></button><button class="slot" data-slot="cert_idiom"><span class="slot-label">成語</span><span class="slot-hint">放入「填文之印」</span></button><button class="slot" data-slot="cert_warrior"><span class="slot-label">勇者</span><span class="slot-hint">放入「圓周長之印」</span></button></div>
+<h3 class="bag-heading">我的背包 <small>完成關卡就會獲得憑證</small></h3><div class="bag" id="bag"></div><p class="feedback" id="gateFeedback" role="status" aria-live="polite"></p><div class="dialog-footer"><button class="secondary" id="continueButton">繼續探索</button></div></dialog>
+<dialog id="resetDialog" aria-labelledby="resetTitle"><h2 id="resetTitle">重新展開冒險？</h2><p class="instructions">這會清除憑證、冒險計時與本次開場紀錄。重新開始時，會再次顯示封面。</p><div class="dialog-footer" style="gap:10px"><button class="secondary" id="cancelReset">繼續冒險</button><button class="primary" id="confirmReset">清除並重新開始</button></div></dialog>
+<dialog id="endingDialog" class="ending-dialog" aria-labelledby="endingHeading" aria-describedby="endingNarration">
+ <div class="ending-header"><div class="ending-heading"><h2 id="endingHeading">星光之門・終章</h2><span class="ending-count" id="endingCount">1 / 5</span></div><button class="ending-skip" id="skipEndingButton">略過劇情</button></div>
+ <div class="ending-body"><div class="ending-stage"><button type="button" class="ending-picture-button" id="endingPictureButton" aria-label="觀看下一幕"><img id="endingImage" alt="" draggable="false"></button><div class="ending-error" id="endingError" hidden><span>圖片暫時無法載入，旁白仍可閱讀。</span><button id="retryEndingImage">重新載入圖片</button></div></div>
+ <div class="ending-caption" aria-live="polite" aria-atomic="true"><span class="ending-speaker" id="endingSpeaker">旁白</span><p id="endingNarration"></p></div>
+ <nav class="ending-navigation" aria-label="結局劇情導覽"><button id="previousEndingButton">← 上一幕</button><p>點畫面或按方向鍵，照自己的步調閱讀</p><button class="ending-next" id="nextEndingButton">下一幕 →</button></nav></div>
+</dialog>
+</div>
+<script>
+(() => {
+ 'use strict';
+ const root=document.documentElement,cover=document.getElementById('introCover'),shell=document.getElementById('adventureShell');
+ let started=false,fadeTimer=0;
+ const image=cover.querySelector('img');
+ function imageFailed(){cover.classList.add('image-unavailable');image.hidden=true}
+ image.addEventListener('error',imageFailed);if(image.complete&&!image.naturalWidth)imageFailed();
+ function reveal(){
+  clearTimeout(fadeTimer);cover.removeEventListener('transitionend',onTransition);
+  cover.hidden=true;root.classList.remove('cover-active','cover-revealing');shell.inert=false;
+  document.querySelector('#completion:not([hidden]) h2')?.focus({preventScroll:true});
+  if(document.getElementById('completion').hidden){const title=document.querySelector('header h1');title.tabIndex=-1;title.focus({preventScroll:true})}
+  window.dispatchEvent(new Event('adventure:started'));
+ }
+ function onTransition(event){if(event.target===cover&&event.propertyName==='opacity')reveal()}
+ function start(){
+  if(started)return;started=true;
+  try{sessionStorage.setItem('adventure_cover_seen','1')}catch{/* The cover remains usable when browser storage is unavailable. */}
+  root.classList.add('cover-revealing');
+  if(matchMedia('(prefers-reduced-motion:reduce)').matches){reveal();return}
+  cover.addEventListener('transitionend',onTransition);cover.classList.add('leaving');fadeTimer=setTimeout(reveal,800);
+ }
+ cover.addEventListener('click',start);
+ if(root.classList.contains('cover-active'))requestAnimationFrame(()=>cover.focus({preventScroll:true}));
+ else{cover.hidden=true;shell.inert=false}
+})();
+</script>
+<script>
+(() => {
+ 'use strict';
+ const keys=['cert_dynasty','cert_idiom','cert_warrior','adventure_start','adventure_finish','adventure_run'];
+ const memory=Object.create(null);let failed=false;
+ function get(key){try{return localStorage.getItem(key)}catch{failed=true;return memory[key]??null}}
+ function set(key,value){memory[key]=String(value);try{localStorage.setItem(key,String(value))}catch{failed=true}}
+ function remove(key){delete memory[key];try{localStorage.removeItem(key)}catch{failed=true}}
+ function has(key){const v=get(key);return v!==null&&!['','false','0','null','undefined'].includes(v.toLowerCase())}
+ // file: pages can have separate localStorage areas. Carry only adventure data
+ // in the return link, then immediately remove the fragment from the address bar.
+ if(location.hash.startsWith('#adventure=')){
+  try{const data=JSON.parse(decodeURIComponent(location.hash.slice(11)));
+   if(data&&Number(data.adventure_start)>0&&typeof data.adventure_run==='string'){
+    keys.forEach(key=>{if(typeof data[key]==='string')set(key,data[key]);else remove(key)});
+    history.replaceState(null,'',location.pathname+location.search);
+   }
+  }catch{/* Ignore an invalid transfer; keep this page's saved progress. */}
+ }
+ if(!get('adventure_run'))set('adventure_run',Date.now().toString(36)+'-'+Math.random().toString(36).slice(2));
+ const start=Number(get('adventure_start'));if(!Number.isFinite(start)||start<=0||start>Date.now())set('adventure_start',String(Date.now()));
+ function link(path){const data={};keys.forEach(key=>{const value=get(key);if(value!==null)data[key]=value});return path+'#adventure='+encodeURIComponent(JSON.stringify(data))}
+ function clearAll(){try{localStorage.clear()}catch{failed=true}try{sessionStorage.clear()}catch{failed=true}Object.keys(memory).forEach(k=>delete memory[k])}
+ window.Adventure=Object.freeze({get,set,has,link,clearAll,get failed(){return failed}});
+})();
+</script>
+<script>
+(() => {
+ 'use strict';
+ const A=window.Adventure, $=id=>document.getElementById(id);
+ const seals=[{key:'cert_dynasty',name:'摹寫之印',place:'摹寫之門：摹寫對對碰'},{key:'cert_idiom',name:'填文之印',place:'五柳之家：課文填字'},{key:'cert_warrior',name:'圓周長之印',place:'圓周長之印：打怪 RPG'}];
+ // Each ending frame is an image-model illustration. Narration stays editable.
+ const endingScenes=[
+  {image:'ending-01.png',title:'三印回響',speaker:'旁白',text:'三枚印記，喚醒了沉睡的門。',alt:'三枚印記亮起，金色星紋在古老大門上交會；見習魔法師握著月牙法杖，抬頭等待。'},
+  {image:'ending-02.png',title:'門後的深藍',speaker:'旁白',text:'門開了，前方仍是一片深藍。',alt:'魔法師停在敞開的星光門前，望向隱入藍色霧氣的石橋，橋面的星紋尚未亮起。'},
+  {image:'ending-03.png',title:'換我點燈',speaker:'魔法師',text:'這一次，換我點燈。',alt:'魔法師露出堅定的微笑，舉起月牙法杖；溫暖星光從杖尖流向石橋，點亮第一顆星紋。'},
+  {image:'ending-04.png',title:'山谷回光',speaker:'旁白',text:'山谷的燈，一盞一盞亮了。',alt:'一道星光穿過魔法山谷，摹寫之門的書頁浮起、五柳之家的窗燈亮起，圓形魔法塔的星環發光。'},
+  {image:'ending-05.png',title:'帶著月光遠行',speaker:'旁白',text:'月光留在杖尖，故事走向遠方。',alt:'魔法師走過敞開的大門，在星光石橋上回頭微笑，帶著月牙法杖朝遠方城堡前進。'}
+ ];
+ let endingIndex=0,pendingEnding=false,endingPreloaded=false;
+ const placed=new Set();let selected=null,dragKey=null,touch=null,suppressUntil=0,winTimer=0;
+ function owned(key){return A.has(key)}
+ function setFeedback(message,tone=''){$('gateFeedback').textContent=message;$('gateFeedback').className='feedback '+tone}
+ function update(){const n=seals.filter(s=>owned(s.key)).length;$('heldCount').textContent=n;seals.forEach(s=>{const el=document.querySelector('.hotspot[data-key="'+s.key+'"]');el.classList.toggle('done',owned(s.key));el.querySelector('.check').hidden=!owned(s.key);el.setAttribute('aria-label',s.place+'，'+(owned(s.key)?'已完成 ✓':'未完成'));el.title=el.getAttribute('aria-label')});if(A.failed)$('storageNote').textContent='瀏覽器無法儲存進度；目前仍可跨頁操作，關閉分頁後進度可能遺失。'}
+ function badge(s,locked=false){const el=document.createElement(locked?'span':'button');el.className='badge';el.dataset.key=s.key;el.innerHTML='<span class="art" aria-hidden="true"></span><span>'+s.name+'</span>';if(!locked){el.type='button';el.draggable=true;el.setAttribute('aria-pressed','false');el.addEventListener('click',()=>{if(Date.now()<suppressUntil)return;selected=selected===s.key?null:s.key;document.querySelectorAll('#bag .badge').forEach(b=>{const on=b.dataset.key===selected;b.classList.toggle('selected',on);b.setAttribute('aria-pressed',String(on))});setFeedback(selected?'已選「'+s.name+'」，請點對應凹槽。':'已取消選取。')});el.addEventListener('dragstart',e=>{dragKey=s.key;selected=null;e.dataTransfer.setData('text/plain',s.key);e.dataTransfer.effectAllowed='move';el.classList.add('drag-source')});el.addEventListener('dragend',()=>{dragKey=null;el.classList.remove('drag-source');clearOver()});el.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.button!==0)return;touch={id:e.pointerId,key:s.key,x:e.clientX,y:e.clientY,source:el,ghost:null};el.setPointerCapture(e.pointerId)})}return el}
+ function renderBag(){const list=seals.filter(s=>owned(s.key)&&!placed.has(s.key));$('bag').replaceChildren(...list.map(s=>badge(s)));if(!list.length){const p=document.createElement('p');p.className='empty';p.textContent=placed.size===3?'三枚憑證都已就位。':placed.size?'目前的憑證已放入，繼續探索收集其餘憑證。':'背包還沒有憑證。先到任一地標完成挑戰吧！';$('bag').append(p)}}
+ function clearOver(){document.querySelectorAll('.slot.over').forEach(el=>el.classList.remove('over'))}
+ function tryPlace(key,slot){if(!key||!owned(key)||placed.has(key)||!slot)return;if(slot.dataset.slot!==key){slot.classList.remove('wrong');void slot.offsetWidth;slot.classList.add('wrong');setTimeout(()=>slot.classList.remove('wrong'),450);selected=null;renderBag();setFeedback('這個凹槽不適合，憑證已回到背包。讀一讀凹槽下方的提示，再試一次。','error');return}placed.add(key);selected=null;slot.classList.add('correct');slot.querySelector('.slot-hint').hidden=true;slot.append(badge(seals.find(s=>s.key===key),true));slot.setAttribute('aria-label',slot.querySelector('.slot-label').textContent+'凹槽，已放入'+seals.find(s=>s.key===key).name);renderBag();setFeedback('放對了！已嵌入 '+placed.size+' / 3 枚憑證。','success');if(placed.size===3){setFeedback('三枚憑證全部正確，星光之門開啟了！','success');A.set('adventure_finish',String(Date.now()));A.set('adventure_ending_seen','false');A.set('adventure_ending_step','0');winTimer=setTimeout(()=>startEnding(false),650)}}
+ function openGate(){update();if(A.get('adventure_finish')&&seals.every(s=>owned(s.key))){if(A.get('adventure_ending_seen')==='true')showCompletion();else startEnding(true);return}renderBag();setFeedback(placed.size?'先前放對的憑證還在凹槽裡，繼續試試看。':seals.some(s=>owned(s.key))?'看看凹槽下方的提示，把憑證送到它的家。':'現在也能查看大門。完成三個關卡後，再帶著憑證回來。');$('gateDialog').showModal()}
+ function cleanupTouch(){if(touch){touch.ghost?.remove();touch.source.classList.remove('drag-source');try{if(touch.source.hasPointerCapture(touch.id))touch.source.releasePointerCapture(touch.id)}catch{}touch=null}clearOver()}
+ document.addEventListener('pointermove',e=>{if(!touch||touch.id!==e.pointerId)return;if(!touch.ghost&&Math.hypot(e.clientX-touch.x,e.clientY-touch.y)>7){touch.ghost=touch.source.cloneNode(true);touch.ghost.className='badge drag-ghost';touch.ghost.removeAttribute('draggable');touch.ghost.setAttribute('aria-hidden','true');$('gateDialog').append(touch.ghost);touch.source.classList.add('drag-source')}if(!touch.ghost)return;e.preventDefault();touch.ghost.style.left=(e.clientX-touch.source.offsetWidth/2)+'px';touch.ghost.style.top=(e.clientY-45)+'px';const hit=document.elementFromPoint(e.clientX,e.clientY)?.closest('.slot');clearOver();hit?.classList.add('over')},{passive:false});
+ document.addEventListener('pointerup',e=>{if(!touch||touch.id!==e.pointerId)return;const key=touch.key,moved=!!touch.ghost,slot=document.elementFromPoint(e.clientX,e.clientY)?.closest('.slot');cleanupTouch();if(moved){suppressUntil=Date.now()+450;if(slot)tryPlace(key,slot);else setFeedback('憑證已回到背包。請拖到凹槽後再放開。')}});
+ document.addEventListener('pointercancel',cleanupTouch);window.addEventListener('blur',cleanupTouch);
+ document.querySelectorAll('.slot').forEach(slot=>{slot.addEventListener('click',()=>{if(Date.now()<suppressUntil)return;if(selected)tryPlace(selected,slot);else if(!slot.classList.contains('correct'))setFeedback('請先點選背包中的憑證，再點這個凹槽。')});slot.addEventListener('dragover',e=>{if(!dragKey)return;e.preventDefault();e.dataTransfer.dropEffect='move';slot.classList.add('over')});slot.addEventListener('dragleave',e=>{if(!slot.contains(e.relatedTarget))slot.classList.remove('over')});slot.addEventListener('drop',e=>{e.preventDefault();const key=e.dataTransfer.getData('text/plain');clearOver();tryPlace(key,slot);dragKey=null})});
+ function closeGate(){cleanupTouch();$('gateDialog').close();$('gateButton').focus()}
+ $('closeGate').onclick=closeGate;$('continueButton').onclick=closeGate;$('gateDialog').addEventListener('cancel',cleanupTouch);$('gateDialog').addEventListener('close',()=>{cleanupTouch();selected=null});
+ function showCompletion(){clearTimeout(winTimer);cleanupTouch();if($('gateDialog').open)$('gateDialog').close();const start=Number(A.get('adventure_start')),end=Number(A.get('adventure_finish'))||Date.now();const seconds=Math.max(0,Math.floor((end-start)/1000));$('duration').textContent=String(Math.floor(seconds/60)).padStart(2,'0')+' 分 '+String(seconds%60).padStart(2,'0')+' 秒';$('mapView').hidden=true;$('completion').hidden=false;$('completionTitle').focus()}
+ function renderEnding(){
+  const scene=endingScenes[endingIndex];
+  $('endingHeading').textContent='終章・'+scene.title;$('endingCount').textContent=(endingIndex+1)+' / '+endingScenes.length;
+  $('endingSpeaker').textContent=scene.speaker;$('endingNarration').textContent=scene.text;
+  $('endingError').hidden=true;$('endingImage').alt=scene.alt;$('endingImage').src=scene.image;
+  $('previousEndingButton').disabled=endingIndex===0;
+  $('nextEndingButton').textContent=endingIndex===endingScenes.length-1?'查看通關紀錄 →':'下一幕 →';
+  $('endingPictureButton').setAttribute('aria-label',endingIndex===endingScenes.length-1?'看完結局，查看通關紀錄':'觀看下一幕，目前為第 '+(endingIndex+1)+' 幕，共 5 幕');
+  A.set('adventure_ending_step',String(endingIndex));
+ }
+ function startEnding(resume=true){
+  clearTimeout(winTimer);cleanupTouch();
+  if(!A.get('adventure_finish')||!seals.every(s=>owned(s.key)))return;
+  const saved=Number(A.get('adventure_ending_step'));
+  endingIndex=resume&&Number.isInteger(saved)?Math.max(0,Math.min(endingScenes.length-1,saved)):0;
+  A.set('adventure_ending_seen','false');A.set('adventure_ending_step',String(endingIndex));
+  if(document.documentElement.classList.contains('cover-active')){pendingEnding=true;return}
+  pendingEnding=false;
+  if($('gateDialog').open)$('gateDialog').close();
+  if(!endingPreloaded){endingPreloaded=true;endingScenes.forEach(scene=>{const image=new Image();image.src=scene.image})}
+  renderEnding();document.documentElement.classList.add('ending-active');
+  if(!$('endingDialog').open)$('endingDialog').showModal();
+  $('endingPictureButton').focus({preventScroll:true});
+ }
+ function finishEnding(){
+  pendingEnding=false;A.set('adventure_ending_seen','true');
+  if($('endingDialog').open)$('endingDialog').close();
+  document.documentElement.classList.remove('ending-active');showCompletion();
+ }
+ function nextEnding(){if(endingIndex===endingScenes.length-1){finishEnding();return}endingIndex++;renderEnding()}
+ function previousEnding(){if(endingIndex===0)return;endingIndex--;renderEnding();if(endingIndex===0&&document.activeElement===$('previousEndingButton'))$('endingPictureButton').focus({preventScroll:true})}
+ $('nextEndingButton').onclick=nextEnding;$('endingPictureButton').onclick=nextEnding;
+ $('previousEndingButton').onclick=previousEnding;$('skipEndingButton').onclick=finishEnding;
+ $('replayEndingButton').onclick=()=>startEnding(false);
+ $('endingImage').addEventListener('error',()=>{$('endingError').hidden=false});
+ $('endingImage').addEventListener('load',()=>{$('endingError').hidden=true});
+ $('retryEndingImage').onclick=()=>{$('endingError').hidden=true;$('endingImage').src=endingScenes[endingIndex].image+'?retry='+Date.now()};
+ $('endingDialog').addEventListener('cancel',event=>event.preventDefault());
+ $('endingDialog').addEventListener('keydown',event=>{if(event.key==='ArrowRight'){event.preventDefault();nextEnding()}else if(event.key==='ArrowLeft'){event.preventDefault();previousEnding()}});
+ window.addEventListener('adventure:started',()=>{if(pendingEnding)startEnding(true)});
+ function requestReset(){$('resetDialog').showModal()}
+ $('resetButton').onclick=requestReset;$('againButton').onclick=requestReset;$('cancelReset').onclick=()=>$('resetDialog').close();$('confirmReset').onclick=()=>{A.clearAll();location.replace(location.pathname)};
+ document.querySelectorAll('.hotspot').forEach(el=>{const activate=()=>{if(el.id==='gateButton')openGate();else location.href=A.link(el.dataset.href)};el.addEventListener('click',activate);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate()}})});
+ window.addEventListener('pageshow',update);window.addEventListener('storage',()=>{update();if($('gateDialog').open){placed.forEach(key=>{if(!owned(key)){placed.delete(key);const slot=document.querySelector('[data-slot="'+key+'"]');slot.classList.remove('correct');slot.querySelector('.badge')?.remove();slot.querySelector('.slot-hint').hidden=false}});renderBag()}});update();if(A.get('adventure_finish')&&seals.every(s=>owned(s.key))){if(A.get('adventure_ending_seen')==='true')showCompletion();else startEnding(true)};
+})();
+</script>
+</body>
+</html>

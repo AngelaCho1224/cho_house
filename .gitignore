@@ -1,0 +1,33 @@
+# Only the website runtime and publication documentation belong in this repository.
+/*
+!/.gitignore
+!/.nojekyll
+!/index.html
+!/README.md
+!/大冒險地圖/
+!/示範1_摹寫配對/
+!/示範2_五柳先生傳課文填字/
+!/示範3_圓周長打怪RPG/
+
+# Private/local files, source notes and generated test output.
+**/tests/
+**/test-results/
+**/node_modules/
+**/assets/design/
+**/*.json
+**/*.py
+**/*.cjs
+**/*.md
+**/*.txt
+**/cover-art.png
+**/assets/characters/mage.png
+**/.env
+**/.env.*
+**/*.pem
+**/*.key
+**/*.pfx
+**/*.p12
+**/Thumbs.db
+**/desktop.ini
+!/README.md
+!/大冒險地圖/FONT-LICENSE.txt
