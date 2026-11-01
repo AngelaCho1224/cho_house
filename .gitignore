@@ -8,6 +8,16 @@
 !/示範1_摹寫配對/
 !/示範2_五柳先生傳課文填字/
 !/示範3_圓周長打怪RPG/
+!/first-puff/
+
+# Publish only the tobacco/betel game's runtime and selected illustrations.
+/first-puff/*
+!/first-puff/index.html
+!/first-puff/game.html
+!/first-puff/config.js
+!/first-puff/images/
+/first-puff/images/*
+!/first-puff/images/*.webp
 
 # Private/local files, source notes and generated test output.
 **/tests/
@@ -31,3 +41,4 @@
 **/desktop.ini
 !/README.md
 !/大冒險地圖/FONT-LICENSE.txt
+!/first-puff/README.md

@@ -1,0 +1,1103 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>第一口之前</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: a phone simulator centered on the page, with a side panel (status, collected knowledge cards, teacher notes). Phone UI keeps a fixed light "app" look; the page around it follows the theme. */
+:root{
+  --bg:#E4EFEC; --panel:#FFFFFF; --ink:#173038; --muted:#56707A; --line:#CFE0DD;
+  --accent:#0C7A84; --accent-ink:#FFFFFF; --soft:#D3ECEC; --warn:#D2523C; --gold:#E9A82A;
+  --display:"Huninn","Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  /* phone app palette (fixed, single look by design) */
+  --ph-bg:#F5F7F8; --ph-ink:#1B2E35; --ph-muted:#6C7F86; --ph-line:#E1E7EA; --ph-chat:#CFE0E8; --ph-me:#A8E27D; --ph-acc:#0C7A84; --ph-red:#D2523C;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F1C1F; --panel:#172A2F; --ink:#E4F1EF; --muted:#9DB6BC; --line:#2A4349;
+  --accent:#4FC2C9; --accent-ink:#06262A; --soft:#1D3E43; --warn:#F0826D; --gold:#F3C25B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1C1F; --panel:#172A2F; --ink:#E4F1EF; --muted:#9DB6BC; --line:#2A4349;
+  --accent:#4FC2C9; --accent-ink:#06262A; --soft:#1D3E43; --warn:#F0826D; --gold:#F3C25B; color-scheme:dark}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0}
+
+.wrap{min-height:100%;display:flex;gap:28px;align-items:center;justify-content:center;padding-block:20px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* ---------- side panel ---------- */
+.side{width:270px;flex:none;display:flex;flex-direction:column;gap:14px;max-height:var(--side-h,calc(100vh - 40px));overflow-y:auto;scrollbar-width:thin}
+.brand h1{font-family:var(--display);font-size:38px;letter-spacing:.04em;line-height:1.2}
+.brand p{color:var(--muted);font-size:14px}
+.pcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.pcard h2{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.stat{display:grid;grid-template-columns:3em 1fr 2.4em;gap:8px;align-items:center;font-size:14px}
+.stat .tr{height:10px;border-radius:5px;background:var(--soft);overflow:hidden}
+.stat .fl{height:100%;border-radius:5px;transition:width .6s}
+.stat b{text-align:right;font-variant-numeric:tabular-nums}
+.clist{list-style:none;margin:0;padding:0;display:grid;gap:2px;font-size:13.5px;line-height:1.5}
+.clist li{display:flex;gap:8px;align-items:center;color:var(--muted)}
+.clist li.on{color:var(--ink)}
+.clist .dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center;font-size:11px}
+.clist li.on .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sbtns{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px;font-size:14px;min-height:40px}
+.day{font-family:var(--display);font-size:18px}
+a.sbtn{color:var(--ink)}
+
+/* ---------- phone ---------- */
+.phone{--h:min(860px,calc(100vh - 40px));--h:min(860px,calc(100dvh - 40px));height:var(--h);width:min(420px,calc(var(--h) * .5),100%);
+  flex:none;background:#14181B;border-radius:46px;padding:10px;box-shadow:0 20px 50px rgba(10,30,35,.28)}
+.screen{position:relative;height:100%;border-radius:36px;overflow:hidden;background:var(--ph-bg);color:var(--ph-ink);display:flex;flex-direction:column;container-type:size}
+.screen *{scrollbar-width:none}
+.screen *::-webkit-scrollbar{display:none}
+.sbar{height:30px;flex:none;display:flex;justify-content:space-between;align-items:center;padding:0 22px;font-size:13px;font-weight:700;background:transparent;position:absolute;inset:0 0 auto;z-index:12;pointer-events:none}
+.sbar.dark{color:#fff}
+#view{flex:1;min-height:0;position:relative}
+.hbar{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);width:120px;height:5px;border-radius:3px;background:rgba(0,0,0,.25);z-index:11;pointer-events:none}
+
+/* home */
+.home{height:100%;background:linear-gradient(170deg,#7CC6C2 0%,#BFE3D0 48%,#F6D9A8 100%);display:flex;flex-direction:column;align-items:center;padding:56px 18px 26px;color:#173038}
+.clock{font-family:var(--display);font-size:66px;line-height:1.1}
+.date{font-size:15px;font-weight:500}
+.apps{margin-top:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;background:rgba(255,255,255,.4);border-radius:26px;padding:14px 8px}
+.app{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;color:#173038;position:relative;padding:0}
+.ic{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;box-shadow:0 3px 8px rgba(0,0,0,.12)}
+.ic svg{width:32px;height:32px}
+.badge{position:absolute;top:-5px;right:2px;background:#E5413B;color:#fff;font-size:12px;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;padding:0 5px;font-weight:700;line-height:1}
+
+.hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);background:#173038;color:#fff;padding:8px 16px;border-radius:999px;font-size:14px;z-index:15;white-space:nowrap;animation:bob 1.6s ease-in-out infinite;pointer-events:none}
+.banner{position:absolute;top:34px;left:8px;right:8px;z-index:16;background:rgba(255,255,255,.98);border-radius:18px;box-shadow:0 10px 26px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;padding:10px 12px;text-align:left;border:0;animation:drop .35s ease}
+.banner .av{width:38px;height:38px}
+.banner .bt{min-width:0;flex:1}
+.banner b{display:block;font-size:14px}
+.banner span{display:block;font-size:14px;color:var(--ph-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.banner i{font-style:normal;font-size:11px;color:var(--ph-muted);align-self:flex-start}
+
+/* common app chrome */
+.apph{display:flex;align-items:center;gap:8px;padding:34px 10px 8px;background:#fff;border-bottom:1px solid var(--ph-line);flex:none;min-height:80px}
+.apph .tt{font-weight:700;font-size:17px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{font-size:30px;line-height:1;border:0;background:none;padding:0;min-width:40px;min-height:40px;color:var(--ph-acc)}
+.av{width:36px;height:36px;border-radius:50%;overflow:hidden;flex:none;display:block}
+.av svg{width:100%;height:100%;display:block}
+.av.sm{width:32px;height:32px}
+.col{height:100%;display:flex;flex-direction:column;background:#fff}
+.scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* chat list */
+.crow{display:flex;gap:12px;align-items:center;padding:12px 14px;border:0;border-bottom:1px solid var(--ph-line);background:#fff;width:100%;text-align:left}
+.crow .av{width:46px;height:46px}
+.crow .ct{flex:1;min-width:0}
+.crow b{display:block;font-size:16px}
+.crow span{display:block;color:var(--ph-muted);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crow .n{background:#E5413B;color:#fff;border-radius:10px;min-width:20px;height:20px;font-size:12px;display:grid;place-items:center;padding:0 5px;font-weight:700}
+
+/* chat room */
+.chat{height:100%;display:flex;flex-direction:column;background:var(--ph-chat)}
+.blk{border:1.5px solid var(--ph-red);color:var(--ph-red);background:#fff;border-radius:999px;font-size:13px;padding:6px 12px;font-weight:700;min-height:36px}
+.blk:disabled{opacity:.5}
+.msgs{flex:1;min-height:0;overflow-y:auto;padding:14px 12px;display:flex;flex-direction:column;gap:10px}
+.m{display:flex;gap:8px;align-items:flex-start;max-width:86%;animation:pop .25s ease}
+.m.me{align-self:flex-end;flex-direction:row-reverse}
+.mcol{display:flex;flex-direction:column;gap:3px;min-width:0}
+.who{font-size:12px;color:#4C636B}
+.bub{background:#fff;padding:9px 13px;border-radius:18px;border-top-left-radius:6px;font-size:16px;line-height:1.5;word-break:break-word}
+.me .bub{background:var(--ph-me);border-top-left-radius:18px;border-top-right-radius:6px}
+.m-sys{align-self:center;background:rgba(27,46,53,.16);color:#1B2E35;font-size:13px;padding:5px 14px;border-radius:999px;text-align:center;max-width:92%;animation:pop .25s}
+.photo{border:0;padding:0;border-radius:14px;overflow:hidden;width:220px;max-width:100%;background:#fff;display:block}
+.photo svg{display:block;width:100%;height:auto}
+.photo.pulse{animation:pulse 1.4s infinite}
+.typing .bub{display:flex;gap:4px;padding:13px 14px}
+.typing i{width:7px;height:7px;border-radius:50%;background:#9DB0B6;animation:dot 1s infinite}
+.typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+.foot{background:#fff;border-top:1px solid var(--ph-line);padding:10px 10px 18px;display:grid;gap:8px;flex:none;max-height:55%;overflow-y:auto}
+.pick{font-size:12px;color:var(--ph-muted)}
+.reps{display:grid;gap:8px}
+.rep{border:2px solid var(--ph-acc);background:#fff;color:var(--ph-acc);border-radius:16px;padding:10px 14px;font-size:16px;text-align:left;font-weight:500;min-height:46px;animation:pop .25s}
+.rep:active{background:#E3F3F2}
+.rep.danger{border-color:var(--ph-red);color:var(--ph-red)}
+.fake{background:#F0F3F4;border-radius:999px;padding:10px 16px;color:var(--ph-muted);font-size:15px}
+
+/* feed */
+.post-h{display:flex;gap:10px;align-items:center;padding:12px 14px}
+.post-h b{display:block;font-size:15px}
+.post-h span{display:block;font-size:12px;color:var(--ph-muted)}
+.post-img svg{display:block;width:100%;height:auto}
+.post-a{padding:8px 14px;font-size:14px;color:var(--ph-muted)}
+.cap{padding:0 14px 10px;font-size:16px;line-height:2.1}
+.tok{border:0;background:#EEF2F3;border-radius:6px;padding:3px 6px;font-size:16px;color:#1B2E35;margin:0 1px}
+.tok.hit{background:#FBE3DD;color:#B23A27;box-shadow:inset 0 0 0 2px #D2523C}
+.tok.ok{background:#E2F0E8;color:#3D6B52}
+.task{margin:4px 12px 12px;padding:12px 14px;border-radius:14px;background:#FFF4DA;display:grid;gap:6px;font-size:15px}
+.task b{font-size:15px}
+.cmts{margin:0 12px 16px;display:grid;gap:10px}
+.cm{display:flex;gap:8px;font-size:14px;align-items:flex-start}
+.cm p{background:#F1F4F5;border-radius:14px;padding:6px 12px}
+.acts{display:grid;gap:8px}
+
+/* search */
+.sq{margin:12px;background:#F0F3F4;border-radius:999px;padding:10px 16px;font-size:15px;min-height:44px}
+.sq .caret{display:inline-block;width:2px;height:1em;background:var(--ph-acc);vertical-align:-2px;animation:blink 1s infinite}
+.res{display:block;text-align:left;border:0;border-bottom:1px solid var(--ph-line);padding:14px;background:#fff;width:100%}
+.res .dom{font-size:12px;color:#2E7D52}
+.res h4{font-size:16px;color:#1A4FB5;font-weight:700;margin:2px 0 4px;line-height:1.4}
+.res p{font-size:14px;color:var(--ph-muted)}
+.res.bad{background:#FDF0EC}.res.good{background:#E9F6EE}
+.sfb{margin:10px 12px;padding:12px 14px;border-radius:14px;font-size:15px;display:grid;gap:8px}
+.sfb.bad{background:#FDF0EC}.sfb.good{background:#E9F6EE}
+.empty{padding:40px 20px;text-align:center;color:var(--ph-muted)}
+
+/* book */
+.bgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.bk{border:0;border-radius:14px;padding:12px;text-align:left;background:#0C7A84;color:#fff;min-height:84px;display:flex;flex-direction:column;gap:4px}
+.bk small{font-size:11px;letter-spacing:.12em;opacity:.8}
+.bk b{font-family:var(--display);font-weight:400;font-size:17px;line-height:1.3}
+.bk.lock{background:#E6ECEE;color:#9AABB0}
+
+/* overlays */
+.ov{position:absolute;inset:0;z-index:20;background:rgba(15,28,33,.62);display:flex;align-items:center;justify-content:center;padding:16px;animation:fade .2s}
+.ov.full{padding:0;background:#0F1C21;align-items:stretch}
+.box{background:#fff;border-radius:22px;padding:20px;width:100%;max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:12px;animation:rise .3s ease}
+.pbtn{background:var(--ph-acc);color:#fff;border:0;border-radius:14px;padding:12px 20px;font-size:16px;font-weight:700;min-height:48px}
+.pbtn.ghost{background:#fff;color:var(--ph-acc);border:2px solid var(--ph-acc)}
+.lab{font-size:12px;letter-spacing:.14em;color:var(--ph-acc);font-weight:700}
+.thk h3{font-family:var(--display);font-size:22px}
+.cloud{background:#F4F8F9;border-radius:22px;padding:12px 16px;border:2px dashed #9DB6BC;text-align:left;font-size:16px;min-height:48px}
+.cloud.sel{border-style:solid;border-color:var(--ph-acc);background:#E3F3F2}
+.cloud.dim{opacity:.4}
+.tfb{background:#FFF4DA;border-radius:14px;padding:12px 14px;display:grid;gap:10px}
+
+.kcard{background:#fff;border-radius:22px;overflow:hidden;width:100%;animation:flip .5s ease}
+.kc-top{background:#0C7A84;color:#fff;padding:18px 18px 16px;display:grid;gap:2px;position:relative}
+.kc-top small{font-size:12px;letter-spacing:.16em;opacity:.85}
+.kc-top h3{font-family:var(--display);font-size:26px}
+.kc-new{position:absolute;top:14px;right:14px;background:#F2C14E;color:#173038;font-size:12px;font-weight:900;padding:3px 10px;border-radius:999px}
+.kc-body{padding:16px 18px;font-size:15.5px;line-height:1.75;display:grid;gap:8px}
+.kc-body ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.kc-foot{padding:0 18px 18px}
+
+.hs{position:relative;border-radius:14px;overflow:hidden;touch-action:manipulation}
+.hs svg,.hs img{display:block;width:100%;height:auto}
+.photo>img{display:block;width:100%;height:auto}
+.home .clock,.home .date{color:#fff;text-shadow:0 2px 8px #102f49}
+.st-hero.has-img .lab{color:#173038;background:#ffffffdf;padding:4px 9px;border-radius:6px;align-self:flex-start}
+.st-hero.has-img h2{color:#102f36;text-shadow:0 1px 4px #fff,0 0 16px #fff}
+
+.spot{position:absolute;transform:translate(-50%,-50%);border-radius:50%;border:0;background:transparent;padding:0}
+.spot.found{box-shadow:inset 0 0 0 4px #F2A93B;background:rgba(242,169,59,.2);animation:pop .3s}
+.spot .num{position:absolute;top:-6px;right:-6px;background:#F2A93B;color:#173038;font-weight:900;font-size:13px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center}
+.hsl{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px}
+.hsl li{background:#FFF4DA;border-radius:12px;padding:8px 12px}
+.hsl li b{color:#B26B00}
+.hsmsg{font-size:14px;color:var(--ph-muted);min-height:1.5em}
+.prog{font-weight:900;color:var(--ph-acc);font-variant-numeric:tabular-nums}
+
+.scene{height:100%;width:100%;display:flex;flex-direction:column;background:#0F1C21}
+.sc-art{flex:1;min-height:0;overflow:hidden}
+.sc-art svg{width:100%;height:100%;display:block}
+.sc-box{background:#fff;border-radius:22px 22px 0 0;padding:16px 18px 24px;display:flex;flex-direction:column;gap:10px;min-height:36%;cursor:pointer}
+.sc-name{align-self:flex-start;background:#0C7A84;color:#fff;font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.sc-text{font-size:17px;line-height:1.65}
+.sc-tap{align-self:flex-end;font-size:12px;color:#8AA2A8;animation:bob 1.6s infinite}
+.sc-ch{display:grid;gap:8px}
+.ring{position:relative;width:54px;height:54px;justify-self:center}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:5}
+.ring .rb{stroke:#E1E7EA}.ring .rf{stroke:#D2523C;stroke-linecap:round;stroke-dasharray:119.4;transition:stroke-dashoffset 1s linear}
+.ring b{position:absolute;inset:0;display:grid;place-items:center;font-size:18px;font-variant-numeric:tabular-nums}
+
+.dayc{height:100%;width:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;color:#fff;text-align:center;padding:24px;cursor:pointer;background:radial-gradient(circle at 50% 40%,#21454D,#0F1C21 70%)}
+.dayc small{letter-spacing:.3em;font-size:13px;opacity:.8}
+.dayc h2{font-family:var(--display);font-size:40px}
+.dayc p{opacity:.85;max-width:20em}
+.dayc .sc-tap{align-self:center;margin-top:16px}
+
+.mont{height:100%;width:100%;padding:56px 16px 28px;display:flex;flex-direction:column;gap:10px;color:#fff;overflow:auto;background:#111A1D}
+.mont h2{font-family:var(--display);font-size:24px;margin-bottom:6px}
+.mn{background:rgba(255,255,255,.1);border-radius:16px;padding:10px 14px;animation:drop .4s ease;display:grid;gap:2px}
+.mn small{color:#F0826D;font-weight:700;font-size:12px;letter-spacing:.08em}
+.mont .tfb{color:#173038;margin-top:8px}
+
+.start{height:100%;width:100%;display:flex;flex-direction:column;overflow-y:auto;color:#173038;background:#fff}
+.st-hero{position:relative;flex:1 0 auto;min-height:40%;padding:56px 22px 22px;display:flex;flex-direction:column;justify-content:flex-end;gap:12px;overflow:hidden;
+  background:radial-gradient(120% 70% at 80% 0%,rgba(255,240,200,.9),transparent 60%),
+             radial-gradient(60% 30% at 15% 30%,rgba(255,255,255,.85),transparent 70%),
+             radial-gradient(50% 22% at 70% 48%,rgba(255,255,255,.7),transparent 70%),
+             linear-gradient(180deg,#8CCBE8 0%,#BFE4E6 48%,#F7DDB0 100%)}
+.st-hero::after{content:"";position:absolute;left:-10%;right:-10%;bottom:-30px;height:90px;border-radius:50%;background:linear-gradient(#9BCB86,#79B06A);z-index:0}
+.st-hero>*{position:relative;z-index:1}
+.st-hero.has-img::after{display:none}
+.scimg{width:100%;height:100%;object-fit:cover;object-position:center bottom;display:block}
+.st-hero .lab{color:#1D5C63}
+.st-hero h2{font-family:var(--display);font-size:clamp(30px,11cqw,46px);line-height:1.1;letter-spacing:.03em;text-shadow:0 2px 0 rgba(255,255,255,.6)}
+.st-notes{display:grid;gap:8px;margin-top:4px}
+.st-n{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-radius:16px;padding:8px 12px;box-shadow:0 6px 18px rgba(30,60,70,.12);animation:floaty 4s ease-in-out infinite}
+.st-n:nth-child(2){margin-left:22px;animation-delay:-2s;opacity:.92}
+.st-n .av{width:32px;height:32px}
+.st-n b{display:block;font-size:13px}
+.st-n span{display:block;font-size:13px;color:#56707A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-n div{min-width:0}
+@keyframes floaty{50%{transform:translateY(-4px)}}
+.st-sheet{background:#fff;border-radius:26px 26px 0 0;margin-top:-22px;position:relative;z-index:2;padding:20px 20px 28px;display:grid;gap:10px;box-shadow:0 -8px 24px rgba(20,50,60,.08)}
+.st-sheet .sub{font-size:15px;line-height:1.6;color:#33505A}
+.start label{font-size:13px;font-weight:700;color:#33505A}
+.start input,.start select{font:inherit;font-size:17px;padding:11px 12px;border-radius:14px;border:2px solid transparent;background:#EEF4F5;width:100%;min-width:0;color:#173038;min-height:48px;-webkit-appearance:none;appearance:none}
+.start select{background-image:linear-gradient(45deg,transparent 50%,#56707A 50%),linear-gradient(135deg,#56707A 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.start input:focus,.start select:focus{outline:none;border-color:#0C7A84;background-color:#fff}
+.start .note{font-size:12.5px;color:#6C7F86;line-height:1.5}
+.srow2{display:grid;grid-template-columns:1.3fr 1fr;gap:10px}
+.srow2>div{display:grid;gap:5px;min-width:0}
+.st-field{display:grid;gap:5px}
+.start .pbtn{width:100%;font-size:17px;min-height:52px;margin-top:4px;box-shadow:0 8px 18px rgba(12,122,132,.28)}
+.endbox h2{font-family:var(--display);font-size:32px}
+.estats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.estats div{background:#F1F6F6;border-radius:12px;padding:8px 4px;font-size:12px;color:var(--ph-muted)}
+.estats b{display:block;font-size:22px;color:#173038;font-variant-numeric:tabular-nums}
+
+.fx{position:absolute;top:84px;left:50%;transform:translateX(-50%);z-index:30;color:#fff;border-radius:999px;padding:6px 14px;font-weight:700;font-size:14px;animation:fx 1.8s forwards;pointer-events:none;white-space:nowrap}
+
+/* teacher sheet */
+.tov{position:fixed;inset:0;z-index:50;background:rgba(10,25,28,.55);display:flex;justify-content:center;align-items:flex-start;overflow:auto;
+  padding-block:calc(24px + env(safe-area-inset-top,0px)) 24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.tcard{background:var(--panel);color:var(--ink);border-radius:18px;max-width:760px;width:100%;padding:24px;display:grid;gap:14px}
+.tcard h2{font-family:var(--display);font-size:26px}
+.tcard h3{font-size:16px;font-weight:700;color:var(--accent)}
+.tcard table{border-collapse:collapse;width:100%;font-size:15px}
+.tcard td,.tcard th{border-bottom:1px solid var(--line);padding:8px 6px;text-align:left;vertical-align:top}
+.tcard th{white-space:nowrap;color:var(--accent);font-variant-numeric:tabular-nums}
+.tcard ul,.tcard ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+.tcard a{color:var(--accent)}
+.tw{overflow-x:auto}
+
+@keyframes pop{from{transform:scale(.92);opacity:.3}to{transform:none;opacity:1}}
+@keyframes drop{from{transform:translateY(-16px);opacity:0}to{transform:none;opacity:1}}
+@keyframes rise{from{transform:translateY(16px);opacity:0}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}}
+@keyframes flip{from{transform:rotateY(80deg) scale(.9);opacity:0}to{transform:none;opacity:1}}
+@keyframes bob{50%{transform:translate(-50%,-4px)}}
+.sc-tap{animation-name:bob2}@keyframes bob2{50%{transform:translateY(-3px)}}
+@keyframes dot{50%{transform:translateY(-4px);opacity:.5}}
+@keyframes blink{50%{opacity:0}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(242,169,59,.9)}70%{box-shadow:0 0 0 12px rgba(242,169,59,0)}100%{box-shadow:0 0 0 0 rgba(242,169,59,0)}}
+@keyframes fx{0%{opacity:0;transform:translate(-50%,8px)}15%{opacity:1;transform:translate(-50%,0)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-14px)}}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-3px)}}
+.shake{animation:shake .35s}
+
+@media (max-width:760px){
+  .wrap{flex-direction:column;gap:10px;padding-block:8px}
+  .side{width:100%;max-width:420px;gap:8px}
+  .brand h1{font-size:24px}.brand p,.clist,.side .pcard h2{display:none}
+  .side .pcard{padding:8px 12px}
+  .sidecards{display:none!important}
+  .phone{--h:calc(100vh - 150px);--h:calc(100dvh - 150px)}
+  .srow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+}
+@media (max-width:480px){
+  .phone{border-radius:0;padding:0;width:100%;box-shadow:none;background:transparent}
+  .screen{border-radius:20px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+  <aside class="side">
+    <div class="brand">
+      <h1>第一口之前</h1>
+      <p>菸檳誘惑模擬器・國一健康教育</p>
+    </div>
+    <section class="pcard">
+      <h2>你的狀態</h2>
+      <div class="srow">
+        <span class="day" id="dayLab">準備開始</span>
+      </div>
+      <div class="stat"><span>健康</span><div class="tr"><div class="fl" id="hBar" style="background:var(--accent)"></div></div><b id="hNum">100</b></div>
+      <div class="stat"><span>友情</span><div class="tr"><div class="fl" id="fBar" style="background:var(--gold)"></div></div><b id="fNum">60</b></div>
+    </section>
+    <section class="pcard sidecards">
+      <h2>知識手冊　<span id="cNum">0</span> / 12</h2>
+      <ul class="clist" id="cList"></ul>
+    </section>
+    <div class="sbtns">
+      <a class="sbtn" href="index.html" style="text-decoration:none;display:inline-flex;align-items:center">回課程首頁</a>
+      <button class="sbtn" id="tBtn" type="button">教師說明</button>
+      <button class="sbtn" id="sndBtn" type="button">音效：開</button>
+      <button class="sbtn" id="rstBtn" type="button">重新開始</button>
+    </div>
+  </aside>
+
+  <div class="phone">
+    <div class="screen" id="screen">
+      <div class="sbar" id="sbar"><span id="clk">21:30</span><span>4G ▮▮▮ 82%</span></div>
+      <div id="view"></div>
+      <div class="hbar"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tov" id="tov" hidden>
+  <section class="tcard" role="dialog" aria-modal="true" aria-labelledby="tTitle">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <h2 id="tTitle">教師使用說明</h2>
+      <button class="sbtn" id="tClose" type="button">關閉</button>
+    </div>
+    <p>學生扮演 707 班的新生，用一支模擬手機度過「戶外教育」那一週：在聊天室回覆朋友、在動態裡找出廣告陷阱、上網查證、放大照片找線索、幫阿公看口腔警訊，最後在限時 10 秒內決定要不要吸「第一口」。選錯會看到可能的後果，並可以回到那一刻重選。全程約 20–25 分鐘。</p>
+    <p>平板直放、橫放都能玩。頁面不需登入。若已設定後台，學生的班級、座號與遊戲結果會記錄到老師的 Google 試算表，可在「教師後台」頁查看；暱稱請學生不要用真名。</p>
+    <h3>建議流程（45 分鐘）</h3>
+    <div class="tw"><table>
+      <tr><th>0–5 分</th><td>引起動機：「你有沒有看過長得像文具、飲料杯的東西，其實是電子煙？」</td></tr>
+      <tr><th>5–30 分</th><td>學生個人或兩人一台平板遊玩。建議關閉音效或戴耳機。</td></tr>
+      <tr><th>30–40 分</th><td>全班討論：分享在戶外教育那一晚的選擇，以及最後怎麼回覆阿哲。</td></tr>
+      <tr><th>40–45 分</th><td>請學生打開手冊，挑一張知識卡用自己的話說給同組聽。</td></tr>
+    </table></div>
+    <h3>討論題</h3>
+    <ol>
+      <li>電子煙最常是「認識的人」免費給的。故事裡，為什麼拒絕阿哲比封鎖果果小舖難？</li>
+      <li>你拒絕之後，阿哲和宇恩的反應是什麼？拒絕一定會失去朋友嗎？</li>
+      <li>阿公嚼檳榔、嘴巴破很久。我們可以怎麼關心家人，而不是責罵？</li>
+    </ol>
+    <h3>關卡與知識對照</h3>
+    <ul>
+      <li>第 1 天：電子煙偽裝外型（放大照片找吸嘴、煙油窗、充電孔）、尼古丁成癮</li>
+      <li>第 2 天：廣告行銷話術、資訊查證、電子煙 vs 加熱菸（班導群組小考）</li>
+      <li>第 3 天：網路陌生帳號推銷與法規、檳榔一級致癌物、口腔癌警訊</li>
+      <li>第 4–5 天：限時拒絕、拒絕技巧、多數人不用、陪朋友找大人</li>
+    </ul>
+    <h3>使用時的提醒</h3>
+    <ul>
+      <li>班上可能有學生的家人抽菸或嚼檳榔。討論時聚焦在「關心健康」，避免把使用者說成壞人。</li>
+      <li>電子煙與加熱菸的內容依國健署 115 年 5 月簡報整理，可以在討論時搭配投影該簡報的外觀照片。</li>
+      <li>「持有電子煙」罰則目前為修法草案，遊戲只呈現現行的使用罰則。</li>
+    </ul>
+    <h3>資料來源</h3>
+    <ul>
+      <li>國民健康署〈電子煙與加熱菸外觀辨識方式及說明〉簡報（115 年 5 月）</li>
+      <li><a href="https://www.peoplenews.tw/articles/healthcare/51621" target="_blank" rel="noopener">國健署 114 年青少年吸菸行為調查（民報報導）</a></li>
+      <li><a href="https://cna.com.tw/news/ahel/202303210365.aspx" target="_blank" rel="noopener">菸害防制法 2023/3/22 修法重點（中央社）</a></li>
+      <li><a href="https://www.nownews.com/news/6708623" target="_blank" rel="noopener">電子煙取得來源與法規（NOWnews）</a></li>
+      <li><a href="https://cybsbox.cy.gov.tw/CYBSBoxSSL/edoc/download/53469" target="_blank" rel="noopener">檳榔、菸、酒與口腔癌風險倍數（監察院調查報告）</a></li>
+      <li><a href="https://mohw.gov.tw/cp-16-64191-1.html" target="_blank" rel="noopener">口腔癌警訊與篩檢（衛福部）</a></li>
+    </ul>
+  </section>
+</div>
+
+<script src="config.js"></script>
+<script>
+(function(){
+const CFG=Object.assign({API_URL:"",CLASSES:[],MAX_SEAT:40},window.GAME_CONFIG||{});
+const IMG=Object.assign({avatars:{}},CFG.IMAGES||{});IMG.avatars=IMG.avatars||{};
+const imgURL=k=>{const v=k.startsWith("av:")?IMG.avatars[k.slice(3)]:IMG[k];return v?String(v).replace(/["'()<>\\\s]/g,c=>encodeURIComponent(c)):""};
+const bgStyle=(k,shade)=>{const u=imgURL(k);return u?` style="background:${shade?`linear-gradient(rgba(10,20,25,${shade}),rgba(10,20,25,${shade})),`:""}url('${u}') center/cover no-repeat"`:""};
+const LOG={sid:Date.now().toString(36)+Math.random().toString(36).slice(2,8),t0:0};
+function send(type,extra){
+  if(!CFG.API_URL)return;
+  const d=Object.assign({type,sid:LOG.sid,cls:S.cls,seat:S.seat,nick:S.name},extra||{});
+  try{fetch(CFG.API_URL,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(d)}).catch(()=>{})}catch(e){}
+}
+/* ================= 插圖 ================= */
+const P={skin:"#F3CBA5",skin2:"#E3B088",hair:"#2A2A35",cheek:"#F49A9A",mouth:"#A8443C",A:"#3E7CB1",B:"#E9A82A",C:"#5FA36B",D:"#8E9FA8",E:"#D86F8F",w:"#FFFFFF",ink:"#1B2E35",pink:"#F08BB5",nut:"#6E9E3A",wood:"#B07A4F"};
+function head(o={}){
+  const hc=o.hc||P.hair,H=o.hair||"short",m=o.mood||"smile";let s="";
+  if(H==="long"||H==="bun")s+=`<path d="M-30 -4 Q-35 30 -25 38 L25 38 Q35 30 30 -4Z" fill="${hc}"/>`;
+  s+=`<circle r="26" fill="${P.skin}"/>`;
+  const hs={
+    short:`<path d="M-27 -2 Q-30 -32 0 -31 Q30 -32 27 -2 Q20 -20 4 -18 Q-14 -22 -27 -2Z" fill="${hc}"/>`,
+    spiky:`<path d="M-27 -2 L-25 -22 L-15 -19 L-9 -33 L1 -21 L10 -33 L16 -19 L26 -23 L27 -2 Q14 -15 0 -15 Q-14 -15 -27 -2Z" fill="${hc}"/>`,
+    long:`<path d="M-28 2 Q-30 -30 0 -30 Q30 -30 28 2 Q18 -16 0 -15 Q-16 -16 -28 2Z" fill="${hc}"/>`,
+    bun:`<circle cy="-30" r="11" fill="${hc}"/><path d="M-28 2 Q-30 -30 0 -30 Q30 -30 28 2 Q18 -16 0 -15 Q-16 -16 -28 2Z" fill="${hc}"/>`,
+    bald:`<path d="M-25 -8 Q-29 4 -25 12 M25 -8 Q29 4 25 12" stroke="#BDBDBD" stroke-width="7" fill="none" stroke-linecap="round"/>`
+  };
+  s+=hs[H]||hs.short;
+  if(m==="worried")s+=`<path d="M-15 -10 L-5 -7 M15 -10 L5 -7" stroke="${P.ink}" stroke-width="2.4" stroke-linecap="round"/>`;
+  s+=`<circle cx="-9" cy="0" r="3.2" fill="${P.ink}"/><circle cx="9" cy="0" r="3.2" fill="${P.ink}"/>`;
+  if(o.glasses)s+=`<g fill="none" stroke="${P.ink}" stroke-width="2"><circle cx="-9" cy="0" r="7.5"/><circle cx="9" cy="0" r="7.5"/><path d="M-1.5 0 H1.5"/></g>`;
+  if(o.shades)s+=`<rect x="-19" y="-6" width="38" height="11" rx="5" fill="${P.ink}"/>`;
+  s+=`<circle cx="-16" cy="9" r="4" fill="${P.cheek}" opacity=".7"/><circle cx="16" cy="9" r="4" fill="${P.cheek}" opacity=".7"/>`;
+  const M={smile:`<path d="M-8 10 Q0 17 8 10" stroke="${P.ink}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`,
+    grin:`<path d="M-10 9 Q0 23 10 9Z" fill="${P.mouth}"/>`,
+    worried:`<path d="M-7 15 Q0 9 7 15" stroke="${P.ink}" stroke-width="2.6" fill="none" stroke-linecap="round"/>`,
+    neutral:`<path d="M-7 13 H7" stroke="${P.ink}" stroke-width="2.6" stroke-linecap="round"/>`};
+  return s+(M[m]||M.smile);
+}
+function person(x,y,sc,o={}){
+  const sh=o.shirt||P.A;
+  let s=`<g transform="translate(${x} ${y}) scale(${o.flip?-sc:sc} ${sc})">`;
+  s+=`<path d="M-34 40 V-14 Q-34 -38 -10 -40 H10 Q34 -38 34 -14 V40Z" fill="${sh}"/>`;
+  s+=`<rect x="-7" y="-50" width="14" height="12" fill="${P.skin2}"/><path d="M-10 -40 L0 -27 L10 -40Z" fill="${P.w}"/>`;
+  s+=`<g transform="translate(0 -72)">${head(o)}</g>`;
+  const arm=(d,hx,hy)=>`<path d="${d}" stroke="${sh}" stroke-width="13" fill="none" stroke-linecap="round"/><circle cx="${hx}" cy="${hy}" r="7.5" fill="${P.skin}"/>`;
+  if(o.arm==="up")s+=arm("M27 -28 Q46 -34 53 -56",55,-60);
+  if(o.arm==="wave")s+=arm("M-27 -28 Q-48 -38 -53 -64",-55,-68);
+  if(o.item)s+=o.item;
+  return s+"</g>";
+}
+const ITEM={
+  pen:`<g transform="translate(55 -60) rotate(-25)"><rect x="-5" y="-38" width="10" height="42" rx="4" fill="${P.pink}"/><rect x="-3.5" y="-46" width="7" height="10" rx="2" fill="#F4F4F4"/><rect x="-2.5" y="-24" width="5" height="9" rx="1" fill="#9B6BC9"/></g>`,
+  nut:`<g transform="translate(55 -66)"><ellipse cy="-6" rx="7" ry="9.5" fill="${P.nut}"/><path d="M0 -15 v-5" stroke="#4E7A26" stroke-width="2.5" stroke-linecap="round"/></g>`
+};
+const AV={
+  zhe:{bg:"#FCE7C2",hair:"spiky",mood:"grin",shirt:P.B},
+  qing:{bg:"#FBD9E3",hair:"long",mood:"smile",shirt:P.E},
+  yu:{bg:"#D8EED9",hair:"short",glasses:true,mood:"smile",shirt:P.C},
+  lin:{bg:"#DCE6F5",hair:"bun",glasses:true,mood:"smile",shirt:"#5E6FA8"},
+  mom:{bg:"#FBE3D3",hair:"bun",mood:"smile",shirt:P.E,hc:"#4A3428"},
+  gpa:{bg:"#ECE7DE",hair:"bald",mood:"grin",shirt:P.D},
+  kevin:{bg:"#E0EED4",hair:"short",mood:"smile",shirt:"#4E8A5B",hc:"#5A3A22"},
+  wei:{bg:"#FFE0E8",hair:"short",shades:true,mood:"grin",shirt:"#F08BB5",hc:"#8A5A3A"}
+};
+function avatar(id){
+  if(imgURL("av:"+id))return `<img src="${imgURL("av:"+id)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`;
+  if(id==="class")return `<svg viewBox="-34 -34 68 68"><circle r="34" fill="#DCEBF0"/><g transform="translate(0 -9) scale(.38)">${head(AV.yu)}</g><g transform="translate(-14 9) scale(.38)">${head(AV.qing)}</g><g transform="translate(14 9) scale(.38)">${head(AV.zhe)}</g></svg>`;
+  if(id==="shop")return `<svg viewBox="-34 -34 68 68"><circle r="34" fill="#EEE4F8"/><g fill="#8E5CC2">${[[-8,-6],[8,-6],[0,-6],[-4,4],[4,4],[0,13],[-12,-14],[0,-15],[12,-14]].map(([x,y])=>`<circle cx="${x}" cy="${y+2}" r="6.5"/>`).join("")}</g><path d="M0 -20 Q8 -30 16 -24" stroke="#4E8A3B" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`;
+  if(id==="fam")return `<svg viewBox="-34 -34 68 68"><circle r="34" fill="#FBE3D3"/><path d="M-18 -2 L0 -18 L18 -2 V18 H-18Z" fill="#fff"/><path d="M-22 0 L0 -21 L22 0" stroke="#D2523C" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M0 12 C-10 4 -8 -4 -3 -4 C-1 -4 0 -2 0 -1 C0 -2 1 -4 3 -4 C8 -4 10 4 0 12Z" fill="#E5617A"/></svg>`;
+  const a=AV[id];
+  return `<svg viewBox="-34 -34 68 68"><circle r="34" fill="${a.bg}"/><path d="M-27 36 Q-27 18 -10 16 H10 Q27 18 27 36Z" fill="${a.shirt}"/><g transform="translate(0 -5) scale(.8)">${head(a)}</g></svg>`;
+}
+const ICON={
+  chat:`<svg viewBox="0 0 32 32"><path d="M16 5C9 5 4 9.3 4 14.6c0 3 1.6 5.6 4.2 7.4L7 27l5.6-3c1.1.3 2.2.4 3.4.4 7 0 12-4.3 12-9.8S23 5 16 5Z" fill="#fff"/></svg>`,
+  feed:`<svg viewBox="0 0 32 32"><rect x="5" y="7" width="22" height="18" rx="5" fill="none" stroke="#fff" stroke-width="2.6"/><circle cx="16" cy="16" r="5" fill="none" stroke="#fff" stroke-width="2.6"/><circle cx="23" cy="11" r="1.6" fill="#fff"/></svg>`,
+  search:`<svg viewBox="0 0 32 32"><circle cx="14" cy="14" r="8" fill="none" stroke="#fff" stroke-width="3"/><path d="M20 20 L27 27" stroke="#fff" stroke-width="3.4" stroke-linecap="round"/></svg>`,
+  book:`<svg viewBox="0 0 32 32"><path d="M6 7 Q11 5 16 8 Q21 5 26 7 V25 Q21 23 16 26 Q11 23 6 25Z" fill="#fff"/><path d="M16 8 V26" stroke="#0C7A84" stroke-width="2"/></svg>`
+};
+const PHOTO={
+  pen:()=>imgURL("pen")?`<img src="${imgURL("pen")}" alt="桌面上的螢光筆與紫色電子煙，請找出吸嘴、煙油窗口和充電孔。">`:`<svg viewBox="0 0 300 220"><rect width="300" height="220" fill="#E8D7C0"/><g stroke="#DCC7AB" stroke-width="2" fill="none"><path d="M0 40 Q150 30 300 46"/><path d="M0 182 Q140 172 300 190"/><path d="M0 74 Q160 66 300 80"/></g>
+    <g transform="rotate(-5 80 180)"><rect x="18" y="150" width="128" height="62" rx="4" fill="#fff"/><g stroke="#C9DCE6" stroke-width="2"><path d="M26 166 H138 M26 180 H138 M26 194 H138"/></g></g>
+    <g transform="rotate(10 240 30)"><rect x="196" y="22" width="78" height="15" rx="6" fill="#F7E04B"/><rect x="268" y="24" width="14" height="11" rx="3" fill="#E9C21B"/></g>
+    <rect x="60" y="100" width="180" height="34" rx="13" fill="#F08BB5"/><rect x="68" y="104" width="164" height="7" rx="3.5" fill="#F8BDD6"/>
+    <path d="M104 111 l3 6 6 1 -4.5 4 1 6 -5.5 -3 -5.5 3 1 -6 -4.5 -4 6 -1Z" fill="#fff" opacity=".9"/>
+    <rect x="34" y="106" width="30" height="22" rx="8" fill="#F4F4F4"/><rect x="40" y="113" width="10" height="8" rx="3" fill="#BDBDBD"/>
+    <rect x="150" y="107" width="36" height="20" rx="5" fill="#5B3B7A"/><rect x="153" y="115" width="30" height="9" rx="2" fill="#B07BE0"/>
+    <circle cx="211" cy="117" r="3" fill="#7CF0FF"/>
+    <rect x="236" y="103" width="9" height="28" rx="4" fill="#E06FA0"/><rect x="242" y="112" width="4" height="10" rx="1.5" fill="#333"/></svg>`,
+  mouth:()=>`<svg viewBox="0 0 300 240"><rect width="300" height="240" fill="#FBE9E0"/>
+    <ellipse cx="150" cy="122" rx="138" ry="104" fill="#E58E8E"/><ellipse cx="150" cy="122" rx="120" ry="88" fill="#7E2B36"/>
+    <path d="M32 122 Q42 58 92 46 L92 198 Q42 186 32 122Z" fill="#D46A73"/><path d="M268 122 Q258 58 208 46 L208 198 Q258 186 268 122Z" fill="#D46A73"/>
+    <g fill="#fff">${[0,1,2,3,4,5,6].map(i=>`<rect x="${88+i*18}" y="40" width="16" height="24" rx="5"/>`).join("")}${[0,1,2,3,4,5,6].map(i=>`<rect x="${88+i*18}" y="182" width="16" height="22" rx="5"/>`).join("")}</g>
+    <ellipse cx="150" cy="150" rx="66" ry="38" fill="#EE8E96"/><path d="M150 122 V170" stroke="#D8707B" stroke-width="3" stroke-linecap="round"/>
+    <path d="M56 104 q12 -12 24 -2 q9 11 -2 23 q-15 7 -22 -5z" fill="#F4F0E6"/>
+    <path d="M226 106 q14 -6 22 4 q4 14 -10 18 q-16 2 -14 -10z" fill="#B3112A"/>
+    <ellipse cx="192" cy="152" rx="11" ry="8" fill="#F2E8B8" stroke="#C0283A" stroke-width="4"/></svg>`
+};
+const SPOTS={
+  pen:{w:300,h:220,need:3,title:"找出 3 個線索，看看它到底是不是螢光筆",items:[
+    {x:49,y:117,r:26,ok:1,l:"吸嘴",d:"筆蓋的位置其實是吸氣用的嘴。"},
+    {x:168,y:117,r:24,ok:1,l:"小窗口",d:"看得到裡面紫色的液體，那是煙油，含尼古丁。"},
+    {x:242,y:117,r:20,ok:1,l:"充電孔",d:"螢光筆不需要充電。電子煙要用電池加熱煙油。"},
+    {x:110,y:117,r:16,ok:0,d:"這只是貼紙裝飾。"},
+    {x:236,y:29,r:26,ok:0,d:"這才是真的螢光筆，沒有問題。"}]},
+  mouth:{w:300,h:240,need:3,title:"找出 3 個口腔癌的警訊",items:[
+    {x:68,y:112,r:24,ok:1,l:"白色斑塊（白斑）",d:"擦不掉的白色斑塊是癌前病變的警訊。"},
+    {x:237,y:117,r:22,ok:1,l:"紅色斑塊（紅斑）",d:"不明的紅色斑塊也要盡快檢查。"},
+    {x:192,y:152,r:20,ok:1,l:"一直不會好的破洞",d:"嘴巴破超過 2 週沒好，要去看耳鼻喉科或牙科。"},
+    {x:150,y:52,r:20,ok:0,d:"這是正常的牙齒。"},
+    {x:125,y:150,r:20,ok:0,d:"這是正常的舌頭。"}]}
+};
+// Coordinates refer to the supplied 1456 by 819 illustration.
+if(imgURL("pen")) SPOTS.pen={w:1456,h:819,need:3,title:"找出紫色物品上的 3 個線索",items:[
+  {x:1182,y:187,r:85,ok:1,l:"吸嘴",d:"上方黑色的部分是吸嘴。"},
+  {x:1071,y:315,r:65,ok:1,l:"煙油窗口",d:"小窗口裡看得到煙油；外表像文具不代表安全。"},
+  {x:971,y:686,r:65,ok:1,l:"充電孔",d:"底部有充電孔，這個裝置需要電池。"},
+  {x:449,y:398,r:100,ok:0,d:"這是左邊的螢光筆，再找找右邊紫色物品的線索。"},
+  {x:170,y:580,r:65,ok:0,d:"這是筆記本，請找紫色物品上的線索。"}
+]};
+function feedImg(){if(imgURL("ad"))return `<img src="${imgURL("ad")}" alt="廣告貼文圖片" style="width:100%;display:block">`;return `<svg viewBox="0 0 300 250"><rect width="300" height="250" fill="#FFD6DE"/>
+  <g opacity=".5" fill="#FFC0CD">${[0,1,2,3,4].map(i=>`<rect x="${i*70-20}" y="0" width="30" height="250" transform="rotate(20 ${i*70} 125)"/>`).join("")}</g>
+  <path d="M-10 250 A90 90 0 0 1 130 250Z" fill="#5BAA5F"/><path d="M4 250 A76 76 0 0 1 116 250Z" fill="#F4F0E6"/><path d="M12 250 A68 68 0 0 1 108 250Z" fill="#F2667E"/>
+  <g fill="#2A2A35">${[[40,226],[60,212],[80,226],[60,236]].map(([x,y])=>`<ellipse cx="${x}" cy="${y}" rx="2.5" ry="4"/>`).join("")}</g>
+  <rect x="200" y="56" width="10" height="56" rx="4" fill="#E2506B" transform="rotate(12 205 84)"/>
+  <path d="M164 96 H240 L232 206 H172Z" fill="#F48FA4"/><path d="M168 132 H236 L232 206 H172Z" fill="#E86F8C"/>
+  <rect x="158" y="86" width="88" height="14" rx="6" fill="#fff"/>
+  <rect x="190" y="150" width="24" height="14" rx="3" fill="#2A2A35"/><text x="202" y="161" text-anchor="middle" font-size="9" fill="#7CF0FF" font-family="monospace">88%</text>
+  <g fill="#E8F7FB" opacity=".9"><rect x="248" y="170" width="22" height="22" rx="5" transform="rotate(14 259 181)"/><rect x="140" y="186" width="18" height="18" rx="4" transform="rotate(-10 149 195)"/></g>
+  <text x="20" y="44" font-size="26" font-weight="900" fill="#fff" font-family="Huninn,sans-serif">夏日限定</text>
+  <text x="20" y="72" font-size="16" fill="#fff" font-family="Huninn,sans-serif">西瓜冰口味</text></svg>`;}
+const SCENE={
+  cram:()=>imgURL("cram")?`<img class="scimg" src="${imgURL("cram")}" alt="">`:`<svg viewBox="0 0 360 420" preserveAspectRatio="xMidYMax slice"><rect width="360" height="420" fill="#F6C27E"/><circle cx="292" cy="160" r="46" fill="#FBE2A6"/>
+    <rect x="0" y="322" width="360" height="12" fill="#A39A8C"/><rect x="0" y="332" width="360" height="90" fill="#7C7468"/>
+    <rect x="20" y="60" width="220" height="264" fill="#5F7C8A"/><rect x="40" y="80" width="180" height="44" rx="6" fill="#D2523C"/>
+    <text x="130" y="110" text-anchor="middle" font-size="22" font-weight="900" fill="#fff" font-family="Noto Sans TC,sans-serif">明日補習班</text>
+    <g fill="#FCE9B0">${[0,1,2].map(i=>`<rect x="${40+i*62}" y="146" width="46" height="36" rx="3"/><rect x="${40+i*62}" y="204" width="46" height="36" rx="3"/>`).join("")}</g>
+    <rect x="104" y="262" width="52" height="62" fill="#2E3E46"/>
+    <rect x="318" y="118" width="7" height="206" fill="#2E3E46"/><rect x="296" y="112" width="36" height="9" rx="4" fill="#2E3E46"/><circle cx="306" cy="128" r="20" fill="#FFF3B0" opacity=".55"/>
+    ${person(190,400,1.45,{...AV.kevin,arm:"up",item:ITEM.nut})}</svg>`,
+  dorm:()=>imgURL("dorm")?`<img class="scimg" src="${imgURL("dorm")}" alt="">`:`<svg viewBox="0 0 360 420" preserveAspectRatio="xMidYMax slice"><rect width="360" height="420" fill="#2B3A63"/><circle cx="180" cy="70" r="140" fill="#FFE9A8" opacity=".1"/>
+    <rect x="0" y="330" width="360" height="90" fill="#6B5545"/>
+    <rect x="232" y="40" width="108" height="90" rx="4" fill="#1C2748" stroke="#B07A4F" stroke-width="6"/><path d="M286 40 V130 M232 85 H340" stroke="#B07A4F" stroke-width="4"/><circle cx="310" cy="66" r="14" fill="#F7E6A1"/>
+    <g fill="#F7E6A1"><circle cx="252" cy="58" r="2"/><circle cx="270" cy="110" r="1.6"/><circle cx="322" cy="112" r="1.8"/></g>
+    <rect x="10" y="40" width="8" height="300" fill="#B07A4F"/><rect x="120" y="40" width="8" height="300" fill="#B07A4F"/>
+    <rect x="10" y="150" width="118" height="10" fill="#B07A4F"/><rect x="18" y="134" width="102" height="16" rx="6" fill="#5FA36B"/><rect x="22" y="126" width="30" height="12" rx="5" fill="#fff"/>
+    <g transform="translate(190 372)">${["#D2523C","#3E7CB1","#E9A82A","#5FA36B"].map((c,i)=>`<rect x="${i*22-40}" y="${i%2?4:0}" width="20" height="28" rx="3" fill="${c}" transform="rotate(${i*14-20})"/>`).join("")}</g>
+    ${person(272,412,1.15,{...AV.yu,mood:"worried",flip:true})}
+    ${person(128,405,1.3,{...AV.zhe,arm:"up",item:ITEM.pen})}</svg>`
+};
+
+/* ================= 知識卡 ================= */
+const CARDS=[
+ {id:"disguise",t:"偽裝外型",b:`<p>電子煙常做成<b>玩偶、飲料杯、USB 隨身碟、筆</b>的樣子，色彩多、體積小，像 3C 小物，讓人放下戒心，也讓大人認不出來。</p><p>看到吸嘴、充電孔、可以看到液體的小窗，就要提高警覺。</p>`},
+ {id:"nicotine",t:"尼古丁會成癮",b:`<p>絕大多數電子煙都含有尼古丁。尼古丁會影響青少年還在發育的大腦，可能讓人<b>衝動、難專心、情緒起伏大</b>，而且很容易上癮。</p><p>香味是加進去的香料，不代表比較安全。</p>`},
+ {id:"marketing",t:"行銷話術",b:`<ul><li>水果、甜點口味：降低戒心</li><li>「一口就好」：淡化成癮</li><li>「只是水蒸氣」：錯誤說法</li><li>「#大家都在用」：從眾心理</li><li>「#學生價」：把學生當目標</li></ul>`},
+ {id:"source",t:"查證來源",b:`<p>看到健康資訊先問三件事：<b>誰寫的？他有沒有賣東西的利益？有沒有證據？</b></p><p>優先相信衛福部、國健署這類官方資料，而不是賣家網站或「網友說」。</p>`},
+ {id:"vapor",t:"不是水蒸氣",b:`<p>電子煙用霧化器把<b>煙油</b>（含尼古丁、丙二醇、香料）加熱成氣霧。</p><p>業者說不燃燒、沒有焦油，事實上仍可能產生少量<b>一氧化碳和其他有害物質</b>。</p>`},
+ {id:"compare",t:"電子煙 vs 加熱菸",b:`<ul><li><b>電子煙</b>：液態煙油、霧化器加熱、不含菸草</li><li><b>加熱菸</b>：菸草棒、加熱器加熱到約 350°C</li></ul><p>共同點：含尼古丁會成癮、有二手菸害、影響心血管與呼吸系統、影響青少年腦部發展。</p>`},
+ {id:"law",t:"法律怎麼說",b:`<p>2023 年 3 月 22 日起，電子煙在台灣<b>全面禁止</b>製造、輸入、販賣、供應、展示、廣告和使用。</p><ul><li>使用者：罰 2,000～10,000 元</li><li>販賣、展示：最高罰 100 萬元</li><li>未經審查核定的加熱菸也一樣禁止</li><li>未滿 20 歲不得吸菸</li></ul>`},
+ {id:"protect",t:"保護自己",b:`<p>陌生帳號私訊推銷：<b>先截圖留證據 → 封鎖 → 檢舉 → 告訴老師或家長</b>。</p><p>動態不要露出制服、校名、學號，避免被鎖定。</p>`},
+ {id:"betel",t:"檳榔是一級致癌物",b:`<p>不管有沒有加紅灰、白灰，<b>檳榔本身就會致癌</b>。台灣每年超過 8,000 人罹患口腔癌。</p><ul><li>只嚼檳榔：口腔癌風險約 28 倍</li><li>抽菸＋嚼檳榔：約 89 倍</li><li>菸＋酒＋檳榔：約 123 倍</li></ul>`},
+ {id:"oral",t:"口腔癌警訊",b:`<p>記住五個字：<b>破、斑、硬、凸、腫</b>。嘴巴破洞超過 2 週沒好、白色或紅色斑塊，都要盡快就醫。</p><p>30 歲以上有嚼檳榔或吸菸的人，每 2 年可以免費做一次口腔黏膜檢查。</p>`},
+ {id:"refuse",t:"拒絕技巧",b:`<ul><li><b>直接說不</b>：「我不要，謝謝。」</li><li><b>說出理由</b>：要比賽、怕口臭、牙齒會變色</li><li><b>轉移話題</b>：「來玩 UNO！」</li><li><b>離開現場</b>：走開、封鎖帳號</li><li><b>找大人</b>：老師、家長、輔導老師</li></ul>`},
+ {id:"most",t:"大多數人不用",b:`<p>國健署 2025 年調查：國中生電子煙使用率約 <b>2.1%</b>，大約每 50 人才 1 人。</p><p>電子煙最常是家人、朋友「免費給的」。所以最需要練習拒絕的，往往是認識的人。</p>`}
+];
+
+/* ================= 狀態 ================= */
+const S={name:"小安",health:100,friend:60,cards:new Set(),tried:false,helpedGpa:false,helpedZhe:false,view:"start",chat:null,sound:true,feedNew:false};
+const PEOPLE={zhe:{n:"阿哲",av:"zhe"},qing:{n:"小晴",av:"qing"},yu:{n:"宇恩",av:"yu"},lin:{n:"林老師（班導）",av:"lin"},shop:{n:"果果小舖",av:"shop"},mom:{n:"媽媽",av:"mom"},gpa:{n:"阿公",av:"gpa"}};
+const CH={
+  class:{name:"707 班級群組",av:"class",group:true,msgs:[],unread:0},
+  zhe:{name:"阿哲",av:"zhe",msgs:[],unread:0},
+  shop:{name:"果果小舖",av:"shop",msgs:[],unread:0,stranger:true,blocked:false},
+  fam:{name:"溫暖的家（3）",av:"fam",group:true,msgs:[],unread:0}
+};
+const ORDER=["zhe","class","fam","shop"];
+const pending={}, waiters={};
+const V=document.getElementById("view"), SCR=document.getElementById("screen");
+const N=()=>S.name;
+let skipFn=null, banEl=null, hintEl=null;
+
+function wait(ms){return new Promise(r=>{const t=setTimeout(()=>{skipFn=null;r()},ms);skipFn=()=>{clearTimeout(t);skipFn=null;r()}})}
+function waitFor(k){return new Promise(r=>{(waiters[k]=waiters[k]||[]).push(r)})}
+function fire(k,v){const w=waiters[k];if(w){delete waiters[k];w.forEach(f=>f(v))}}
+
+/* ================= 音效 ================= */
+let AC=null;
+function sfx(t){
+  if(!S.sound||!AC)return;
+  try{const map={pop:[660,.07,"sine"],note:[880,.16,"triangle"],ding:[1046,.35,"sine"],tick:[520,.05,"square"],bad:[150,.4,"sawtooth"],good:[784,.22,"triangle"]};
+  const [f,d,ty]=map[t];const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
+  o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(t==="bad"?.05:.08,n);g.gain.exponentialRampToValueAtTime(.001,n+d);
+  o.connect(g).connect(AC.destination);o.start(n);o.stop(n+d+.02);
+  if(t==="good"||t==="ding"){const o2=AC.createOscillator(),g2=AC.createGain();o2.type=ty;o2.frequency.value=f*1.26;g2.gain.setValueAtTime(.07,n+.1);g2.gain.exponentialRampToValueAtTime(.001,n+.1+d);o2.connect(g2).connect(AC.destination);o2.start(n+.1);o2.stop(n+.12+d)}}catch(e){}
+}
+
+/* ================= 側欄 ================= */
+function stats(){
+  document.getElementById("hBar").style.width=S.health+"%";document.getElementById("hNum").textContent=S.health;
+  document.getElementById("fBar").style.width=S.friend+"%";document.getElementById("fNum").textContent=S.friend;
+  document.getElementById("cNum").textContent=S.cards.size;
+  document.getElementById("cList").innerHTML=CARDS.map((c,i)=>`<li class="${S.cards.has(c.id)?"on":""}"><span class="dot">${S.cards.has(c.id)?"✓":""}</span>${S.cards.has(c.id)?c.t:"？？？"}</li>`).join("");
+}
+function eff(e){
+  if(!e)return;
+  for(const k of ["health","friend"])if(e[k]){
+    S[k]=Math.max(0,Math.min(100,S[k]+e[k]));
+    const f=document.createElement("div");f.className="fx";
+    f.style.background=e[k]>0?(k==="health"?"#0C7A84":"#C98A12"):"#D2523C";
+    f.style.top=(84+(k==="friend"?36:0))+"px";
+    f.textContent=`${k==="health"?"健康":"友情"} ${e[k]>0?"+":""}${e[k]}`;SCR.appendChild(f);setTimeout(()=>f.remove(),1900);
+    sfx(e[k]>0?"good":"bad");
+  }
+  stats();
+}
+function setTime(day,t){document.getElementById("clk").textContent=t;S.time=t;S.day=day;document.getElementById("dayLab").textContent=day?day+"　"+t:"準備開始";if(S.view==="home")rHome()}
+
+/* ================= 導覽 ================= */
+function go(view,arg){
+  S.view=view;S.chat=view==="chat"?arg:null;
+  if(banEl&&banEl._go&&banEl._go[0]===view&&banEl._go[1]===arg){banEl.remove();banEl=null}
+  ({home:rHome,list:rList,chat:()=>rChat(arg),feed:rFeed,search:rSearch,book:rBook})[view]();
+  document.getElementById("sbar").classList.toggle("dark",false);
+  fire(view==="chat"?"chat:"+arg:view);
+  if(view==="chat"&&!pending[arg]&&hintEl&&hintEl._k==="chat:"+arg)hint(null);
+}
+function openWait(k){
+  const [v,a]=k.split(":");
+  if(S.view===v&&(!a||S.chat===a))return Promise.resolve();
+  return waitFor(k);
+}
+V.addEventListener("click",e=>{
+  const b=e.target.closest("[data-go]");if(b){const [v,a]=b.dataset.go.split(":");go(v,a);return}
+  if(e.target.closest(".msgs")&&skipFn)skipFn();
+});
+function hint(t,k){if(hintEl){hintEl.remove();hintEl=null}if(t){hintEl=document.createElement("div");hintEl.className="hint";hintEl.textContent=t;hintEl._k=k;SCR.appendChild(hintEl)}}
+function banner(o){
+  if(banEl)banEl.remove();
+  const b=document.createElement("button");b.className="banner";b.type="button";b._go=o.go;
+  b.innerHTML=`<span class="av">${o.icon}</span><span class="bt"><b>${o.title}</b><span>${o.text}</span></span><i>現在</i>`;
+  b.onclick=()=>{b.remove();banEl=null;go(o.go[0],o.go[1])};
+  SCR.appendChild(b);banEl=b;sfx("note");
+}
+function badges(){if(S.view==="home")rHome();if(S.view==="list")rList()}
+
+/* ================= 畫面 ================= */
+function unreadAll(){return ORDER.reduce((a,k)=>a+CH[k].unread,0)}
+function rHome(){
+  const u=unreadAll();
+  V.innerHTML=`<div class="home"${bgStyle("home")}><div class="clock">${S.time||"21:30"}</div><div class="date">${S.day||""}</div>
+    <div class="apps">
+      <button class="app" data-go="list" type="button"><span class="ic" style="background:#3DBE6C">${ICON.chat}</span>聊聊${u?`<span class="badge">${u}</span>`:""}</button>
+      <button class="app" data-go="feed" type="button"><span class="ic" style="background:linear-gradient(135deg,#F58AA6,#F6B04A)">${ICON.feed}</span>動態${S.feedNew?`<span class="badge">1</span>`:""}</button>
+      <button class="app" data-go="search" type="button"><span class="ic" style="background:#3E7CB1">${ICON.search}</span>搜尋</button>
+      <button class="app" data-go="book" type="button"><span class="ic" style="background:#0C7A84">${ICON.book}</span>手冊${S.cards.size?`<span class="badge" style="background:#173038">${S.cards.size}</span>`:""}</button>
+    </div></div>`;
+}
+function lastText(c){const m=c.msgs[c.msgs.length-1];if(!m)return "";if(m.photo)return "[照片]";return (m.who==="me"?"你：":"")+m.text}
+function rList(){
+  const list=ORDER.filter(k=>CH[k].msgs.length);
+  V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">聊天</span></div>
+   <div class="scroll">${list.length?list.map(k=>`<button class="crow" data-go="chat:${k}" type="button"><span class="av">${avatar(CH[k].av)}</span><span class="ct"><b>${CH[k].name}</b><span>${lastText(CH[k])}</span></span>${CH[k].unread?`<span class="n">${CH[k].unread}</span>`:""}</button>`).join(""):`<p class="empty">還沒有訊息</p>`}</div></div>`;
+}
+function msgHTML(m,ch){
+  if(m.who==="sys")return `<div class="m-sys">${m.text}</div>`;
+  if(m.who==="me")return `<div class="m me"><div class="bub">${m.text}</div></div>`;
+  const p=PEOPLE[m.who];
+  const body=m.photo?`<button class="photo ${S.inspect===m.photo?"pulse":""}" data-photo="${m.photo}" type="button" aria-label="放大照片">${PHOTO[m.photo]()}</button>`:`<div class="bub">${m.text}</div>`;
+  return `<div class="m"><span class="av sm">${avatar(p.av)}</span><div class="mcol">${ch.group?`<span class="who">${p.n}</span>`:""}${body}</div></div>`;
+}
+function rChat(id){
+  const ch=CH[id];ch.unread=0;if(pending[id])hint(null);
+  V.innerHTML=`<div class="chat"><div class="apph"><button class="back" data-go="list" type="button" aria-label="返回">‹</button><span class="av">${avatar(ch.av)}</span><span class="tt">${ch.name}</span>
+    ${ch.stranger?`<button class="blk" id="blk" type="button" ${ch.blocked?"disabled":""}>${ch.blocked?"已封鎖":"封鎖・檢舉"}</button>`:""}</div>
+    <div class="msgs" id="msgs">${ch.msgs.map(m=>msgHTML(m,ch)).join("")}<div class="m typing" id="typing" hidden><span class="av sm">${avatar(ch.av==="class"||ch.av==="fam"?"class":ch.av)}</span><div class="bub"><i></i><i></i><i></i></div></div></div>
+    <div class="foot" id="foot"></div></div>`;
+  const blk=document.getElementById("blk");
+  if(blk)blk.onclick=()=>{const p=pending[id];if(p){const i=p.opts.findIndex(o=>o.block);if(i>=0)pick(id,i)}};
+  bindPhotos();foot(id);scrollDown();
+}
+function bindPhotos(){V.querySelectorAll(".photo").forEach(b=>b.onclick=()=>{const k=b.dataset.photo;if(S.inspect===k)fire("inspect:"+k);else viewPhoto(k)})}
+function scrollDown(){const m=document.getElementById("msgs");if(m)m.scrollTop=m.scrollHeight}
+function inChat(id){return S.view==="chat"&&S.chat===id}
+function append(m,id){
+  if(!inChat(id))return;
+  const t=document.getElementById("typing");t.insertAdjacentHTML("beforebegin",msgHTML(m,CH[id]));bindPhotos();scrollDown();
+}
+function typing(on,who){const t=document.getElementById("typing");if(!t)return;t.hidden=!on;if(on&&who&&PEOPLE[who])t.querySelector(".av").innerHTML=avatar(PEOPLE[who].av);scrollDown()}
+function foot(id){
+  const f=document.getElementById("foot");if(!f)return;const p=pending[id];
+  if(!p){f.innerHTML=`<div class="fake">${CH[id].blocked?"你已封鎖這個帳號":"輸入訊息…"}</div>`;return}
+  f.innerHTML=`<p class="pick">選一個回覆</p><div class="reps">${p.opts.map((o,i)=>`<button class="rep ${o.block?"danger":""}" data-i="${i}" type="button">${o.t}</button>`).join("")}</div>`;
+  f.querySelectorAll(".rep").forEach(b=>b.onclick=()=>pick(id,+b.dataset.i));
+  scrollDown();
+}
+function pick(id,i){
+  const p=pending[id];if(!p)return;delete pending[id];hint(null);const o={...p.opts[i],i};
+  if(!o.block){const m={who:"me",text:o.say||o.t};CH[id].msgs.push(m);append(m,id);sfx("pop")}
+  foot(id);eff(o.eff);p.res(o);
+}
+
+/* ================= 故事指令 ================= */
+async function say(id,who,text,x={}){
+  const here=inChat(id);
+  if(here&&who!=="sys"){typing(true,who);await wait(Math.min(500+(text||"").length*45,2000)+(x.photo?400:0));typing(false)}
+  const m={who,text,...x};CH[id].msgs.push(m);
+  if(inChat(id)){append(m,id);sfx("pop")}
+  else if(who!=="sys"){CH[id].unread++;banner({title:CH[id].name,text:x.photo?`${PEOPLE[who].n}傳送了一張照片`:(CH[id].group?PEOPLE[who].n+"：":"")+text,go:["chat",id],icon:avatar(CH[id].av)});badges()}
+  if(!here)await wait(350);
+}
+const sys=(id,t)=>say(id,"sys",t);
+function reply(id,opts){return new Promise(res=>{pending[id]={opts,res};if(inChat(id))foot(id);else{hint("點「聊聊」回到聊天室回覆","");badges()}})}
+async function need(k,text){ // 等玩家打開某處
+  const [v,a]=k.split(":");
+  if(S.view===v&&(!a||S.chat===a))return;
+  hint(text||"點上方的通知打開",k);await openWait(k);hint(null);
+}
+
+function overlay(html,cls=""){const el=document.createElement("div");el.className="ov "+cls;el.innerHTML=html;SCR.appendChild(el);return el}
+function closeOv(el){el.remove()}
+function dayCard(small,big,sub){return new Promise(r=>{
+  const el=overlay(`<div class="dayc"${bgStyle(small.includes("DAY 3")?"street":"day",.55)}><small>${small}</small><h2>${big}</h2><p>${sub||""}</p><span class="sc-tap">點一下繼續 ▼</span></div>`,"full");
+  setTimeout(()=>el.onclick=()=>{closeOv(el);r()},400);
+})}
+function think(q,opts){return new Promise(res=>{
+  const el=overlay(`<div class="box thk"><span class="lab">你心裡想…</span><h3>${q}</h3><div class="reps">${opts.map((o,i)=>`<button class="cloud" data-i="${i}" type="button">${o.t}</button>`).join("")}</div><div class="tfb" hidden></div></div>`);
+  el.querySelectorAll(".cloud").forEach(b=>b.onclick=()=>{
+    const o=opts[+b.dataset.i];el.querySelectorAll(".cloud").forEach(x=>{x.disabled=true;x.classList.add(x===b?"sel":"dim")});
+    const f=el.querySelector(".tfb");f.hidden=false;f.innerHTML=`<p>${o.fb}</p><button class="pbtn" type="button">繼續</button>`;
+    f.querySelector("button").onclick=()=>{closeOv(el);eff(o.eff);res(o)};f.scrollIntoView({block:"nearest"});
+  });
+})}
+function cardHTML(c,isNew){const n=CARDS.indexOf(c)+1;return `<div class="kcard"><div class="kc-top"><small>知識卡 ${String(n).padStart(2,"0")} / 12</small><h3>${c.t}</h3>${isNew?`<span class="kc-new">新收集</span>`:""}</div><div class="kc-body">${c.b}</div><div class="kc-foot"><button class="pbtn" type="button" style="width:100%">${isNew?"收進手冊":"關閉"}</button></div></div>`}
+function unlock(id){return new Promise(r=>{
+  if(S.cards.has(id))return r();
+  S.cards.add(id);stats();sfx("ding");
+  const c=CARDS.find(x=>x.id===id);const el=overlay(cardHTML(c,true));
+  el.querySelector(".pbtn").onclick=()=>{closeOv(el);badges();r()};
+})}
+function viewPhoto(k){const el=overlay(`<div class="box"><div class="hs">${PHOTO[k]()}</div><button class="pbtn" type="button">關閉</button></div>`);el.querySelector(".pbtn").onclick=()=>closeOv(el)}
+async function inspect(k,chat){
+  S.inspect=k;if(inChat(chat))rChat(chat);
+  await waitFor("inspect:"+k);
+  const d=SPOTS[k],found=[];
+  await new Promise(res=>{
+    const el=overlay(`<div class="box"><span class="lab">放大檢查　<span class="prog" id="prog">0 / ${d.need}</span></span><h3 style="font-family:var(--display);font-size:20px">${d.title}</h3>
+      <div class="hs">${PHOTO[k]()}${d.items.map((s,i)=>`<button class="spot" data-i="${i}" type="button" aria-label="檢查這裡" style="left:${s.x/d.w*100}%;top:${s.y/d.h*100}%;width:${s.r*2/d.w*100}%;aspect-ratio:1"></button>`).join("")}</div>
+      <p class="hsmsg" id="hsmsg">用手指點點看可疑的地方</p><ul class="hsl" id="hsl"></ul><button class="pbtn" id="hsdone" type="button" hidden>完成</button></div>`);
+    el.querySelectorAll(".spot").forEach(b=>b.onclick=()=>{
+      const s=d.items[+b.dataset.i];const msg=el.querySelector("#hsmsg");
+      if(!s.ok){msg.textContent=s.d;b.classList.remove("shake");void b.offsetWidth;b.classList.add("shake");return}
+      if(b.classList.contains("found"))return;
+      found.push(s);b.classList.add("found");b.innerHTML=`<span class="num">${found.length}</span>`;sfx("good");
+      el.querySelector("#hsl").insertAdjacentHTML("beforeend",`<li><b>${found.length}. ${s.l}</b>　${s.d}</li>`);
+      el.querySelector("#prog").textContent=`${found.length} / ${d.need}`;msg.textContent=found.length<d.need?"還有其他線索喔":"全部找到了！";
+      if(found.length>=d.need){const bt=el.querySelector("#hsdone");bt.hidden=false;bt.onclick=()=>{closeOv(el);res()}}
+    });
+  });
+  S.inspect=null;if(inChat(chat))rChat(chat);
+}
+function sceneOpen(key){
+  const el=overlay(`<div class="scene"><div class="sc-art">${SCENE[key]()}</div><div class="sc-box"><span class="sc-name"></span><p class="sc-text"></p><div class="sc-ch"></div><span class="sc-tap">點一下繼續 ▼</span></div></div>`,"full");
+  const box=el.querySelector(".sc-box"),nm=el.querySelector(".sc-name"),tx=el.querySelector(".sc-text"),chs=el.querySelector(".sc-ch"),tap=el.querySelector(".sc-tap");
+  document.getElementById("sbar").classList.add("dark");
+  return{
+    line(who,text){return new Promise(r=>{nm.hidden=!who;nm.textContent=who||"";tx.textContent=text;chs.innerHTML="";tap.hidden=false;sfx("pop");
+      const h=()=>{box.removeEventListener("click",h);r()};setTimeout(()=>box.addEventListener("click",h),300)})},
+    choose(opts,sec){return new Promise(r=>{
+      tap.hidden=true;let left=sec,iv=null,fin=false;
+      chs.innerHTML=(sec?`<div class="ring"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="rb"/><circle cx="22" cy="22" r="19" class="rf" id="rf"/></svg><b id="rn">${sec}</b></div>`:"")+opts.map((o,i)=>`<button class="rep ${o.bad?"":""}" data-i="${i}" type="button">${o.t}</button>`).join("");
+      const done=v=>{if(fin)return false;fin=true;if(iv)clearInterval(iv);r(v);return true};
+      chs.querySelectorAll(".rep").forEach(b=>b.onclick=e=>{e.stopPropagation();const o={...opts[+b.dataset.i],i:+b.dataset.i};if(done(o))eff(o.eff)});
+      if(sec){const rf=chs.querySelector("#rf"),rn=chs.querySelector("#rn");
+        iv=setInterval(()=>{left--;rn.textContent=left;rf.style.strokeDashoffset=119.4*(1-left/sec);sfx("tick");if(left<=0)done(null)},1000)}
+    })},
+    close(){closeOv(el);document.getElementById("sbar").classList.remove("dark")}
+  };
+}
+
+/* ================= 動態 ================= */
+const CAP=[
+  {t:"夏日限定西瓜冰口味",trap:1,d:"水果口味是用來降低戒心、讓人以為跟飲料一樣無害。"},{t:"，"},
+  {t:"一口就超 chill",trap:1,d:"淡化尼古丁的成癮性，好像吸一口沒關係。"},{t:"，"},
+  {t:"只是水蒸氣不傷身",trap:1,d:"錯誤說法。電子煙氣霧含尼古丁和其他化學物質。"},{t:"！ "},
+  {t:"#放學後",trap:0,d:"這只是一般的標籤。"},{t:" "},
+  {t:"#大家都在用",trap:1,d:"從眾話術。國中生使用率約 2%，不用的人才是多數。"},{t:" "},
+  {t:"#夏天",trap:0,d:"這只是一般的標籤。"},{t:" "},
+  {t:"#學生價",trap:1,d:"把學生當成目標客群，但電子煙在台灣全面禁止。"}
+];
+const F={on:false,found:new Set(),wrong:new Set(),msg:"",phase:0,act:-1};
+function rFeed(){
+  S.feedNew=false;
+  if(!F.on){V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">動態</span></div><p class="empty">目前沒有新動態</p></div>`;return}
+  const need=CAP.filter(c=>c.trap).length;
+  V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">動態</span></div>
+   <div class="scroll" id="fs"><article>
+    <div class="post-h"><span class="av">${avatar("wei")}</span><div><b>chill_wei 威威</b><span>贊助・12 分鐘前</span></div></div>
+    <div class="post-img">${feedImg()}</div><div class="post-a">2.3 萬個讚・318 則留言</div>
+    <p class="cap"><b>chill_wei</b> ${CAP.map((c,i)=>c.trap===undefined?c.t:`<button class="tok ${F.found.has(i)?"hit":F.wrong.has(i)?"ok":""}" data-k="${i}" type="button">${c.t}</button>`).join("")}</p>
+   </article>
+   ${F.phase===0?`<div class="task"><b>任務：這是一則電子煙廣告。點出貼文裡的 ${need} 個行銷陷阱　<span class="prog">${F.found.size} / ${need}</span></b><span>${F.msg||"點文字或標籤試試看"}</span></div>`:""}
+   ${F.phase>=1?`<div class="cmts"><div class="cm"><span class="av sm">${avatar("qing")}</span><p><b>小晴</b>　真的只是水蒸氣嗎？？</p></div><div class="cm"><span class="av sm">${avatar("yu")}</span><p><b>宇恩</b>　我哥說那個很香欸</p></div>
+     ${F.phase===1?`<div class="task"><b>你要怎麼處理這則貼文？</b><div class="acts"><button class="rep" data-a="0" type="button">按讚，分享給班上同學</button><button class="rep" data-a="1" type="button">檢舉這則廣告</button><button class="rep" data-a="2" type="button">先去搜尋查證</button></div></div>`:`<div class="task">${["你把廣告轉給了更多同學，這正是業者想要的。","已檢舉。電子煙廣告在台灣是違法的。","好習慣！看到健康資訊，先查證再相信。"][F.act]}</div>`}</div>`:""}
+   </div></div>`;
+  V.querySelectorAll(".tok").forEach(b=>b.onclick=()=>{
+    if(F.phase>0)return;const i=+b.dataset.k,c=CAP[i];
+    if(c.trap){if(!F.found.has(i)){F.found.add(i);sfx("good")}F.msg=`抓到了！${c.d}`}else{F.wrong.add(i);F.msg=c.d;sfx("tick")}
+    const st=document.getElementById("fs").scrollTop;rFeed();document.getElementById("fs").scrollTop=st;
+    if(F.found.size===need)fire("feedTraps");
+  });
+  V.querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>{F.act=+b.dataset.a;F.phase=2;const st=document.getElementById("fs").scrollTop;rFeed();document.getElementById("fs").scrollTop=st;fire("feedAct",F.act)});
+}
+
+/* ================= 搜尋 ================= */
+const RES=[
+  {dom:"vape-good-shop.example",t:"【必看】電子煙只是香香的水蒸氣，比奶茶還健康！",p:"專家說超安全，現在下單學生 85 折，超商取貨不露名…",ok:0,
+   why:"這是賣電子煙的網站，他們有賣東西的利益；而且「專家說」卻沒寫是哪位專家、有什麼證據。"},
+  {dom:"閒聊論壇・青春板",t:"網友分享：我用了三年都沒事啦",p:"我朋友也都在用，根本沒差，大人太緊張了…",ok:0,
+   why:"個人經驗不等於科學證據。尼古丁成癮、對大腦的影響，不一定馬上看得出來。"},
+  {dom:"hpa.gov.tw・衛生福利部國民健康署",t:"電子煙與加熱菸外觀辨識方式及說明",p:"電子煙是電池供電裝置，透過霧化器將煙油加熱汽化，產生「蒸氣」供使用者吸入…",ok:1,
+   why:"官方資料，有明確出處。重點：電子煙把含尼古丁、丙二醇、香料的煙油加熱霧化；雖然宣稱不燃燒、不含焦油，事實上仍可能產生少量一氧化碳及其他有害物質。"}
+];
+const SR={on:false,typed:"",tried:new Set(),done:false,last:-1};
+function rSearch(){
+  if(!SR.on){V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">搜尋</span></div><div class="sq">搜尋…</div></div>`;return}
+  const Q="電子煙 只是水蒸氣嗎";
+  V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">搜尋</span></div>
+   <div class="sq"><span id="sqt">${SR.typed}</span><span class="caret"></span></div><div class="scroll" id="sres"></div></div>`;
+  const draw=()=>{const box=document.getElementById("sres");if(!box)return;
+    box.innerHTML=`<div class="task" style="margin-top:0"><b>任務：哪一個搜尋結果最值得相信？</b></div>`+RES.map((r,i)=>`<button class="res ${SR.tried.has(i)?(r.ok?"good":"bad"):""}" data-r="${i}" type="button"><span class="dom">${r.dom}</span><h4>${r.t}</h4><p>${r.p}</p></button>`).join("")+
+      (SR.last>=0?`<div class="sfb ${RES[SR.last].ok?"good":"bad"}"><b>${RES[SR.last].ok?"選得好！":"再想想"}</b><span>${RES[SR.last].why}</span>${RES[SR.last].ok&&!SR.done?`<button class="pbtn" id="sdone" type="button">完成查證</button>`:""}</div>`:"");
+    box.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const i=+b.dataset.r;SR.tried.add(i);SR.last=i;sfx(RES[i].ok?"good":"tick");draw();box.scrollTop=box.scrollHeight});
+    const d=document.getElementById("sdone");if(d)d.onclick=()=>{SR.done=true;draw();fire("searchDone")};
+  };
+  if(SR.typed.length<Q.length){let i=SR.typed.length;const t=setInterval(()=>{if(S.view!=="search"){clearInterval(t);return}SR.typed=Q.slice(0,++i);const el=document.getElementById("sqt");if(el)el.textContent=SR.typed;if(i>=Q.length){clearInterval(t);draw()}},90)}else draw();
+}
+
+/* ================= 手冊 ================= */
+function rBook(){
+  V.innerHTML=`<div class="col"><div class="apph"><button class="back" data-go="home" type="button" aria-label="回主畫面">‹</button><span class="tt">知識手冊　${S.cards.size} / 12</span></div>
+   <div class="scroll"><div class="bgrid">${CARDS.map((c,i)=>`<button class="bk ${S.cards.has(c.id)?"":"lock"}" data-c="${i}" type="button"><small>知識卡 ${String(i+1).padStart(2,"0")}</small><b>${S.cards.has(c.id)?c.t:"尚未收集"}</b></button>`).join("")}</div></div></div>`;
+  V.querySelectorAll("[data-c]").forEach(b=>b.onclick=()=>{const c=CARDS[+b.dataset.c];if(!S.cards.has(c.id))return;const el=overlay(cardHTML(c,false));el.querySelector(".pbtn").onclick=()=>closeOv(el)});
+}
+
+/* ================= 劇本 ================= */
+async function main(){
+  // ---------- 第 1 天 ----------
+  setTime("週一","21:30");go("home");
+  await dayCard("DAY 1・週一晚上","分房表出爐","下週就是兩天一夜的戶外教育。");
+  await say("class","qing","戶外教育的分房表出來了！");
+  await say("class","qing",`我們 305 房：${N()}、阿哲、宇恩`);
+  await need("chat:class","點上方的通知，打開班級群組");
+  await say("class","yu","讚！晚上一起玩桌遊");
+  await say("class","zhe","我會帶「好東西」嘿嘿");
+  let r=await reply("class",[{t:"什麼好東西？"},{t:"我帶 UNO！"},{t:"期待～"}]);
+  await say("class","qing",r.i===0?"阿哲又在搞神秘":"好耶！");
+  await say("zhe","zhe","欸 私訊你一下");
+  await say("zhe","zhe","",{photo:"pen"});
+  await need("chat:zhe","阿哲私訊你了，點通知打開");
+  await say("zhe","zhe","你猜這是什麼？");
+  r=await reply("zhe",[{t:"螢光筆？"},{t:"這是…電子煙嗎？"},{t:"看不出來欸"}]);LOG.penGuess=["螢光筆","電子煙","看不出來"][r.i];
+  await say("zhe","zhe",r.i===1?"哇 你很懂喔":"哈哈 你點開照片看清楚");
+  await sys("zhe","點一下照片放大，找出 3 個線索");
+  await inspect("pen","zhe");
+  await say("zhe","zhe","對啦 是電子煙 我哥給我的");
+  await say("zhe","zhe","葡萄口味 超香 跟糖果一樣");
+  await unlock("disguise");
+  LOG.thought=(await think("看到這裡，你心裡想…",[
+    {t:"香香的，應該跟吃糖差不多吧？",fb:"香味是加進去的香料，裡面一樣有尼古丁。尼古丁很容易讓人上癮，青少年的大腦更敏感。"},
+    {t:"長得再可愛，裡面也是尼古丁吧…",fb:"沒錯！外表會騙人，成分不會。"},
+    {t:"阿哲的哥哥怎麼會有這個？",fb:"好問題。電子煙在台灣全面禁止，最常是熟人「免費給的」。"}])).t;
+  await unlock("nicotine");
+  await say("zhe","zhe","戶外教育晚上帶去，大家一起玩！");
+  r=await reply("zhe",[{t:"帶那個會被抓吧，不要啦"},{t:"好啊，我也想看看",eff:{health:-5}},{t:"嗯…再說啦"}]);LOG.zheInvite=["拒絕","好啊想看看","再說"][r.i];
+  await say("zhe","zhe",["吼 你很乖欸","讚啦","好啦好啦"][r.i]);
+  await say("zhe","zhe","先睡了 掰");
+  await wait(800);
+
+  // ---------- 第 2 天 ----------
+  go("home");setTime("週二","12:20");
+  await dayCard("DAY 2・週二午休","滑一下手機","午餐吃完，大家都在滑動態。");
+  F.on=true;S.feedNew=true;rHome();
+  banner({title:"動態",text:"chill_wei 威威 發布了新貼文",go:["feed"],icon:avatar("wei")});
+  await need("feed","點通知打開動態");
+  await waitFor("feedTraps");
+  await unlock("marketing");
+  F.phase=1;if(S.view==="feed")rFeed();
+  const act=await waitFor("feedAct");LOG.feedAct=["按讚分享","檢舉","去查證"][act];
+  eff(act===0?{health:-5}:{health:5});
+  await wait(1200);
+  SR.on=true;
+  banner({title:"搜尋",text:"查查看：電子煙真的只是水蒸氣嗎？",go:["search"],icon:`<svg viewBox="0 0 36 36"><rect width="36" height="36" fill="#3E7CB1"/><g transform="translate(2 2)">${ICON.search.replace('<svg viewBox="0 0 32 32">',"").replace("</svg>","")}</g></svg>`});
+  await need("search","點通知去搜尋查證");
+  await waitFor("searchDone");
+  await unlock("source");await unlock("vapor");
+  await wait(600);
+  await say("class","lin","各位同學好～下週健康課要考「電子煙和加熱菸」");
+  await say("class","lin","老師先在群組出 4 題，大家練習一下 😊");
+  await need("chat:class","林老師在班級群組出題了");
+  const QZ=[
+    {q:"第 1 題：裝的是液態「煙油」，用霧化器加熱成氣霧。這是？",a:0,e:"電子煙！霧化器的線圈通電後，把煙油加熱汽化。"},
+    {q:"第 2 題：裡面有真的菸草，做成「菸草棒」，加熱到約 350°C。這是？",a:1,e:"加熱菸！不點火燃燒，但吸進去的一樣是菸草成分。"},
+    {q:"第 3 題：含尼古丁會成癮，也有二手菸害。這是？",a:2,e:"兩者都是！還會影響心血管、呼吸系統和青少年的大腦發展。"},
+    {q:"第 4 題：在台灣全面禁止，任何人都不能使用。這是？",a:0,e:"電子煙。加熱菸要通過健康風險評估審查才能賣，沒通過的一樣禁止。違法使用都罰 2,000～10,000 元。"}];
+  let right=0;
+  for(const q of QZ){
+    await say("class","lin",q.q);
+    r=await reply("class",["電子煙","加熱菸","兩者都是"].map(t=>({t})));
+    if(r.i===q.a){right++;await say("class","lin","答對了！"+q.e)}else await say("class","lin","差一點～答案是"+q.e);
+  }
+  LOG.quiz=right;
+  await say("class",right>=3?"qing":"yu",right>=3?`${N()} 好強！`:"我也錯好幾題哈哈，下週一起加油");
+  eff({friend:right>=3?5:2});
+  await unlock("compare");
+  await wait(800);
+
+  // ---------- 第 3 天 ----------
+  go("home");setTime("週三","17:40");
+  await dayCard("DAY 3・週三放學","陌生的私訊","放學路上，手機震了一下。");
+  await say("shop","shop","嗨～你是 707 班的吧？");
+  await say("shop","shop","學生價水果彈團購中 🍇");
+  await need("chat:shop","有陌生帳號私訊你");
+  await say("shop","shop","包裝像文具，超商取貨，爸媽不會發現喔！");
+  await sys("shop","陌生帳號・你們沒有共同好友");
+  const BL={t:"封鎖並檢舉",block:true};
+  r=await reply("shop",[{t:"你怎麼知道我是 707 的？"},{t:"一支多少錢？"},BL]);LOG.shop=r.block?"立刻封鎖":"回覆後才封鎖";
+  if(!r.block){
+    if(r.i===0){await say("shop","shop","你的動態有穿制服、拍到學號啊～");await say("shop","shop","要不要先看看口味？");}
+    else{await say("shop","shop","一支 350，先轉 200 訂金幫你留");await say("shop","shop","介紹同學買，再送你一支！");}
+    r=await reply("shop",[{t:"我再想想…"},{t:"可以貨到付款嗎？"},BL]);
+    if(!r.block){await say("shop","shop","只剩 3 支喔，今天不訂就沒了！");r=await reply("shop",[BL]);}
+  }
+  CH.shop.blocked=true;
+  await sys("shop","你已截圖、封鎖並檢舉這個帳號");
+  if(inChat("shop"))rChat("shop");
+  eff({health:5});
+  await unlock("law");await unlock("protect");
+  await wait(600);
+
+  setTime("週三","20:50");
+  const sc=sceneOpen("cram");
+  await sc.line("","補習班下課，你在門口等公車。隔壁班的凱文學長走了過來。");
+  await sc.line("凱文學長",`欸，${N()}！等一下小考，吃一顆提神啦。`);
+  await sc.line("凱文學長","我每天都靠這個撐。");
+  r=await sc.choose([
+    {t:"「謝了，我不用。我牙齒才剛整理好，不想變紅。」"},
+    {t:"先收下說等一下吃，回家再偷偷丟掉"},
+    {t:"吃一顆試試看，只吃這一次",eff:{health:-20}}]);LOG.cram=["說理由拒絕","收下再丟掉","吃了一顆"][r.i];
+  await sc.line(r.i===0?"凱文學長":"",["「喔，好吧。」學長聳聳肩走了。說出理由的拒絕，對方很難反駁。",
+    "你避開了這次。但學長以為你接受了，下次可能還會再給。清楚說一次「不用」，之後反而省事。",
+    "你的嘴巴開始發麻、臉發熱、心跳變快。檳榔是一級致癌物，提神的感覺不值得拿健康換。"][r.i]);
+  sc.close();
+  await unlock("betel");
+  await wait(500);
+
+  setTime("週三","22:05");go("home");
+  await say("fam","mom","阿公說他嘴巴破一個多月了，還說沒關係");
+  await say("fam","gpa","吃檳榔的人嘴巴破很正常啦 哈哈");
+  await need("chat:fam","家族群組有新訊息");
+  r=await reply("fam",[{t:"阿公，嘴巴破超過兩週沒好要去檢查！"},{t:"喔喔"},{t:"阿公不要再吃了啦！很臭欸"}]);LOG.gpa=["提醒檢查","喔喔","嫌臭"][r.i];
+  if(r.i===2)await say("fam","gpa","哎唷 孫仔嫌阿公臭喔…");
+  await say("fam","mom",`${N()}，你們健康課有教嗎？我找到一張口腔檢查的衛教圖，你幫阿公看看哪些是警訊`);
+  await say("fam","mom","",{photo:"mouth"});
+  await sys("fam","點一下圖片，找出 3 個警訊");
+  await inspect("mouth","fam");
+  r=await reply("fam",[{t:"白斑、紅斑、破洞超過兩週不好，都要給醫生看！",eff:{friend:3}},{t:"阿公，我陪你去看醫生好不好？",eff:{friend:5}}]);
+  await say("fam","gpa","好啦好啦，聽孫仔的，週六去給醫生看");
+  S.helpedGpa=true;
+  await unlock("oral");
+  await wait(800);
+
+  // ---------- 第 4 天 ----------
+  setTime("週四","22:30");go("home");
+  await dayCard("DAY 4・戶外教育","305 號房的晚上","老師剛查完房。阿哲從背包裡拿出了什麼……");
+  let first=true;
+  while(true){
+    const d=sceneOpen("dorm");
+    if(first){
+      await d.line("","房間裡只剩下你們三個。阿哲拿出那支紫色的電子煙。");
+      await d.line("阿哲","葡萄口味的，超香！老師剛查完房，不會被發現啦。");
+      await d.line("宇恩","呃……我是有點怕啦。");
+    }else{
+      await d.line("","時間回到那一晚。阿哲又把它拿了出來。");
+    }
+    await d.line("阿哲",`${N()}，你先來一口！`);
+    const OPTS=[
+      {t:"「不用啦！欸來玩 UNO，輸的明天幫大家拿早餐！」",eff:{friend:10}},
+      {t:"「我不要，謝謝。」",eff:{friend:5}},
+      {t:"「那……一口就好。」"}];
+    let c=await d.choose(OPTS,10);const timedOut=!c;
+    if(!c){
+      await d.line("","你愣住了……阿哲直接把它塞到你手裡：「快啦！」");
+      c=await d.choose(OPTS,0);
+    }
+    if(first)LOG.dorm=(timedOut?"愣住→":"")+["轉移話題","直接拒絕","一口就好"][c.i];
+    if(c.i<2){
+      await d.line("宇恩",c.i===0?"好耶！我也不要那個，UNO 我來發牌！":"我也不要～那我們玩桌遊啦！");
+      await d.line("阿哲","……好啦好啦，收起來。玩就玩，我才不會輸！");
+      await d.line("","那一晚，你們玩到老師又來敲門。拒絕，不一定會失去朋友。");
+      d.close();
+      await unlock("refuse");
+      break;
+    }
+    S.tried=true;eff({health:-40});
+    await d.line("","你吸了一口。甜甜的味道之後，是一陣頭暈和咳嗽。");
+    d.close();
+    await unlock("nicotine");
+    await montage();
+    S.health=Math.max(S.health,60);stats();first=false;
+  }
+  await wait(600);
+
+  // ---------- 第 5 天 ----------
+  setTime("週五","16:10");go("home");
+  await dayCard("DAY 5・週五放學","阿哲的私訊","戶外教育結束了。回家的路上……");
+  await say("zhe","zhe","欸，昨天抱歉啦");
+  await say("zhe","zhe","其實我也不太想用");
+  await need("chat:zhe","阿哲私訊你");
+  await say("zhe","zhe","我哥一直叫我試，還說不用很遜，我怕他生氣");
+  r=await reply("zhe",[{t:"我們一起去找輔導老師聊聊？我陪你",eff:{friend:10}},{t:"你就跟你哥說不要就好啦",eff:{friend:3}},{t:"那你就偷偷丟掉",eff:{friend:3}}]);
+  if(r.i===0){S.helpedZhe=true;await say("zhe","zhe","好…有你陪比較敢");await say("zhe","zhe","下週一午休一起去");}
+  else{await say("zhe","zhe","我試試看啦…可是我怕我哥一直盧");await sys("zhe","提示：遇到家人或學長的壓力，可以找信任的大人一起想辦法");
+    r=await reply("zhe",[{t:"不然我陪你去找輔導老師？",eff:{friend:7}},{t:"加油啦"}]);
+    if(r.i===0){S.helpedZhe=true;await say("zhe","zhe","好！下週一午休一起去");}}
+  await unlock("most");
+  await say("fam","mom","阿公預約好週六的口腔檢查了，說是孫仔叫他去的 😊");
+  await wait(1200);
+  ending();
+}
+
+function montage(){return new Promise(res=>{
+  const el=overlay(`<div class="mont"><h2>如果你吸了那一口……</h2><div id="ml" style="display:grid;gap:10px"></div></div>`,"full");
+  const L=[["一週後","你又想起那個葡萄味，上課一直分心、坐不住"],["阿哲","我哥說一顆煙彈 300，你要不要？"],["零用錢","本週餘額 −600 元"],["身體","爬三樓就喘，晚上睡不好，脾氣變差"],["學務處通知","請家長到校。依菸害防制法，使用電子煙可處 2,000～10,000 元罰鍰"]];
+  let i=0;const ml=el.querySelector("#ml");
+  const step=()=>{if(i<L.length){ml.insertAdjacentHTML("beforeend",`<div class="mn"><small>${L[i][0]}</small><span>${L[i][1]}</span></div>`);sfx(i===L.length-1?"bad":"note");i++;setTimeout(step,1300)}
+    else{ml.insertAdjacentHTML("beforeend",`<div class="tfb"><p>尼古丁會讓人很快上癮。這只是故事，但現實中很多人就是從「一口就好」開始，而且沒有重來鍵。</p><button class="pbtn" type="button">回到那一晚，重新選擇</button></div>`);
+      ml.querySelector(".pbtn").onclick=()=>{closeOv(el);res()}}};
+  setTimeout(step,500);
+})}
+
+function ending(){
+  let t,x;
+  if(!S.tried&&S.helpedZhe){t="清新的一週";x="你守住了自己的第一口，也陪阿哲去找大人幫忙。拒絕，不代表失去朋友。"}
+  else if(S.tried){t="重新選擇";x="你曾經走到「一口就好」，但你回來了。現實中沒有重來鍵，所以要在第一口之前想清楚。"}
+  else{t="拒絕高手";x="每一次誘惑你都拒絕了。下次朋友需要幫忙時，也可以陪他一起找大人。"}
+  setTime("週五","23:59");
+  send("finish",{ending:t,health:S.health,friend:S.friend,cards:S.cards.size,tried:S.tried,helpedZhe:S.helpedZhe,
+    minutes:Math.round((Date.now()-LOG.t0)/6000)/10,penGuess:LOG.penGuess,thought:LOG.thought,zheInvite:LOG.zheInvite,feedAct:LOG.feedAct,
+    searchWrong:[...SR.tried].filter(i=>!RES[i].ok).length,quiz:LOG.quiz,shop:LOG.shop,cram:LOG.cram,gpa:LOG.gpa,dorm:LOG.dorm});
+  const el=overlay(`<div class="box endbox"><span class="lab">結局</span><h2>${t}</h2><p>${x}</p>
+    <div class="estats"><div><b>${S.health}</b>健康</div><div><b>${S.friend}</b>友情</div><div><b>${S.cards.size}/12</b>知識卡</div></div>
+    <p style="font-size:14px;color:var(--ph-muted)">想幫家人戒菸：國健署戒菸專線 <b style="white-space:nowrap">0800-636363</b>（免費）。想戒檳榔，可以到醫院戒檳門診或衛生所詢問。</p>
+    <button class="pbtn" id="eb" type="button">打開知識手冊</button><button class="pbtn ghost" id="er" type="button">再玩一次</button></div>`);
+  el.querySelector("#eb").onclick=()=>{closeOv(el);go("book")};
+  el.querySelector("#er").onclick=()=>location.reload();
+  sfx("ding");
+}
+
+/* ================= 開始 ================= */
+function start(){
+  setTime("","21:30");S.view="start";
+  V.innerHTML=`<div class="start">
+    <div class="st-hero ${imgURL("start")?"has-img":""}"${bgStyle("start")}>
+      <span class="lab">國一健康教育・互動模擬</span>
+      <h2>第一口之前</h2>
+      <div class="st-notes" aria-hidden="true">
+        <div class="st-n"><span class="av">${avatar("zhe")}</span><div><b>阿哲</b><span>欸 給你看一個好東西…</span></div></div>
+        <div class="st-n"><span class="av">${avatar("shop")}</span><div><b>果果小舖</b><span>學生價水果彈團購中 🍇</span></div></div>
+      </div>
+    </div>
+    <div class="st-sheet">
+      <p class="sub">你是 707 班的新生。接下來一週，手機會收到很多訊息，每一個回覆都會改變故事的走向。</p>
+      <div class="srow2">
+        <div><label for="cls">班級</label>${CFG.CLASSES.length?`<select id="cls"><option value="">選擇</option>${CFG.CLASSES.map(c=>`<option>${c}</option>`).join("")}</select>`:`<input id="cls" maxlength="8" placeholder="例如 701" inputmode="numeric" autocomplete="off">`}</div>
+        <div><label for="seat">座號</label><select id="seat"><option value="">選擇</option>${Array.from({length:CFG.MAX_SEAT},(_,i)=>`<option>${i+1}</option>`).join("")}</select></div>
+      </div>
+      <div class="st-field"><label for="nick">遊戲裡的暱稱</label><input id="nick" maxlength="6" placeholder="例如：小安" autocomplete="off"></div>
+      <p class="note" id="snote">${CFG.API_URL?"班級、座號和遊戲結果會傳給老師；暱稱請不要用真實姓名。":"暱稱請不要用真實姓名。"}約 20 分鐘，建議戴耳機。</p>
+      <button class="pbtn" id="go" type="button">開始</button>
+    </div></div>`;
+  document.getElementById("go").onclick=()=>{
+    const clean=x=>String(x||"").trim().replace(/[<>&"'=]/g,"");
+    const cls=clean(document.getElementById("cls").value),seat=clean(document.getElementById("seat").value);
+    if(!cls||!seat){const n=document.getElementById("snote");n.textContent="請先填好班級和座號。";n.style.color="#B23A27";n.style.fontWeight="700";return}
+    S.cls=cls;S.seat=seat;
+    const v=clean(document.getElementById("nick").value);if(v)S.name=v;
+    LOG.t0=Date.now();send("start");
+    try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}
+    main();
+  };
+}
+document.getElementById("sndBtn").onclick=e=>{S.sound=!S.sound;e.target.textContent="音效："+(S.sound?"開":"關")};
+document.getElementById("rstBtn").onclick=()=>location.reload();
+const tov=document.getElementById("tov");
+document.getElementById("tBtn").onclick=()=>{tov.hidden=false;document.getElementById("tClose").focus()};
+document.getElementById("tClose").onclick=()=>{tov.hidden=true};
+tov.addEventListener("click",e=>{if(e.target===tov)tov.hidden=true});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")tov.hidden=true});
+stats();start();
+})();
+</script>
+
+</body>
+</html>
