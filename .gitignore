@@ -18,6 +18,7 @@
 !/first-puff/images/
 /first-puff/images/*
 !/first-puff/images/*.webp
+!/first-puff/images/oral-warning-realistic.png
 
 # Private/local files, source notes and generated test output.
 **/tests/

@@ -17,6 +17,7 @@ window.GAME_CONFIG = {
   // 4. 換成自己的圖片：把圖片上傳到 GitHub 的 images 資料夾，再把檔名填進來。
   //    留空 "" 的地方會用原本的插圖。檔名大小寫要一模一樣。
   IMAGES: {
+    mouth: "images/oral-warning-realistic.png", // 擬真口腔衛教示意圖
     pen: "images/device-clues.webp",
     street: "images/evening-street.webp",
     start: "images/classroom.webp",   // 開始畫面上半部的背景　　　（建議直式，約 1080×900）

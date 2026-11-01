@@ -13,9 +13,11 @@
 - `index.html`：遊戲入口。
 - `game.html`：畫面、劇情、知識卡和互動程式。
 - `config.js`：班級、座號上限、圖片路徑及選用的後台網址。
-- `images/`：從原始資料夾整理的八張 WebP 圖片。
+- `images/`：從原始資料夾整理的八張 WebP 圖片，以及 AI 生成的擬真口腔衛教圖 `oral-warning-realistic.png`。
 
 圖片與程式均使用相對路徑，可同時支援本機開啟及 GitHub Pages 子目錄。
+
+口腔插圖由內建 imagegen 繪圖工具製作，屬於非真實病例的教學示意圖。三個點擊區已依成品中的白斑、紅斑與潰瘍位置重設。潰瘍持續時間由故事情境提供，不能從圖片判斷；衛教文字參考[臺北市政府衛生局〈口腔癌及預防〉](https://health.gov.taipei/cp.aspx?n=7622a216fcc93d8a&s=E4F2240A73ED4B1B)。
 
 ## 資料記錄
 

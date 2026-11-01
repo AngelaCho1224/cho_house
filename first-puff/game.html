@@ -397,7 +397,7 @@ a.sbtn{color:var(--ink)}
   </section>
 </div>
 
-<script src="config.js"></script>
+<script src="config.js?v=oral-realistic-1"></script>
 <script>
 (function(){
 const CFG=Object.assign({API_URL:"",CLASSES:[],MAX_SEAT:40},window.GAME_CONFIG||{});
@@ -485,14 +485,7 @@ const PHOTO={
     <rect x="150" y="107" width="36" height="20" rx="5" fill="#5B3B7A"/><rect x="153" y="115" width="30" height="9" rx="2" fill="#B07BE0"/>
     <circle cx="211" cy="117" r="3" fill="#7CF0FF"/>
     <rect x="236" y="103" width="9" height="28" rx="4" fill="#E06FA0"/><rect x="242" y="112" width="4" height="10" rx="1.5" fill="#333"/></svg>`,
-  mouth:()=>`<svg viewBox="0 0 300 240"><rect width="300" height="240" fill="#FBE9E0"/>
-    <ellipse cx="150" cy="122" rx="138" ry="104" fill="#E58E8E"/><ellipse cx="150" cy="122" rx="120" ry="88" fill="#7E2B36"/>
-    <path d="M32 122 Q42 58 92 46 L92 198 Q42 186 32 122Z" fill="#D46A73"/><path d="M268 122 Q258 58 208 46 L208 198 Q258 186 268 122Z" fill="#D46A73"/>
-    <g fill="#fff">${[0,1,2,3,4,5,6].map(i=>`<rect x="${88+i*18}" y="40" width="16" height="24" rx="5"/>`).join("")}${[0,1,2,3,4,5,6].map(i=>`<rect x="${88+i*18}" y="182" width="16" height="22" rx="5"/>`).join("")}</g>
-    <ellipse cx="150" cy="150" rx="66" ry="38" fill="#EE8E96"/><path d="M150 122 V170" stroke="#D8707B" stroke-width="3" stroke-linecap="round"/>
-    <path d="M56 104 q12 -12 24 -2 q9 11 -2 23 q-15 7 -22 -5z" fill="#F4F0E6"/>
-    <path d="M226 106 q14 -6 22 4 q4 14 -10 18 q-16 2 -14 -10z" fill="#B3112A"/>
-    <ellipse cx="192" cy="152" rx="11" ry="8" fill="#F2E8B8" stroke="#C0283A" stroke-width="4"/></svg>`
+  mouth:()=>`<img src="${imgURL("mouth")||"images/oral-warning-realistic.png"}" width="1536" height="1024" alt="AI 擬真口腔示意圖：畫面左側內頰有白色斑塊、右側內頰有紅色斑塊，舌頭右側有一處潰瘍。">`
 };
 const SPOTS={
   pen:{w:300,h:220,need:3,title:"找出 3 個線索，看看它到底是不是螢光筆",items:[
@@ -501,12 +494,12 @@ const SPOTS={
     {x:242,y:117,r:20,ok:1,l:"充電孔",d:"螢光筆不需要充電。電子煙要用電池加熱煙油。"},
     {x:110,y:117,r:16,ok:0,d:"這只是貼紙裝飾。"},
     {x:236,y:29,r:26,ok:0,d:"這才是真的螢光筆，沒有問題。"}]},
-  mouth:{w:300,h:240,need:3,title:"找出 3 個口腔癌的警訊",items:[
-    {x:68,y:112,r:24,ok:1,l:"白色斑塊（白斑）",d:"擦不掉的白色斑塊是癌前病變的警訊。"},
-    {x:237,y:117,r:22,ok:1,l:"紅色斑塊（紅斑）",d:"不明的紅色斑塊也要盡快檢查。"},
-    {x:192,y:152,r:20,ok:1,l:"一直不會好的破洞",d:"嘴巴破超過 2 週沒好，要去看耳鼻喉科或牙科。"},
-    {x:150,y:52,r:20,ok:0,d:"這是正常的牙齒。"},
-    {x:125,y:150,r:20,ok:0,d:"這是正常的舌頭。"}]}
+  mouth:{w:1536,h:1024,need:3,title:"找出 3 個需要就醫評估的警訊",items:[
+    {x:255,y:450,r:125,ok:1,l:"白色斑塊（白斑）",d:"不明或擦不掉的白色斑塊，需要請醫師檢查。"},
+    {x:1340,y:450,r:125,ok:1,l:"紅色斑塊（紅斑）",d:"黏膜出現不明的紅色斑塊，應請醫師檢查。"},
+    {x:1000,y:650,r:115,ok:1,l:"超過兩週沒好的潰瘍",d:"情境中阿公的嘴破已超過兩週沒好，應看牙科或耳鼻喉科。"},
+    {x:770,y:100,r:115,ok:0,d:"這是正常的牙齒，再找找口腔黏膜和舌頭。"},
+    {x:650,y:620,r:115,ok:0,d:"這一區是正常的舌頭，再找找顏色或表面不同的地方。"}]}
 };
 // Coordinates refer to the supplied 1456 by 819 illustration.
 if(imgURL("pen")) SPOTS.pen={w:1456,h:819,need:3,title:"找出紫色物品上的 3 個線索",items:[
@@ -736,7 +729,7 @@ function unlock(id){return new Promise(r=>{
   const c=CARDS.find(x=>x.id===id);const el=overlay(cardHTML(c,true));
   el.querySelector(".pbtn").onclick=()=>{closeOv(el);badges();r()};
 })}
-function viewPhoto(k){const el=overlay(`<div class="box"><div class="hs">${PHOTO[k]()}</div><button class="pbtn" type="button">關閉</button></div>`);el.querySelector(".pbtn").onclick=()=>closeOv(el)}
+function viewPhoto(k){const el=overlay(`<div class="box"><div class="hs">${PHOTO[k]()}</div>${k==="mouth"?'<p class="lab">AI 擬真示意圖，非真實病例。</p>':""}<button class="pbtn" type="button">關閉</button></div>`);el.querySelector(".pbtn").onclick=()=>closeOv(el)}
 async function inspect(k,chat){
   S.inspect=k;if(inChat(chat))rChat(chat);
   await waitFor("inspect:"+k);
@@ -744,6 +737,7 @@ async function inspect(k,chat){
   await new Promise(res=>{
     const el=overlay(`<div class="box"><span class="lab">放大檢查　<span class="prog" id="prog">0 / ${d.need}</span></span><h3 style="font-family:var(--display);font-size:20px">${d.title}</h3>
       <div class="hs">${PHOTO[k]()}${d.items.map((s,i)=>`<button class="spot" data-i="${i}" type="button" aria-label="檢查這裡" style="left:${s.x/d.w*100}%;top:${s.y/d.h*100}%;width:${s.r*2/d.w*100}%;aspect-ratio:1"></button>`).join("")}</div>
+      ${k==="mouth"?'<p class="lab">AI 擬真示意圖，非真實病例；警訊需由醫師評估。</p>':""}
       <p class="hsmsg" id="hsmsg">用手指點點看可疑的地方</p><ul class="hsl" id="hsl"></ul><button class="pbtn" id="hsdone" type="button" hidden>完成</button></div>`);
     el.querySelectorAll(".spot").forEach(b=>b.onclick=()=>{
       const s=d.items[+b.dataset.i];const msg=el.querySelector("#hsmsg");
