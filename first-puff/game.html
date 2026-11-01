@@ -191,7 +191,7 @@ a.sbtn{color:var(--ink)}
 .kc-body ul{margin:0;padding-left:1.2em;display:grid;gap:4px}
 .kc-foot{padding:0 18px 18px}
 
-.hs{position:relative;border-radius:14px;overflow:hidden;touch-action:manipulation}
+.hs{position:relative;flex-shrink:0;border-radius:14px;overflow:hidden;touch-action:manipulation}
 .hs svg,.hs img{display:block;width:100%;height:auto}
 .photo>img{display:block;width:100%;height:auto}
 .home .clock,.home .date{color:#fff;text-shadow:0 2px 8px #102f49}
@@ -512,7 +512,7 @@ const SPOTS={
 if(imgURL("pen")) SPOTS.pen={w:1456,h:819,need:3,title:"找出紫色物品上的 3 個線索",items:[
   {x:1182,y:187,r:85,ok:1,l:"吸嘴",d:"上方黑色的部分是吸嘴。"},
   {x:1071,y:315,r:65,ok:1,l:"煙油窗口",d:"小窗口裡看得到煙油；外表像文具不代表安全。"},
-  {x:971,y:686,r:65,ok:1,l:"充電孔",d:"底部有充電孔，這個裝置需要電池。"},
+  {x:770,y:735,r:110,ok:1,l:"充電孔",d:"底部有充電孔，這個裝置需要電池。"},
   {x:449,y:398,r:100,ok:0,d:"這是左邊的螢光筆，再找找右邊紫色物品的線索。"},
   {x:170,y:580,r:65,ok:0,d:"這是筆記本，請找紫色物品上的線索。"}
 ]};
