@@ -9,6 +9,24 @@
 !/示範2_五柳先生傳課文填字/
 !/示範3_圓周長打怪RPG/
 !/first-puff/
+!/七年三班的那句話/
+
+# Classroom story game: publish runtime and the character-consistent illustrations.
+/七年三班的那句話/*
+!/七年三班的那句話/index.html
+!/七年三班的那句話/game.css
+!/七年三班的那句話/tablet.css
+!/七年三班的那句話/story-data.js
+!/七年三班的那句話/story-engine.js
+!/七年三班的那句話/img/
+/七年三班的那句話/img/*
+!/七年三班的那句話/img/branches/
+/七年三班的那句話/img/branches/*
+!/七年三班的那句話/img/branches/characters-v2.png
+!/七年三班的那句話/img/branches/intro-atlas-v2.png
+!/七年三班的那句話/img/branches/nick-atlas-v2.png
+!/七年三班的那句話/img/branches/gossip-atlas-v2.png
+!/七年三班的那句話/img/branches/attack-atlas-v2.png
 
 # Publish only the tobacco/betel game's runtime and selected illustrations.
 /first-puff/*

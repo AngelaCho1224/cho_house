@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>七年三班的那句話</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* 版面想法：故事模式是一張大插圖加下方對話框，點一下前進；手機模式是一支置中的手機。上方固定兩條量表。黑板綠＋螢光筆黃。 */
+:root{
+  --bg:#e9efeb; --paper:#fbfcfa; --ink:#1d2a28; --muted:#5a6966; --line:#cfd9d4;
+  --accent:#0f6b5c; --accent-ink:#ffffff; --me:#ffe27a; --me-ink:#2b2400;
+  --warn:#c2412c; --good:#2a7a4a; --mid:#a06a00; --stage:#16211f;
+  --display:"LXGW WenKai TC","Noto Sans TC","PingFang TC","Microsoft JhengHei",serif;
+  --body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#121d1b; --paper:#1b2a27; --ink:#e7efe9; --muted:#9cada8; --line:#2f433e;
+    --accent:#6fd0b8; --accent-ink:#06211c; --me:#6b5a12; --me-ink:#fff6cf;
+    --warn:#ff8a73; --good:#7fd69c; --mid:#f0c060; --stage:#0b1312; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121d1b; --paper:#1b2a27; --ink:#e7efe9; --muted:#9cada8; --line:#2f433e;
+  --accent:#6fd0b8; --accent-ink:#06211c; --me:#6b5a12; --me-ink:#fff6cf;
+  --warn:#ff8a73; --good:#7fd69c; --mid:#f0c060; --stage:#0b1312; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.7}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.3;margin:0}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+img{max-width:100%}
+[hidden]{display:none!important}
+.wrap{max-width:900px;margin:0 auto;padding:28px 16px 48px}
+.eyebrow{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:700}
+.btn{border:0;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-weight:700;padding:10px 18px}
+.btn.big{font-size:18px;padding:12px 28px}
+.btn.ghost{background:transparent;color:var(--accent);border:1.5px solid var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.tag{display:inline-block;font-size:13px;font-weight:700;border-radius:999px;padding:2px 10px;background:var(--me);color:var(--me-ink)}
+
+/* 開始畫面 */
+.title h1{font-size:clamp(32px,7vw,52px);margin:4px 0 10px}
+.lede{max-width:34em;color:var(--muted);margin:0 0 20px}
+.strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:24px 0}
+.strip img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;display:block}
+.notes{margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.notes section{border-top:3px solid var(--accent);padding-top:12px}
+.notes h3{font-size:19px;margin-bottom:6px}
+.notes ul{margin:0;padding-left:1.2em;font-size:15px}
+
+/* 個人資料 */
+.profile{max-width:420px;margin:0 auto;padding:40px 16px}
+.idcard{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.idcard h2{font-size:26px}
+.idcard label{font-size:14px;color:var(--muted);display:block;margin-bottom:4px}
+.idcard input[type=text]{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;background:var(--bg)}
+.swatches{display:flex;gap:10px}
+.sw{width:38px;height:38px;border-radius:50%;border:3px solid transparent}
+.sw[aria-pressed="true"]{border-color:var(--ink)}
+
+/* 選同學 */
+.select{max-width:560px;margin:0 auto;padding:28px 16px 40px;display:flex;flex-direction:column;gap:14px}
+.select h2{font-size:26px}
+.pick{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.pick img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.pickbody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px}
+.pickbody .period{font-family:var(--display);font-size:14px;color:var(--muted)}
+.pickbody h3{font-size:26px}
+.pickbody dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:15px}
+.pickbody dt{color:var(--muted);white-space:nowrap}
+.pickbody dd{margin:0}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.round{width:46px;height:46px;border-radius:50%;border:1.5px solid var(--line);background:var(--paper);font-size:20px}
+.dots{display:flex;gap:6px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--accent)}
+.done{font-size:14px;font-weight:700}
+.good{color:var(--good)} .mid{color:var(--mid)} .bad{color:var(--warn)}
+
+/* 遊玩畫面 */
+.play{height:100%;display:flex;flex-direction:column;max-width:960px;margin:0 auto}
+.hud{padding:8px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);background:var(--paper)}
+.back{border:0;background:transparent;color:var(--accent);font-weight:700;padding:4px}
+.hudtitle{font-family:var(--display);font-weight:700;white-space:nowrap}
+.meters{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-width:0}
+.meter{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.meter b{color:var(--ink);font-variant-numeric:tabular-nums}
+.bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:2px}
+.bar i{display:block;height:100%;background:var(--good);transition:width .4s}
+.bar i.mid{background:var(--mid)} .bar i.bad{background:var(--warn)}
+.alert{flex:none;width:28px;height:28px;border-radius:50%;border:2px solid var(--line);color:var(--line);display:grid;place-items:center;font-weight:700}
+.alert.on{border-color:var(--warn);color:var(--warn)}
+@media (max-width:520px){.hudtitle{display:none}}
+
+/* 故事模式 */
+.scene{flex:1;min-height:0;display:flex;flex-direction:column;background:var(--stage)}
+.sceneimg{flex:1;min-height:120px;display:grid;place-items:center;overflow:hidden}
+.sceneimg img{width:100%;height:100%;object-fit:contain;display:block}
+.board{font-family:var(--display);color:#dfeee8;font-size:clamp(22px,4vw,34px);padding:24px;text-align:center}
+.dlg{background:var(--paper);border-top:3px solid var(--accent);padding:14px 18px 16px;display:flex;flex-direction:column;gap:10px}
+.speaker{font-family:var(--display);font-weight:700;color:var(--accent);min-height:1.2em}
+.speaker.me{color:var(--mid)}
+.line{font-size:18px;min-height:3.4em}
+.line.narr{font-family:var(--display);color:var(--muted)}
+.ctl{display:flex;flex-direction:column;gap:8px}
+.next{align-self:flex-end}
+
+/* 手機模式 */
+.phonewrap{flex:1;min-height:0;display:flex;justify-content:center;background:var(--stage);padding:12px}
+.phone{width:100%;max-width:440px;display:flex;flex-direction:column;background:var(--paper);border-radius:26px;border:6px solid #2b3a37;overflow:hidden}
+.appbar{padding:10px 16px;border-bottom:1px solid var(--line);text-align:center}
+.appbar b{display:block;font-size:16px}
+.appbar span{font-size:12px;color:var(--muted)}
+.chat{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sys{align-self:center;max-width:92%;font-size:13.5px;color:var(--muted);text-align:center}
+.msg{display:flex;gap:8px;max-width:86%}
+.msg.me{align-self:flex-end;flex-direction:row-reverse}
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:14px;color:#fff}
+.who{font-size:12px;color:var(--muted)}
+.bub{background:var(--bg);border-radius:4px 14px 14px 14px;padding:7px 12px;overflow-wrap:anywhere}
+.msg.me .bub{background:var(--me);color:var(--me-ink);border-radius:14px 4px 14px 14px}
+.stk{width:150px;border-radius:10px;display:block;background:#fff}
+.dock{border-top:1px solid var(--line);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+
+/* 選項 */
+.prompt{font-size:13.5px;color:var(--muted);display:flex;justify-content:space-between;gap:8px}
+.prompt b{color:var(--warn)}
+.timer{height:5px;background:var(--line);border-radius:99px;overflow:hidden}
+.timer i{display:block;height:100%;width:100%;background:var(--warn)}
+.opt{text-align:left;background:var(--paper);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px}
+.opt:hover{border-color:var(--accent)}
+
+/* 手冊 */
+.book{max-width:640px;margin:0 auto;padding:24px 16px 48px;display:flex;flex-direction:column;gap:14px}
+.book h2{font-size:28px}
+.panel{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--paper)}
+.panel h3{font-size:19px;margin-bottom:6px}
+.panel ul{margin:4px 0 0;padding-left:1.2em}
+.panel li{margin-bottom:6px}
+.verdict{font-family:var(--display);font-size:26px;font-weight:700}
+.d{font-weight:700}
+.d.up{color:var(--good)} .d.down{color:var(--warn)} .d.flat{color:var(--muted)}
+.say{background:var(--me);color:var(--me-ink);border-radius:8px;padding:2px 8px;display:inline-block;margin:3px 0}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+<meta name="theme-color" content="#efe6f5">
+<meta name="description" content="在教室與班級群組中，練習不跟風、說出界線、找人幫忙。三個校園故事，試試你的一句話會帶來什麼改變。">
+<link rel="stylesheet" href="game.css">
+<link rel="stylesheet" href="tablet.css">
+</head>
+<body>
+<header class="sitebar"><a class="brand" href="./index.html" aria-label="七年三班首頁"><span class="brand-mark">7³</span><span>七年三班<span class="brand-sub">一句話，會改變什麼？</span></span></a><nav aria-label="遊戲工具"><button type="button" class="tool" id="btnSettings">遊戲設定</button><button type="button" class="tool" id="btnGuide">教師指南</button></nav></header>
+<dialog id="guideDialog" class="modal"><div class="modal-head"><h2>陪學生練習，把話說清楚</h2><button type="button" class="tool" data-close="guideDialog">關閉</button></div><p>三個故事，分別練習：不取綽號、不傳閒話、用具體的話表達困擾。</p><ol><li>先選一個故事，個人或兩人一組體驗；每條路線做 6 次選擇。</li><li>閱讀結局手冊，回看路線。可從某次選擇改選，觀察後續事件如何改變。</li><li>兩人練習說出手冊中的句子，再討論可以找誰幫忙。</li></ol><p class="soft-note">量表呈現故事中的變化，並非真實人物的心理評估。沉默有時是在保護自己；學生不必獨自制止衝突，可以先離開並向可信任的大人求助。</p><p>角色與情節皆為虛構。班上若正有類似事件，請先與輔導老師討論使用方式。</p><details><summary>角色外觀設定與平板使用方式</summary><img class="character-sheet" src="img/branches/characters-v2.png" alt="固定角色外觀，從左到右為阿哲、小晴、小宇、玩家同學與老師"><p class="character-key">由左到右：阿哲（深棕蓬鬆髮）、小晴（高馬尾與米白蝴蝶結）、小宇（較短深色亂髮、較鬆的領帶）、玩家同學（黑色方框眼鏡）、老師（低髮髻、圓框眼鏡、米色外套）。新場景使用同一份設定圖作參考。</p><p>平板橫放：左邊看圖、右邊閱讀與選擇。直放：由上往下閱讀，不必強制轉向。設定中可開大字閱讀；瀏覽器仍可自行縮放。</p></details></dialog>
+<dialog id="settingsDialog" class="modal"><div class="modal-head"><h2>照自己的步調玩</h2><button type="button" class="tool" data-close="settingsDialog">完成</button></div><fieldset><legend>思考時間</legend><label class="setting"><input type="radio" name="pace" value="calm" checked>慢慢想<span>每一題都等你選好，不倒數。</span></label><label class="setting"><input type="radio" name="pace" value="timed">限時挑戰<span>部分情境有 10 秒倒數，感受當下的壓力。</span></label></fieldset><label class="setting"><input id="quickChat" type="checkbox">一次顯示整段訊息<span>關閉時，訊息會依序出現。</span></label><label class="setting"><input id="largeText" type="checkbox">大字閱讀<span>加大故事和選項文字，畫面仍可捲動。</span></label><p class="soft-note">思考時間與訊息顯示設定，在下一個情境生效。開啟設定或路線時，倒數會暫停。</p><p class="soft-note" id="storageStatus">結局與設定僅保存在這個瀏覽器，不儲存暱稱。</p><button class="reset-action" id="resetProgress" type="button">清除這個瀏覽器的結局記錄</button><p class="reset-status" id="resetStatus" role="status"></p></dialog>
+
+
+<!-- 開始畫面 -->
+<div id="vTitle" class="wrap title">
+  <div class="hero-grid"><section class="hero-copy"><div class="eyebrow">校園相處練習室 · 互動故事</div><p class="hero-kicker">如果是你，會怎麼回？</p><h1>七年三班的<br><span>那句話</span></h1><p class="lede">一句玩笑、一則轉傳、一次沉默。<br>在教室和群組裡，你的選擇，<br>會讓故事走向哪裡？</p><button class="btn big" id="btnStart" type="button">走進七年三班 <span aria-hidden="true">↗</span></button><p class="start-note">3 個故事 · 每條路線 6 次選擇 · 15 種結局</p><button class="text-link" id="btnContinue" type="button" hidden>查看已完成的故事 →</button></section><div class="hero-art" aria-label="三位同學的校園故事插圖"><div class="art-caption">CLASS 703 / 今天的訊息</div><div class="hero-phone"><div class="phone-notch" aria-hidden="true"></div><div class="mini-app">七年三班 <span>班級群組</span></div><div id="heroIllustration" class="hero-illustration" data-paint="nick-private" data-who="阿哲"></div><div class="preview-message">「開個玩笑而已，幹嘛那麼認真？」</div><div class="preview-message reply">如果是我，會怎麼說……</div><div class="typing-label">你的一句話，故事的下一步。</div></div><div class="art-stamp stamp-one">說出感受</div><div class="art-stamp stamp-two">也留住善意</div><div class="art-number" aria-hidden="true">703</div></div></div>
+  <div class="chapter-preview"><span>今天，從哪一句開始？</span><div class="preview-grid"><button type="button" class="preview-card" data-chapter="0"><div class="preview-thumb" data-paint="ch1-open" data-who="阿哲"></div><span><small>01 / 取綽號</small><b>神明大人</b><em>玩笑，什麼時候變了樣？</em></span><i aria-hidden="true">↗</i></button><button type="button" class="preview-card" data-chapter="1"><div class="preview-thumb" data-paint="ch2-open" data-who="小晴"></div><span><small>02 / 講閒話</small><b>不要說出去喔</b><em>這則訊息，要傳出去嗎？</em></span><i aria-hidden="true">↗</i></button><button type="button" class="preview-card" data-chapter="2"><div class="preview-thumb" data-paint="ch3-open" data-who="小宇"></div><span><small>03 / 攻擊性語言</small><b>自習課演唱會</b><em>我很生氣，也能好好說。</em></span><i aria-hidden="true">↗</i></button></div></div>
+  <div class="notes">
+    <section>
+      <h3>給老師：一節課的用法</h3>
+      <ul>
+        <li>10 分鐘：學生個人或兩人一組玩一節。</li>
+        <li>15 分鐘：小組比較結局，找出轉折的那一句話。</li>
+        <li>15 分鐘：角色演練，把手冊裡黃色標記的句子說出口。</li>
+        <li>5 分鐘：說明校內可以找誰幫忙。</li>
+      </ul>
+    </section>
+    <section>
+      <h3>這份教材想傳達的事</h3>
+      <ul>
+        <li>被行為打擾是真的，可以說出來。</li>
+        <li>說的是那個行為，不是笑那個人。</li>
+        <li>不跟著笑、不轉傳；若不方便當面說，可以私下找大人幫忙。</li>
+        <li>角色與情節皆為虛構。班上若正有類似事件，請先與輔導老師討論再使用。</li>
+      </ul>
+    </section>
+  </div>
+</div>
+
+<!-- 個人資料 -->
+<div id="vProfile" class="profile" hidden>
+  <form class="idcard" id="profileForm">
+    <div class="eyebrow">七年三班 ・ 學生資料</div>
+    <h2>你想怎麼稱呼自己？</h2><p class="profile-note">用暱稱就好。接下來，你也是七年三班的一員。</p>
+    <div>
+      <label for="nick">你的暱稱（不用真實姓名）</label>
+      <input type="text" id="nick" maxlength="8" placeholder="同學" autocomplete="off">
+    </div>
+    <div>
+      <label>選一個代表你的顏色</label>
+      <div class="swatches" id="swatches"></div>
+    </div>
+    <button class="btn" type="submit">下一步</button>
+  </form>
+</div>
+
+<!-- 選同學 -->
+<div id="vSelect" class="select" hidden>
+  <div>
+    <div class="eyebrow">左右切換，選一位同學的故事</div>
+    <h2 id="selHello"></h2>
+  </div>
+  <div class="pick">
+    <div id="selArt" class="selection-art" role="img" aria-label="故事插圖"></div>
+    <div class="pickbody">
+      <div class="period" id="selPeriod"></div>
+      <h3 id="selTitle"></h3>
+      <div><span class="tag" id="selTag"></span></div>
+      <dl>
+        <dt>同學</dt><dd id="selWho"></dd>
+        <dt>你的角色</dt><dd id="selRole"></dd>
+      </dl>
+      <div class="done" id="selDone"></div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="round" id="selPrev" type="button" aria-label="上一位">←</button>
+    <div class="dots" id="selDots"></div>
+    <button class="round" id="selNext" type="button" aria-label="下一位">→</button>
+  </div>
+  <button class="btn big" id="selGo" type="button">進入這一節</button>
+</div>
+
+<!-- 平板優先的分支故事畫面 -->
+<main id="vPlay" class="play branch-play" hidden>
+  <div class="hud">
+    <button class="back" id="btnBack" type="button" aria-label="回到選擇畫面">←</button>
+    <div class="hudtitle" id="hudTitle"></div>
+    <div class="meters"><div class="meter"><span id="moodLabel"></span> <b id="moodNum"></b><div class="bar"><i id="moodBar"></i></div></div><div class="meter">班級氣氛 <b id="clsNum"></b><div class="bar"><i id="clsBar"></i></div></div></div>
+    <span class="choice-count" id="choiceCount"></span><button class="tool hud-route" id="btnRoute" type="button">我的路線</button>
+  </div>
+  <div class="tablet-stage">
+    <figure class="visual-pane"><div id="visualArt" class="visual-art" role="img" aria-label="校園故事插圖"></div><figcaption id="stageCaption"></figcaption><p id="branchTrail" class="branch-trail"></p><p class="meter-note" id="meterNote"></p></figure>
+    <section class="reading-pane" aria-label="故事與選擇">
+      <div id="readingScroll" class="reading-scroll"><div class="channel-label" id="channelLabel"></div><h2 class="event-title" id="eventTitle" tabindex="-1"></h2><div id="sceneText" aria-live="polite" aria-relevant="additions text"></div></div>
+      <div class="decision-area"><p class="choice-prompt" id="choicePrompt"></p><div class="countdown" id="countdown" hidden><div class="countdown-head"><span>可以先停一下，來不及回應也不代表同意。</span><b id="countdownLabel"></b></div><div class="countdown-bar"><i id="countdownFill"></i></div></div><div class="aftermath" id="aftermath" aria-live="polite" hidden><p class="after-label">這句話之後……</p><p class="after-reply" id="afterReply"></p><p class="after-note" id="afterNote"></p></div><div id="choices" class="choices" aria-label="選擇你的做法"></div></div>
+    </section>
+  </div>
+</main>
+
+<!-- 手冊 -->
+<div id="vBook" class="book" hidden></div>
+
+<script src="story-data.js"></script>
+<script src="story-engine.js"></script>
+<dialog id="routeDialog" class="modal route-modal"><div class="modal-head"><h2>我的故事路線</h2><button type="button" class="tool" data-close="routeDialog">關閉路線</button></div><div id="routeContent"></div></dialog>
+<footer class="sitefoot">七年三班的那句話 <span>練習說出感受，也練習聽見別人。</span></footer>
+
+</body>
+</html>
